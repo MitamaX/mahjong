@@ -61,10 +61,13 @@
   --app-pad: var(--space-3);
   --app-gap: var(--space-3);
   --frame-w: calc(100vw - var(--safe-x) - var(--app-pad) * 2);
-  --frame-h: calc(var(--viewport-h) - var(--safe-y) - var(--app-pad) * 2 - var(--app-gap));
+  --dora-reserve: 0px;
+  --frame-h: calc(var(--viewport-h) - var(--safe-y) - var(--app-pad) * 2 - var(--app-gap)
+    - var(--dora-reserve));
   --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);
   --panel-cap-h: calc((var(--viewport-h) - var(--safe-y)) * 0.94);
   --detail-board-cap: calc(var(--viewport-h) * 0.5);
+  --center-min: 136px;
 
   --board-span: 680;
   --report-board-span: 615;

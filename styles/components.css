@@ -117,9 +117,9 @@
 }
 
 .chip {
-  --badge-pad-y: calc(var(--plate-unit) * 2);
-  --badge-pad-x: calc(var(--plate-unit) * 8);
-  --badge-text: calc(var(--plate-unit) * 11);
+  --badge-pad-y: calc(var(--board-unit) * 2);
+  --badge-pad-x: calc(var(--board-unit) * 8);
+  --badge-text: calc(var(--label-unit) * 11);
   visibility: hidden;
 }
 
@@ -142,17 +142,17 @@
 .verdict--최악 { background: var(--ink); color: var(--ivory); }
 
 .plate {
-  --plate-unit: max(var(--board-unit), 0.78px);
-  min-width: calc(var(--plate-unit) * 62);
+  --label-unit: min(max(var(--board-unit), 0.82px), calc(var(--center-size) / 166));
+  min-width: calc(var(--board-unit) * 62);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(var(--plate-unit) * 1);
-  padding: calc(var(--plate-unit) * 4) calc(var(--plate-unit) * 8);
+  gap: calc(var(--board-unit) * 1);
+  padding: calc(var(--board-unit) * 4) calc(var(--board-unit) * 8);
   border-radius: var(--radius-s);
   background: var(--ivory);
   box-shadow: 0 1px 3px var(--shade);
-  font-size: calc(var(--plate-unit) * 12);
+  font-size: calc(var(--label-unit) * 12);
   transition: box-shadow 0.15s ease;
 }
 
@@ -161,7 +161,7 @@
 }
 
 .plate__wind {
-  font-size: calc(var(--plate-unit) * 16);
+  font-size: calc(var(--label-unit) * 16);
   font-weight: 700;
   color: var(--tan);
 }
@@ -387,6 +387,7 @@
 }
 
 .detail__board {
+  --center-min: 0px;
   --board-fit: min(100cqw, var(--detail-board-cap));
   --board-unit: calc(var(--board-fit) / var(--report-board-span));
   width: var(--board-fit);
