@@ -253,6 +253,7 @@
 .stat__label {
   font-size: var(--text-s);
   color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 .stat__value {
@@ -528,6 +529,19 @@ button.ledger__row:not(.ledger__row--on):active {
 
   .drawer__inner .note {
     display: flex;
+  }
+
+  .stats--compact {
+    gap: var(--space-1);
+  }
+
+  .stats--compact .stat {
+    gap: var(--space-1);
+    padding: var(--space-1);
+  }
+
+  .compare__row {
+    gap: var(--space-1);
   }
 }
 
