@@ -20,7 +20,7 @@ const DASH = '—';
 
 const percent = (value) => `${value.toFixed(1)}%`;
 const points = (value) => value.toFixed(1);
-const rounded = (value) => `${Math.round(value)}`;
+const score = (value) => `${Math.round(value)}점`;
 const ratio = (value) => `${Math.round(value)}%`;
 const text = (value, format) => (value === null ? DASH : format(value));
 
@@ -142,7 +142,7 @@ export class ReportView {
       ['위험', text(report.danger, percent)],
       ['샨텐', text(report.shanten, points)],
       ['최선', text(report.hits, ratio)],
-      ['종합', text(report.overall, rounded)]
+      ['종합', text(report.overall, score)]
     ]));
 
     const entries = report.records.map((record) => this.entry(record));
