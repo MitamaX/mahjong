@@ -1,0 +1,56 @@
+:root {
+  --sage: #CCD5AE;
+  --lime: #E9EDC9;
+  --ivory: #FEFAE0;
+  --cream: #FAEDCD;
+  --tan: #D4A373;
+
+  --ink: #5A4632;
+  --ink-soft: #8C7355;
+  --felt: #A9B78C;
+  --felt-deep: #8C9A6E;
+
+  --man: #B5794C;
+  --pin: #77875C;
+  --sou: #5A4632;
+
+  --line: rgba(90, 70, 50, 0.18);
+  --shade: rgba(90, 70, 50, 0.22);
+  --veil: rgba(90, 70, 50, 0.45);
+
+  --tile-w: 30px;
+  --tile-h: 42px;
+  --tile-gap: 2px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 14px;
+  --space-4: 22px;
+  --space-5: 34px;
+
+  --layer-center: 1;
+  --layer-dock: 2;
+  --layer-announce: 3;
+  --layer-overlay: 10;
+
+  --radius-s: 5px;
+  --radius-m: 10px;
+  --radius-l: 18px;
+
+  --board-span: 680;
+  --detail-board-span: 615;
+  --dock-span: 714;
+  --dock-extra: 130px;
+  --board-size: min(
+    100vh - 54px,
+    92vw,
+    760px,
+    calc((100vw - var(--dock-extra)) * var(--board-span) / var(--dock-span))
+  );
+  --board-unit: min(1px, calc(var(--board-size) / var(--board-span)));
+  --center-size: calc(var(--board-unit) * 236);
+  --river-cols: 6;
+  --river-rows: 3;
+  --dock-lift: calc(var(--board-unit) * 54);
+  --font: 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+}
