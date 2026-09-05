@@ -250,8 +250,6 @@
     --dora-cap: 1px;
     top: auto;
     bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
     margin-bottom: var(--space-3);
   }
 }
