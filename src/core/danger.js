@@ -131,14 +131,9 @@ function copiesLeft(tile, remaining) {
   return Math.max(0, Math.min(4, remaining[tile]));
 }
 
-function isDeadHonor(tile, left) {
-  return Tiles.isHonor(tile) && left === 0;
-}
-
 function guardOf(tile, threat, remaining) {
-  const left = copiesLeft(tile, remaining);
-  if (isDeadHonor(tile, left)) return { kind: GUARD.HONOR, left, cites: [] };
   if (threat.safe.has(tile)) return { kind: GUARD.GENBUTSU, left: null, cites: [] };
+  const left = copiesLeft(tile, remaining);
   if (Tiles.isHonor(tile)) return { kind: GUARD.HONOR, left, cites: [] };
   const wall = kabeWall(tile, remaining);
   if (wall !== null) return { kind: GUARD.KABE, left: null, cites: [wall] };
@@ -171,9 +166,5 @@ export { GUARD };
 export const Danger = {
   profile(threats, remaining) {
     return new ThreatProfile(threats, remaining);
-  },
-
-  isDeadHonor(guard) {
-    return guard !== null && guard.kind === GUARD.HONOR && guard.left === 0;
   }
 };

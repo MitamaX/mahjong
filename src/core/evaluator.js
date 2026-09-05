@@ -1,15 +1,8 @@
 import { Danger } from './danger.js';
 
-const STANCE = { BUILD: 'build', PUSH: 'push', FOLD: 'fold' };
-const WEIGHTS = {
-  [STANCE.BUILD]: { efficiency: 1, safety: 0 },
-  [STANCE.PUSH]: { efficiency: 0.65, safety: 0.35 },
-  [STANCE.FOLD]: { efficiency: 0.1, safety: 0.9 }
-};
-const PUSH_TURN_LIMIT = 8;
-const PUSH_DORA_FLOOR = 2;
-const PUSH_UKEIRE_FLOOR = 12;
-const DEAD_HONOR_EDGE = 2;
+const PERFECT = 100;
+const PERCENT = 100;
+const ROUNDING = 100;
 
 const bands = (rows) => rows.map(([label, min]) => ({ label, min }));
 
@@ -40,23 +33,26 @@ function statsOf(option) {
   };
 }
 
-function stanceOf(threats, minShanten, turn, doraCount, bestUkeire) {
-  if (!threats.length) return STANCE.BUILD;
-  if (minShanten <= 0) return STANCE.PUSH;
-  if (minShanten === 1 && turn <= PUSH_TURN_LIMIT && (doraCount >= PUSH_DORA_FLOOR || bestUkeire >= PUSH_UKEIRE_FLOOR)) return STANCE.PUSH;
-  return STANCE.FOLD;
+const CRITERIA = [
+  { of: (option) => option.danger, weight: 12, tie: 0.001 },
+  { of: (option) => option.shanten, weight: 4, tie: 0 },
+  { of: (option) => -option.ukeire, weight: 0.2, tie: 0 }
+];
+
+function compare(option, other) {
+  for (const { of, tie } of CRITERIA) {
+    const gap = of(option) - of(other);
+    if (Math.abs(gap) > tie) return gap;
+  }
+  return 0;
 }
 
-function efficiencyScore(option, minShanten, bestUkeire) {
-  const loss = option.shanten - minShanten;
-  if (loss > 0) return Math.max(10, 45 - 15 * loss);
-  return 60 + 40 * (option.ukeire / Math.max(bestUkeire, 1));
+function lossOf(picked, ideal) {
+  return CRITERIA.reduce((sum, { of, weight }) => sum + weight * Math.max(0, of(picked) - of(ideal)), 0);
 }
 
-function safetyScore(danger, minDanger, maxDanger) {
-  const span = maxDanger - minDanger;
-  if (span <= 0.001) return 100;
-  return 100 - 100 * ((danger - minDanger) / span);
+function accuracyOf(loss) {
+  return Math.round(Math.max(0, PERFECT - loss) * ROUNDING) / ROUNDING;
 }
 
 export class Evaluator {
@@ -64,7 +60,7 @@ export class Evaluator {
     this.records = [];
   }
 
-  evaluate({ turn, hand, chosen, remaining, threats, rivers, dora }) {
+  evaluate({ turn, hand, chosen, remaining, threats, rivers, doraIndicator }) {
     const profile = Danger.profile(threats, remaining);
     const options = hand.discardOptions(remaining).map((option) => ({
       ...option,
@@ -72,57 +68,36 @@ export class Evaluator {
       guard: profile.guard(option.tile)
     }));
 
-    const minShanten = Math.min(...options.map((option) => option.shanten));
-    const bestUkeire = Math.max(...options.filter((option) => option.shanten === minShanten).map((option) => option.ukeire), 1);
-    const dangers = options.map((option) => option.danger);
-    const minDanger = Math.min(...dangers);
-    const maxDanger = Math.max(...dangers);
-    const stance = stanceOf(threats, minShanten, turn, hand.counts[dora], bestUkeire);
+    const picked = options.find((option) => option.tile === chosen);
+    const ideal = options.reduce((best, option) => (compare(option, best) < 0 ? option : best), picked);
+    const score = accuracyOf(lossOf(picked, ideal));
 
-    const weight = WEIGHTS[stance];
-    const scored = options.map((option) => {
-      const efficiency = efficiencyScore(option, minShanten, bestUkeire);
-      const safety = safetyScore(option.danger, minDanger, maxDanger)
-        + (Danger.isDeadHonor(option.guard) ? DEAD_HONOR_EDGE : 0);
-      return {
-        ...option,
-        efficiency,
-        safety,
-        score: weight.efficiency * efficiency + weight.safety * safety
-      };
-    });
-
-    const picked = scored.find((option) => option.tile === chosen);
-    const ideal = scored.reduce((best, option) => (option.score > best.score ? option : best), picked);
-    const accuracy = Math.round((100 - (ideal.score - picked.score)) * 100) / 100;
     const record = {
       turn,
-      stance,
       hand: hand.tiles,
       rivers,
+      doraIndicator,
       picked: statsOf(picked),
       best: statsOf(ideal),
-      score: accuracy,
-      verdict: labelOf(VERDICTS, accuracy)
+      score,
+      verdict: labelOf(VERDICTS, score)
     };
     this.records.push(record);
     return record;
   }
 
   summary() {
-    const mean = (list, pick) => (list.length ? list.reduce((sum, record) => sum + pick(record), 0) / list.length : null);
-    const score = (record) => record.score;
-    const of = (stance) => mean(this.records.filter((record) => record.stance === stance), score);
-    const overall = mean(this.records, score);
+    const { records } = this;
+    const total = (pick) => records.reduce((sum, record) => sum + pick(record), 0);
+    const mean = (pick) => (records.length ? total(pick) / records.length : null);
+    const overall = mean((record) => record.score);
     return {
-      push: of(STANCE.PUSH),
-      fold: of(STANCE.FOLD),
       overall,
-      shanten: mean(this.records, (record) => record.picked.shanten),
       grade: overall === null ? '—' : labelOf(GRADES, overall),
-      records: this.records
+      danger: mean((record) => record.picked.danger),
+      shanten: mean((record) => record.picked.shanten),
+      hits: mean((record) => (record.best.tile === record.picked.tile ? PERCENT : 0)),
+      records
     };
   }
 }
-
-export { STANCE };

@@ -136,6 +136,16 @@
   background: var(--felt-deep);
 }
 
+.center__dora {
+  --tile-w: calc(var(--board-unit) * 24);
+  --tile-h: calc(var(--board-unit) * 33);
+  display: flex;
+  gap: calc(var(--board-unit) * 3);
+  padding: calc(var(--board-unit) * 5);
+  border-radius: var(--radius-m);
+  background: var(--felt-deep);
+}
+
 .dock {
   position: relative;
   z-index: var(--layer-dock);

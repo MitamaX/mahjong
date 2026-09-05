@@ -30,15 +30,26 @@ export class Hand {
     return Shanten.of(this.counts);
   }
 
-  bestShanten() {
-    let best = Infinity;
+  heldKinds() {
+    const tiles = [];
     for (let tile = 0; tile < KINDS; tile += 1) {
-      if (this.counts[tile] === 0) continue;
-      this.counts[tile] -= 1;
-      best = Math.min(best, this.shanten());
-      this.counts[tile] += 1;
+      if (this.counts[tile] > 0) tiles.push(tile);
     }
-    return best;
+    return tiles;
+  }
+
+  withoutTile(tile, read) {
+    this.counts[tile] -= 1;
+    const value = read();
+    this.counts[tile] += 1;
+    return value;
+  }
+
+  bestShanten() {
+    return this.heldKinds().reduce(
+      (best, tile) => Math.min(best, this.withoutTile(tile, () => this.shanten())),
+      Infinity
+    );
   }
 
   isComplete() {
@@ -79,15 +90,10 @@ export class Hand {
   }
 
   discardOptions(remaining) {
-    const options = [];
-    for (let tile = 0; tile < KINDS; tile += 1) {
-      if (this.counts[tile] === 0) continue;
-      this.counts[tile] -= 1;
+    return this.heldKinds().map((tile) => this.withoutTile(tile, () => {
       const shanten = this.shanten();
       const { total } = this.ukeire(remaining);
-      options.push({ tile, shanten, ukeire: total, waits: shanten === 0 ? this.waits() : [] });
-      this.counts[tile] += 1;
-    }
-    return options;
+      return { tile, shanten, ukeire: total, waits: shanten === 0 ? this.waits() : [] };
+    }));
   }
 }

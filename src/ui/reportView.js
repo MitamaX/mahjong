@@ -3,42 +3,39 @@ import { SEAT_CLASSES, riverRows } from './board.js';
 import { PLAYER } from '../core/round.js';
 import { GUARD } from '../core/danger.js';
 
-const STANCE_LABELS = { build: '조패', push: '오시', fold: '오리' };
-const BUILD_STANCE = 'build';
-const PUSH_STANCE = 'push';
-const FOLD_STANCE = 'fold';
 const TILE_COPIES = 4;
 const SAFE_GUARDS = [GUARD.GENBUTSU, GUARD.SUJI, GUARD.HONOR];
 const CITE_SEPARATOR = '·';
-const LEDGER_HEADS = ['순', '선택', '최선', '국면', '샨텐', '위험', '판정'];
+const LEDGER_HEADS = ['순', '선택', '최선', '샨텐', '위험', '판정'];
 const COMPACT_STATS = 'stats stats--compact';
 const BEST_MARK = 'best';
 const PICK_MARK = 'pick';
 const CITE_MARK = 'cite';
+const EDGES = [
+  { label: '더 안전한', holds: (best, picked) => best.danger < picked.danger },
+  { label: '샨텐수를 늘리지 않는', holds: (best, picked) => best.shanten < picked.shanten },
+  { label: '유효패가 더 많은', holds: (best, picked) => best.ukeire > picked.ukeire }
+];
+const DASH = '—';
+const DORA_SLOTS = 5;
+
+const percent = (value) => `${value.toFixed(1)}%`;
+const points = (value) => value.toFixed(1);
+const rounded = (value) => `${Math.round(value)}`;
+const ratio = (value) => `${Math.round(value)}%`;
+const text = (value, format) => (value === null ? DASH : format(value));
+
 const guardText = ({ kind, left }) => (left === null ? kind : `${TILE_COPIES - left}장 보이는 ${kind}`);
 const citeList = (cites) => cites
   .map((tile) => cited(tile, CITE_MARK))
   .flatMap((part, index) => (index ? [CITE_SEPARATOR, part] : [part]));
 
-const EDGES = {
-  shanten: { label: '샨텐수를 늘리지 않는', holds: (best, picked) => best.shanten < picked.shanten },
-  ukeire: { label: '유효패가 더 많은', holds: (best, picked) => best.ukeire > picked.ukeire },
-  safety: {
-    label: '더 안전한',
-    holds: (best, picked) => best.danger < picked.danger && best.guard?.kind !== GUARD.GENBUTSU
-  }
-};
+const sharesGuard = (best, picked) => (best.guard?.kind ?? null) === (picked.guard?.kind ?? null);
 
-const EDGE_PRIORITY = {
-  [BUILD_STANCE]: ['shanten', 'ukeire', 'safety'],
-  [PUSH_STANCE]: ['shanten', 'safety', 'ukeire'],
-  [FOLD_STANCE]: ['safety', 'shanten', 'ukeire']
-};
-
-function edgeLabel(best, picked, stance) {
-  if (best.tile === picked.tile) return '';
-  const edge = EDGE_PRIORITY[stance].find((name) => EDGES[name].holds(best, picked));
-  return edge ? `${EDGES[edge].label} ` : '';
+function edgeLabel(best, picked) {
+  if (best.tile === picked.tile || !sharesGuard(best, picked)) return '';
+  const edge = EDGES.find(({ holds }) => holds(best, picked));
+  return edge ? `${edge.label} ` : '';
 }
 
 function outcomeLabel(result) {
@@ -48,22 +45,10 @@ function outcomeLabel(result) {
   return result.from === PLAYER ? '방총' : '론';
 }
 
-function scoreText(value) {
-  return value === null ? '—' : Math.round(value);
-}
-
-function shantenText(value) {
-  return value === null ? '—' : value.toFixed(1);
-}
-
-function dangerText(stance, danger) {
-  return stance === BUILD_STANCE ? '—' : `${danger.toFixed(1)}%`;
-}
-
-function span(text, className) {
+function span(content, className) {
   const node = document.createElement('span');
   if (className) node.className = className;
-  if (text !== undefined) node.textContent = text;
+  if (content !== undefined) node.textContent = content;
   return node;
 }
 
@@ -91,16 +76,15 @@ function cited(tile, mark) {
   return { tile, mark };
 }
 
-function noteSegments({ best, picked, stance }) {
+function noteSegments({ best, picked }) {
   const choice = cited(best.tile, BEST_MARK);
-  const edge = edgeLabel(best, picked, stance);
-  if (stance !== FOLD_STANCE) return [choice, `가 유효패 ${best.ukeire}장으로 최선.`];
+  const edge = edgeLabel(best, picked);
   if (best.guard.kind === GUARD.KABE) return [...citeList(best.guard.cites), '가 벽이기에', choice, '가 최선.'];
   if (best.guard.kind === GUARD.SUJI) {
     return [choice, `가 ${edge}`, ...citeList(best.guard.cites), `의 ${guardText(best.guard)}이기에 최선.`];
   }
   if (SAFE_GUARDS.includes(best.guard.kind)) return [choice, `가 ${edge}${guardText(best.guard)}이기에 최선.`];
-  return [choice, `가 위험 ${best.danger.toFixed(1)}%로 최선.`];
+  return [choice, `가 위험 ${percent(best.danger)}로 최선.`];
 }
 
 function noteNode(segments) {
@@ -108,8 +92,18 @@ function noteNode(segments) {
     (typeof part === 'string' ? span(part) : tileNode(part.tile, { mark: part.mark }))));
 }
 
-function centerNode(turn) {
-  return box('center', [box('center__core', [span(`${turn}순`, 'center__round')])]);
+function doraNode(indicator, marks) {
+  return box('center__dora', [
+    tileNode(indicator, { mark: marks.get(indicator) ?? null }),
+    ...Array.from({ length: DORA_SLOTS - 1 }, () => tileNode(0, { back: true }))
+  ]);
+}
+
+function centerNode({ turn, doraIndicator }, marks) {
+  return box('center', [box('center__core', [
+    span(`${turn}순`, 'center__round'),
+    doraNode(doraIndicator, marks)
+  ])]);
 }
 
 function citedMarks(segments) {
@@ -149,10 +143,10 @@ export class ReportView {
     this.node('outcome').textContent = outcomeLabel(report.result);
     this.node('grade').textContent = report.grade;
     this.node('summary').replaceChildren(...statNodes([
-      ['오시', scoreText(report.push)],
-      ['오리', scoreText(report.fold)],
-      ['샨텐', shantenText(report.shanten)],
-      ['종합', scoreText(report.overall)]
+      ['위험', text(report.danger, percent)],
+      ['샨텐', text(report.shanten, points)],
+      ['최선', text(report.hits, ratio)],
+      ['종합', text(report.overall, rounded)]
     ]));
 
     const entries = report.records.map((record) => this.entry(record));
@@ -188,9 +182,8 @@ export class ReportView {
       span(record.turn),
       tileCell(record.picked.tile),
       record.best.tile === record.picked.tile ? span('=', 'ledger__same') : tileCell(record.best.tile),
-      span(STANCE_LABELS[record.stance]),
       span(record.picked.shanten),
-      span(dangerText(record.stance, record.picked.danger)),
+      span(percent(record.picked.danger)),
       span(record.verdict, `verdict verdict--${record.verdict}`)
     );
     return row;
@@ -203,9 +196,9 @@ export class ReportView {
   }
 
   compareRows(record) {
-    const best = this.compareRow('최선', record.best, record.stance, BEST_MARK);
+    const best = this.compareRow('최선', record.best, BEST_MARK);
     if (record.picked.tile === record.best.tile) return [best];
-    return [this.compareRow('선택', record.picked, record.stance, PICK_MARK), best];
+    return [this.compareRow('선택', record.picked, PICK_MARK), best];
   }
 
   open({ record, row, drawer }) {
@@ -215,10 +208,11 @@ export class ReportView {
     row.classList.add('ledger__row--on');
     drawer.classList.add('drawer--on');
     const segments = noteSegments(record);
+    const marks = citedMarks(segments);
     this.node('note').replaceChildren(noteNode(segments));
     this.node('board').replaceChildren(
-      ...this.seatFrames(record.rivers, citedMarks(segments)),
-      centerNode(record.turn)
+      ...this.seatFrames(record.rivers, marks),
+      centerNode(record, marks)
     );
   }
 
@@ -237,14 +231,14 @@ export class ReportView {
     return null;
   }
 
-  compareRow(label, stats, stance, mark) {
+  compareRow(label, stats, mark) {
     return box('compare__row', [
       span(label, 'compare__label'),
       tileCell(stats.tile, mark),
       statsNode([
         ['샨텐', stats.shanten],
         ['유효패', stats.ukeire],
-        ['위험', dangerText(stance, stats.danger)]
+        ['위험', percent(stats.danger)]
       ], COMPACT_STATS)
     ]);
   }

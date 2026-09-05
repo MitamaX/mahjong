@@ -27,7 +27,6 @@ export class Round {
     this.declaredAt = SEATS.map(() => -1);
     this.log = [];
     this.doraIndicator = this.wall.doraIndicator;
-    this.dora = Tiles.next(this.doraIndicator);
     this.turn = 0;
     this.result = null;
     this.drawn = null;
@@ -116,7 +115,7 @@ export class Round {
       remaining: this.remaining(),
       threats: this.threats(),
       rivers: this.rivers.map((river) => river.slice()),
-      dora: this.dora
+      doraIndicator: this.doraIndicator
     });
     this.commitDiscard(PLAYER, tile, withRiichi);
     this.seatToAct = (PLAYER + 1) % SEATS.length;
