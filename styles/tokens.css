@@ -44,15 +44,38 @@
   --radius-m: 10px;
   --radius-l: 18px;
 
+  --btn-pad-y: var(--space-2);
+  --grade-size: 52px;
+  --panel-pad: var(--space-4);
+  --panel-gap: var(--space-3);
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-pad: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  --safe-x: calc(var(--safe-left) + var(--safe-right));
+  --safe-y: calc(var(--safe-top) + var(--safe-bottom));
+
+  --viewport-h: 100vh;
+  --app-pad: var(--space-3);
+  --app-gap: var(--space-3);
+  --frame-w: calc(100vw - var(--safe-x) - var(--app-pad) * 2);
+  --frame-h: calc(var(--viewport-h) - var(--safe-y) - var(--app-pad) * 2 - var(--app-gap));
+  --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);
+  --panel-cap-h: calc((var(--viewport-h) - var(--safe-y)) * 0.94);
+  --detail-board-cap: calc(var(--viewport-h) * 0.5);
+
   --board-span: 680;
   --report-board-span: 615;
   --dock-span: 714;
-  --dock-extra: 200px;
+  --stack-span: 690;
+  --dock-tail: 200px;
+  --board-cap: 760px;
   --board-size: min(
-    100vh - 54px,
-    92vw,
-    760px,
-    calc((100vw - var(--dock-extra)) * var(--board-span) / var(--dock-span))
+    var(--board-cap),
+    calc(var(--frame-h) * var(--board-span) / var(--stack-span)),
+    calc((var(--frame-w) - var(--dock-tail)) * var(--board-span) / var(--dock-span))
   );
   --board-unit: min(1px, calc(var(--board-size) / var(--board-span)));
   --center-span: 236;
@@ -60,4 +83,10 @@
   --river-rows: 3;
   --dock-lift: calc(var(--board-unit) * 54);
   --font: 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --viewport-h: 100dvh;
+  }
 }

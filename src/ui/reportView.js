@@ -117,7 +117,7 @@ export class ReportView {
           <span class="panel__title" data-outcome></span>
           <span class="grade" data-grade></span>
         </header>
-        <div class="stats" data-summary></div>
+        <div class="stats stats--summary" data-summary></div>
         <div class="panel__body">
           <div class="ledger" data-ledger></div>
           <div class="detail">

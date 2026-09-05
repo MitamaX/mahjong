@@ -5,8 +5,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3);
-  gap: var(--space-3);
+  padding: var(--app-pad);
+  gap: var(--app-gap);
 }
 
 .board {
@@ -125,11 +125,12 @@
 
 .board__dora,
 .center__dora {
-  --tile-w: calc(var(--board-unit) * 24);
-  --tile-h: calc(var(--board-unit) * 33);
+  --dora-unit: max(var(--board-unit), 0.7px);
+  --tile-w: calc(var(--dora-unit) * 24);
+  --tile-h: calc(var(--dora-unit) * 33);
   display: flex;
-  gap: calc(var(--board-unit) * 3);
-  padding: calc(var(--board-unit) * 5);
+  gap: calc(var(--dora-unit) * 3);
+  padding: calc(var(--dora-unit) * 5);
   border-radius: var(--radius-m);
   background: var(--felt-deep);
 }
@@ -205,9 +206,24 @@
   z-index: var(--layer-overlay);
   display: grid;
   place-items: center;
+  padding: var(--safe-pad);
   background: var(--veil);
 }
 
 .overlay[hidden] {
   display: none;
+}
+
+@media (max-width: 780px) {
+  :root {
+    --app-pad: var(--space-2);
+    --dock-tail: var(--space-2);
+  }
+
+  .dock__riichi {
+    left: auto;
+    right: 0;
+    bottom: 100%;
+    margin: 0 0 var(--space-3);
+  }
 }

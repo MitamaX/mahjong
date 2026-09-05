@@ -6,16 +6,19 @@
 
 html,
 body {
-  height: 100%;
+  height: var(--viewport-h);
   margin: 0;
 }
 
 body {
+  padding: var(--safe-pad);
   background: var(--cream);
   color: var(--ink);
   font-family: var(--font);
   font-size: var(--text-m);
   overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
@@ -24,6 +27,7 @@ button {
   border: none;
   background: none;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 button:disabled {
