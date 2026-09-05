@@ -121,7 +121,7 @@ export class ReportView {
         <div class="panel__body">
           <div class="ledger" data-ledger></div>
           <div class="detail">
-            <div data-note></div>
+            <div class="detail__note" data-note></div>
             <div class="table detail__board" data-board></div>
           </div>
         </div>
@@ -165,7 +165,8 @@ export class ReportView {
   }
 
   entry(record) {
-    const entry = { record, row: this.summaryRow(record), drawer: this.drawerNode(record) };
+    const segments = noteSegments(record);
+    const entry = { record, segments, row: this.summaryRow(record), drawer: this.drawerNode(record, segments) };
     entry.row.addEventListener('click', () => this.open(entry));
     return entry;
   }
@@ -185,10 +186,10 @@ export class ReportView {
     return row;
   }
 
-  drawerNode(record) {
+  drawerNode(record, segments) {
     const hand = box('tile-tray', record.hand.map((tile) => tileNode(tile, { mark: this.markOf(tile, record) })));
     const compare = box('compare', this.compareRows(record));
-    return box('drawer', [box('drawer__inner', [hand, compare])]);
+    return box('drawer', [box('drawer__inner', [hand, compare, noteNode(segments)])]);
   }
 
   compareRows(record) {
@@ -197,13 +198,12 @@ export class ReportView {
     return [this.compareRow('선택', record.picked, PICK_MARK), best];
   }
 
-  open({ record, row, drawer }) {
+  open({ record, segments, row, drawer }) {
     if (drawer.classList.contains('drawer--on')) return;
     this.root.querySelectorAll('.ledger__row--on').forEach((node) => node.classList.remove('ledger__row--on'));
     this.root.querySelectorAll('.drawer--on').forEach((node) => node.classList.remove('drawer--on'));
     row.classList.add('ledger__row--on');
     drawer.classList.add('drawer--on');
-    const segments = noteSegments(record);
     const marks = citedMarks(segments);
     this.node('note').replaceChildren(noteNode(segments));
     this.node('board').replaceChildren(

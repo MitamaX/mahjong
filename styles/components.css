@@ -416,6 +416,11 @@
   color: var(--ink-soft);
 }
 
+.drawer__inner .note {
+  display: none;
+  width: auto;
+}
+
 .compare {
   display: flex;
   flex-direction: column;
@@ -516,11 +521,19 @@ button.ledger__row:not(.ledger__row--on):active {
   .detail {
     align-items: center;
   }
+
+  .detail__note {
+    display: none;
+  }
+
+  .drawer__inner .note {
+    display: flex;
+  }
 }
 
 @media (max-width: 780px) and (orientation: portrait) {
   :root {
-    --detail-cap: calc(var(--viewport-h) * 0.3);
+    --detail-cap: calc(var(--viewport-h) * 0.42);
   }
 
   .panel__body {
@@ -537,5 +550,11 @@ button.ledger__row:not(.ledger__row--on):active {
     --panel-gap: var(--space-2);
     --grade-size: 40px;
     --detail-cap: calc(var(--viewport-h) * 0.35);
+  }
+}
+
+@media (max-width: 780px) and (orientation: landscape) {
+  :root {
+    --detail-cap: calc(var(--viewport-h) * 0.5);
   }
 }
