@@ -1,5 +1,5 @@
 import { tileNode } from './tileView.js';
-import { SEAT_CLASSES, riverRows } from './board.js';
+import { SEAT_CLASSES, riverRows, doraTiles } from './board.js';
 import { PLAYER } from '../core/round.js';
 import { GUARD } from '../core/danger.js';
 
@@ -17,7 +17,6 @@ const EDGES = [
   { label: '유효패가 더 많은', holds: (best, picked) => best.ukeire > picked.ukeire }
 ];
 const DASH = '—';
-const DORA_SLOTS = 5;
 
 const percent = (value) => `${value.toFixed(1)}%`;
 const points = (value) => value.toFixed(1);
@@ -93,10 +92,7 @@ function noteNode(segments) {
 }
 
 function doraNode(indicator, marks) {
-  return box('center__dora', [
-    tileNode(indicator, { mark: marks.get(indicator) ?? null }),
-    ...Array.from({ length: DORA_SLOTS - 1 }, () => tileNode(0, { back: true }))
-  ]);
+  return box('center__dora', doraTiles(indicator, marks.get(indicator) ?? null));
 }
 
 function centerNode({ turn, doraIndicator }, marks) {

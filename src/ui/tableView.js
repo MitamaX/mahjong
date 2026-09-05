@@ -1,7 +1,6 @@
 import { tileNode } from './tileView.js';
-import { SEAT_CLASSES, riverRows } from './board.js';
+import { SEAT_CLASSES, riverRows, doraTiles } from './board.js';
 
-const DORA_SLOTS = 5;
 const ANNOUNCE_MS = 900;
 
 export class TableView {
@@ -118,11 +117,7 @@ export class TableView {
 
   renderInfo() {
     this.root.querySelector('[data-wall]').textContent = this.state.wall;
-    const dora = this.root.querySelector('[data-dora]');
-    dora.replaceChildren(
-      tileNode(this.state.doraIndicator),
-      ...Array.from({ length: DORA_SLOTS - 1 }, () => tileNode(0, { back: true }))
-    );
+    this.root.querySelector('[data-dora]').replaceChildren(...doraTiles(this.state.doraIndicator));
   }
 
   renderHand() {

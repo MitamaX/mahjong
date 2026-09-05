@@ -123,19 +123,7 @@
   opacity: 0.85;
 }
 
-.board__dora {
-  --tile-w: calc(var(--board-unit) * 24);
-  --tile-h: calc(var(--board-unit) * 33);
-  position: absolute;
-  top: var(--board-edge);
-  left: var(--board-edge);
-  display: flex;
-  gap: calc(var(--board-unit) * 3);
-  padding: calc(var(--board-unit) * 5);
-  border-radius: var(--radius-m);
-  background: var(--felt-deep);
-}
-
+.board__dora,
 .center__dora {
   --tile-w: calc(var(--board-unit) * 24);
   --tile-h: calc(var(--board-unit) * 33);
@@ -144,6 +132,12 @@
   padding: calc(var(--board-unit) * 5);
   border-radius: var(--radius-m);
   background: var(--felt-deep);
+}
+
+.board__dora {
+  position: absolute;
+  top: var(--board-edge);
+  left: var(--board-edge);
 }
 
 .dock {
