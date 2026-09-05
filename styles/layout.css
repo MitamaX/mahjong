@@ -250,6 +250,7 @@
     --dora-cap: 1px;
     top: auto;
     bottom: 100%;
+    left: 0;
     margin-bottom: var(--space-3);
   }
 }
