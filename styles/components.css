@@ -168,7 +168,8 @@
 
 .panel {
   --tile-base-w: 24px;
-  --tile-base-h: 33px;
+  --tile-aspect: 1.375;
+  --tile-base-h: calc(var(--tile-base-w) * var(--tile-aspect));
   --note-scale: 0.75;
   --tile-w: var(--tile-base-w);
   --tile-h: var(--tile-base-h);
@@ -356,6 +357,7 @@
 }
 
 .drawer__inner {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -376,8 +378,10 @@
 }
 
 .tile-tray {
+  --tray-room: calc(100cqw - var(--space-2) * 2 - var(--tile-gap) * (var(--hand-tiles) - 1));
+  --tile-w: min(var(--tile-base-w), calc(var(--tray-room) / var(--hand-tiles)));
+  --tile-h: calc(var(--tile-w) * var(--tile-aspect));
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
   justify-content: center;
   gap: var(--tile-gap);
@@ -386,11 +390,15 @@
   background: var(--ivory);
 }
 
+.note,
+.detail__board {
+  --detail-column: min(100cqw, var(--detail-cap));
+  width: var(--detail-column);
+}
+
 .detail__board {
   --center-min: 0px;
-  --board-fit: min(100cqw, var(--detail-board-cap));
-  --board-unit: calc(var(--board-fit) / var(--report-board-span));
-  width: var(--board-fit);
+  --board-unit: calc(var(--detail-column) / var(--report-board-span));
   aspect-ratio: 1;
 }
 
@@ -512,7 +520,7 @@ button.ledger__row:not(.ledger__row--on):active {
 
 @media (max-width: 780px) and (orientation: portrait) {
   :root {
-    --detail-board-cap: calc(var(--viewport-h) * 0.3);
+    --detail-cap: calc(var(--viewport-h) * 0.3);
   }
 
   .panel__body {
@@ -528,6 +536,6 @@ button.ledger__row:not(.ledger__row--on):active {
     --panel-pad: var(--space-2);
     --panel-gap: var(--space-2);
     --grade-size: 40px;
-    --detail-board-cap: calc(var(--viewport-h) * 0.35);
+    --detail-cap: calc(var(--viewport-h) * 0.35);
   }
 }

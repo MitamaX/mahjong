@@ -66,7 +66,7 @@
     - var(--dora-reserve));
   --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);
   --panel-cap-h: calc((var(--viewport-h) - var(--safe-y)) * 0.94);
-  --detail-board-cap: calc(var(--viewport-h) * 0.5);
+  --detail-cap: calc(var(--viewport-h) * 0.5);
   --center-min: 136px;
 
   --board-span: 680;
