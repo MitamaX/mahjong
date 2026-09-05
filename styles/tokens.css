@@ -47,7 +47,7 @@
   --board-span: 680;
   --report-board-span: 615;
   --dock-span: 714;
-  --dock-extra: 130px;
+  --dock-extra: 200px;
   --board-size: min(
     100vh - 54px,
     92vw,

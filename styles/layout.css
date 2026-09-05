@@ -145,8 +145,14 @@
   z-index: var(--layer-dock);
   display: flex;
   align-items: flex-end;
-  gap: var(--space-4);
   margin-top: calc(var(--dock-lift) * -1);
+}
+
+.dock__riichi {
+  position: absolute;
+  left: 100%;
+  bottom: 0;
+  margin-left: var(--space-4);
 }
 
 .hand {

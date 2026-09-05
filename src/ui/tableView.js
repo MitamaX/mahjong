@@ -39,7 +39,7 @@ export class TableView {
       </section>
       <section class="dock">
         <div class="hand" data-hand></div>
-        <button class="btn btn--accent" type="button" data-riichi>리치</button>
+        <button class="btn btn--accent dock__riichi" type="button" data-riichi hidden>리치</button>
       </section>
     `;
     this.riichiButton = this.root.querySelector('[data-riichi]');
@@ -142,6 +142,6 @@ export class TableView {
     concealed.forEach((tile) => append(tile));
     if (drawn !== null) append(drawn, 'tile--drawn');
 
-    this.riichiButton.disabled = !awaiting || !riichiChoices.length;
+    this.riichiButton.hidden = !riichiChoices.length;
   }
 }
