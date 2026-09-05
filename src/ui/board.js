@@ -4,7 +4,7 @@ const RIVER_COLUMNS = Number(getComputedStyle(document.documentElement).getPrope
 
 export const SEAT_CLASSES = ['seat--self', 'seat--right', 'seat--across', 'seat--left'];
 
-export function riverRows(entries) {
+export function riverRows(entries, marks = new Map()) {
   const rows = [];
   entries.forEach((entry, index) => {
     if (index % RIVER_COLUMNS === 0) {
@@ -12,7 +12,8 @@ export function riverRows(entries) {
       row.className = 'river__row';
       rows.push(row);
     }
-    rows[rows.length - 1].appendChild(tileNode(entry.tile, { turned: entry.turned }));
+    const tile = tileNode(entry.tile, { turned: entry.turned, mark: marks.get(entry.tile) ?? null });
+    rows[rows.length - 1].appendChild(tile);
   });
   return rows;
 }

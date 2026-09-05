@@ -1,11 +1,15 @@
 import { Danger } from './danger.js';
 
 const STANCE = { BUILD: 'build', PUSH: 'push', FOLD: 'fold' };
-const PUSH_WEIGHT = { efficiency: 0.65, safety: 0.35 };
-const FOLD_WEIGHT = { efficiency: 0.1, safety: 0.9 };
+const WEIGHTS = {
+  [STANCE.BUILD]: { efficiency: 1, safety: 0 },
+  [STANCE.PUSH]: { efficiency: 0.65, safety: 0.35 },
+  [STANCE.FOLD]: { efficiency: 0.1, safety: 0.9 }
+};
 const PUSH_TURN_LIMIT = 8;
 const PUSH_DORA_FLOOR = 2;
 const PUSH_UKEIRE_FLOOR = 12;
+const DEAD_HONOR_EDGE = 2;
 
 const bands = (rows) => rows.map(([label, min]) => ({ label, min }));
 
@@ -31,7 +35,8 @@ function statsOf(option) {
     tile: option.tile,
     shanten: option.shanten,
     ukeire: option.ukeire,
-    danger: option.danger
+    danger: option.danger,
+    guard: option.guard
   };
 }
 
@@ -60,9 +65,11 @@ export class Evaluator {
   }
 
   evaluate({ turn, hand, chosen, remaining, threats, rivers, dora }) {
+    const profile = Danger.profile(threats, remaining);
     const options = hand.discardOptions(remaining).map((option) => ({
       ...option,
-      danger: Danger.worst(option.tile, threats, remaining)
+      danger: profile.rate(option.tile),
+      guard: profile.guard(option.tile)
     }));
 
     const minShanten = Math.min(...options.map((option) => option.shanten));
@@ -72,16 +79,21 @@ export class Evaluator {
     const maxDanger = Math.max(...dangers);
     const stance = stanceOf(threats, minShanten, turn, hand.counts[dora], bestUkeire);
 
+    const weight = WEIGHTS[stance];
     const scored = options.map((option) => {
       const efficiency = efficiencyScore(option, minShanten, bestUkeire);
-      const safety = safetyScore(option.danger, minDanger, maxDanger);
-      if (stance === STANCE.BUILD) return { ...option, score: efficiency };
-      const weight = stance === STANCE.PUSH ? PUSH_WEIGHT : FOLD_WEIGHT;
-      return { ...option, score: weight.efficiency * efficiency + weight.safety * safety };
+      const safety = safetyScore(option.danger, minDanger, maxDanger)
+        + (Danger.isDeadHonor(option.guard) ? DEAD_HONOR_EDGE : 0);
+      return {
+        ...option,
+        efficiency,
+        safety,
+        score: weight.efficiency * efficiency + weight.safety * safety
+      };
     });
 
     const picked = scored.find((option) => option.tile === chosen);
-    const ideal = scored.reduce((best, option) => (option.score > best.score ? option : best));
+    const ideal = scored.reduce((best, option) => (option.score > best.score ? option : best), picked);
     const accuracy = Math.round((100 - (ideal.score - picked.score)) * 100) / 100;
     const record = {
       turn,

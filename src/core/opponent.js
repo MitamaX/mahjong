@@ -2,7 +2,7 @@ import { Tiles } from './tiles.js';
 import { Danger } from './danger.js';
 
 const PUSH_SHANTEN_CAP = 1;
-const PUSH_DANGER_CAP = 4.0;
+const PUSH_DANGER_CAP = 6.0;
 
 function bestOf(options, rank) {
   return options.reduce((best, option) => (rank(option) > rank(best) ? option : best));
@@ -37,9 +37,10 @@ export const OpponentBrain = {
     }
     if (!threats.length) return { tile: byEfficiency(options).tile, riichi: false };
 
+    const profile = Danger.profile(threats, remaining);
     const guarded = options.map((option) => ({
       ...option,
-      danger: Danger.worst(option.tile, threats, remaining)
+      danger: profile.rate(option.tile)
     }));
     const minShanten = Math.min(...guarded.map((option) => option.shanten));
     const pushable = guarded.filter((option) => option.shanten === minShanten && option.danger <= PUSH_DANGER_CAP);

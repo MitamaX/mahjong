@@ -14,7 +14,7 @@ body {
   background: var(--cream);
   color: var(--ink);
   font-family: var(--font);
-  font-size: 14px;
+  font-size: var(--text-m);
   overflow: hidden;
 }
 

@@ -21,6 +21,8 @@
   --tile-w: 30px;
   --tile-h: 42px;
   --tile-gap: 2px;
+  --hand-tiles: 14;
+  --scrollbar: 8px;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -33,12 +35,17 @@
   --layer-announce: 3;
   --layer-overlay: 10;
 
+  --text-s: 12px;
+  --text-m: 14px;
+  --text-l: 20px;
+  --text-xl: 26px;
+
   --radius-s: 5px;
   --radius-m: 10px;
   --radius-l: 18px;
 
   --board-span: 680;
-  --detail-board-span: 615;
+  --report-board-span: 615;
   --dock-span: 714;
   --dock-extra: 130px;
   --board-size: min(
@@ -48,7 +55,7 @@
     calc((100vw - var(--dock-extra)) * var(--board-span) / var(--dock-span))
   );
   --board-unit: min(1px, calc(var(--board-size) / var(--board-span)));
-  --center-size: calc(var(--board-unit) * 236);
+  --center-span: 236;
   --river-cols: 6;
   --river-rows: 3;
   --dock-lift: calc(var(--board-unit) * 54);

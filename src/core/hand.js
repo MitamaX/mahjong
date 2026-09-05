@@ -30,6 +30,17 @@ export class Hand {
     return Shanten.of(this.counts);
   }
 
+  bestShanten() {
+    let best = Infinity;
+    for (let tile = 0; tile < KINDS; tile += 1) {
+      if (this.counts[tile] === 0) continue;
+      this.counts[tile] -= 1;
+      best = Math.min(best, this.shanten());
+      this.counts[tile] += 1;
+    }
+    return best;
+  }
+
   isComplete() {
     return Shanten.of(this.counts) === -1;
   }

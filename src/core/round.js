@@ -10,6 +10,7 @@ const SEATS = [0, 1, 2, 3];
 const PLAYER = 0;
 const HAND_SIZE = 13;
 const RIICHI_WALL_FLOOR = 4;
+const DEFENSE_SHANTEN_FLOOR = 2;
 const PHASE = { AUTO: 'auto', DEFENSE: 'defense' };
 
 export class Round {
@@ -50,6 +51,10 @@ export class Round {
 
   awaitsChoice() {
     return this.underThreat && !this.declared[PLAYER];
+  }
+
+  isDefenseScenario() {
+    return this.awaiting && this.playerHand.bestShanten() >= DEFENSE_SHANTEN_FLOOR;
   }
 
   remaining(viewer = PLAYER) {
