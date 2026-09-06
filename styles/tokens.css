@@ -74,13 +74,14 @@
   --dock-span: 714;
   --stack-span: 690;
   --dock-tail: 200px;
-  --board-cap: 760px;
+  --board-unit-cap: 1.08px;
+  --board-cap: 820px;
   --board-size: min(
     var(--board-cap),
     calc(var(--frame-h) * var(--board-span) / var(--stack-span)),
     calc((var(--frame-w) - var(--dock-tail)) * var(--board-span) / var(--dock-span))
   );
-  --board-unit: min(1px, calc(var(--board-size) / var(--board-span)));
+  --board-unit: min(var(--board-unit-cap), calc(var(--board-size) / var(--board-span)));
   --center-span: 236;
   --river-cols: 6;
   --river-rows: 3;
