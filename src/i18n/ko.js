@@ -71,7 +71,7 @@ export const ko = {
       tanki: { name: '단기', text: '한 장으로 머리를 기다리는 모양입니다.' },
       shanpon: { name: '샤보', text: '두 쌍 중 한쪽을 기다리는 모양입니다. 한 쌍은 몸통이 되고 한 쌍은 머리로 남습니다.' },
       safeTile: { name: '안전패', text: '[[dealIn]]으로 이어지지 않는 패입니다.' },
-      genbutsu: { name: '현물', text: '특정 [[riichi]]자가 버렸거나 [[riichi]] 후 [[ron]]하지 않은 패입니다. [[furiten]]으로 인해 [[dealIn]]당하지 않습니다. 완벽하게 안전합니다.' },
+      genbutsu: { name: '현물', text: '특정 [[riichi]]자가 버린 적이 있거나 [[ron]]하지 않은 패입니다. [[furiten]]으로 인해 [[dealIn]]당하지 않습니다. 완벽하게 안전합니다.' },
       suji: { name: '스지', text: '[[safeTile]](4~6 한정)의 ±3이 되는 패입니다. [[furiten]]으로 인해 [[ryanmen]] [[wait|대기]]에 [[dealIn]]당하지 않습니다. 상대적으로 안전합니다.' },
       kabe: { name: '벽', text: '어떤 패가 4장 다 보여 그 패를 쓰는 [[ryanmen]] [[wait|대기]]가 사라진 상태입니다. 상대적으로 안전합니다.' },
       honor: { name: '자패', text: '풍패와 삼원패입니다. [[ryanmen]]으로 [[wait|대기]]할 수 없어 [[shanpon]]와 [[tanki]] [[wait|대기]]만 남기에 보이는 장수가 많을수록 안전해집니다.' },

@@ -7,20 +7,20 @@ export const ja = {
     name: 'betaori.app',
     tab: { basic: '基本', defense: '守備', terms: '用語' },
     intro: [
-      '先制[[riichi]]に対して[[safeTile]]を見つける手助けをするリーチ麻雀 守備シミュレーターです。',
-      '相手の捨て牌を読んで最善の打牌を見つける手助けをします。'
+      '先制[[riichi]]に対して[[safeTile]]を見つけるためのリーチ麻雀の守備シミュレーターです。',
+      '相手の捨て牌を読んで最善の打牌を選ぶ手助けをします。'
     ],
     control: {
       title: '操作',
       lines: [
-        '好きな牌をクリックして切れます。',
-        'レポートの各部分を押すとその[[turn]]の評価を確認できます。'
+        '好きな牌をクリックすると切れます。',
+        'レポートの各部分をクリックするとその[[turn]]の評価を確認できます。'
       ]
     },
     flow: {
       title: '進行',
       lines: [
-        '相手の[[riichi]]場面から守備が始まります。',
+        '相手の[[riichi]]から守備が始まります。',
         '相手は最善の打牌で勝負します。追いかけ[[riichi]]をすることもあります。',
         '[[dealIn]]せずに1局を凌いでみてください。'
       ]
@@ -34,7 +34,7 @@ export const ja = {
   compare: { best: '最善', picked: '選択' },
   verdict: { best: '最善', second: '次善', good: '良好', weak: '不足', risky: '危険', worst: '最悪' },
   guard: { genbutsu: '現物', kabe: '壁', suji: '筋', noSuji: '無筋', honor: '字牌' },
-  edge: { danger: 'より安全な', shanten: 'シャンテンを落とさない', ukeire: '受け入れの広い' },
+  edge: { danger: 'より安全な', shanten: 'シャンテンを戻さない', ukeire: '受け入れの広い' },
   seen: (count, guard) => `${count}枚見えの${guard}`,
   turnMark: (turn) => `${turn}巡目`,
   shantenMark: (value) => `${value}シャンテン`,
@@ -49,7 +49,7 @@ export const ja = {
     group: { flow: '進行', win: '和了', wait: '待ち', defense: '守備' },
     term: {
       turn: { name: '巡', text: '一周を数える単位です。[[oya]]から一人ずつ回ります。' },
-      oya: { name: '親', text: '点数を1.5倍受け取り、[[agari]]すると席を維持できる席です。' },
+      oya: { name: '親', text: '点数を1.5倍受け取り、[[agari]]すると連荘できる席です。' },
       ko: { name: '子', text: '[[oya]]以外の残り三席です。' },
       dora: { name: 'ドラ', text: '[[agari]]の点数を上げるボーナス牌です。表示牌の次の牌がドラです。' },
       draw: { name: '流局', text: '誰も[[agari]]できないまま山が尽きて終わることです。' },
@@ -69,8 +69,8 @@ export const ja = {
       tanki: { name: '単騎', text: '一枚で頭を待つ形です。' },
       shanpon: { name: 'シャンポン', text: '二つの対子のどちらかを待つ形です。一方が刻子になり、もう一方が雀頭として残ります。' },
       safeTile: { name: '安全牌', text: '[[dealIn]]にならない牌です。' },
-      genbutsu: { name: '現物', text: '特定の[[riichi]]者が切った牌、または[[riichi]]後に[[ron]]しなかった牌です。[[furiten]]により[[dealIn]]になりません。完全に安全です。' },
-      suji: { name: '筋', text: '[[safeTile]](4〜6限定)の±3になる牌です。[[furiten]]により[[ryanmen]][[wait|待ち]]では[[dealIn]]になりません。比較的安全です。' },
+      genbutsu: { name: '現物', text: '特定の[[riichi]]者が切ったことがあるか、[[ron]]しなかった牌です。[[furiten]]により[[dealIn]]になりません。完全に安全です。' },
+      suji: { name: '筋', text: '[[safeTile]]（4～6限定）の±3になる牌です。[[furiten]]により[[ryanmen]][[wait|待ち]]では[[dealIn]]になりません。比較的安全です。' },
       kabe: { name: '壁', text: 'ある牌が4枚見えて、その牌を使う[[ryanmen]][[wait|待ち]]が消えた状態です。比較的安全です。' },
       honor: { name: '字牌', text: '風牌と三元牌です。[[ryanmen]]で待てないので[[shanpon]]と[[tanki]][[wait|待ち]]だけが残り、見えている枚数が多いほど安全になります。' },
       noSuji: { name: '無筋', text: '[[genbutsu]]・[[suji]]・[[kabe]]のどれにも当てはまらない牌です。' }

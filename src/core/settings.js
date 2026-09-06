@@ -1,7 +1,7 @@
 const STORAGE_KEY = 'mahjong.settings';
 
 export const SETTING_VALUES = {
-  language: ['ko', 'ja', 'en'],
+  language: ['ja', 'en', 'ko'],
   discardInput: ['single', 'double'],
   tileStyle: ['classic', 'simple']
 };
