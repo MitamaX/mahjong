@@ -1,5 +1,6 @@
 import { tileNode } from './tileView.js';
 import { SEAT_CLASSES, riverRows, doraTiles } from './board.js';
+import { iconSvg } from './iconView.js';
 
 const ANNOUNCE_MS = 900;
 
@@ -33,7 +34,11 @@ export class TableView {
               <span class="center__wall" data-wall></span>
             </div>
           </div>
-          <div class="board__dora" data-dora></div>
+          <div class="rack board__corner board__dora" data-dora></div>
+          <div class="board__corner board__tools">
+            <button class="btn btn--icon" type="button" data-help aria-label="도움말">${iconSvg('help')}</button>
+            <button class="btn btn--icon" type="button" data-settings aria-label="설정">${iconSvg('settings')}</button>
+          </div>
           <div class="announce" data-announce hidden></div>
         </div>
       </section>

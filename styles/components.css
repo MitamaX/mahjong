@@ -13,7 +13,8 @@
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.tile svg {
+.tile svg,
+.btn--icon svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -104,6 +105,17 @@
 .btn--wide {
   width: 100%;
   text-align: center;
+}
+
+.btn--icon {
+  --press-shadow: none;
+  width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
+  padding: 10%;
+  border-radius: var(--radius-m);
+  background: var(--felt-deep);
+  color: var(--ivory);
+  box-shadow: none;
 }
 
 .chip,

@@ -92,7 +92,7 @@ function noteNode(segments) {
 }
 
 function doraNode(indicator, marks) {
-  return box('center__dora', doraTiles(indicator, marks.get(indicator) ?? null));
+  return box('rack center__dora', doraTiles(indicator, marks.get(indicator) ?? null));
 }
 
 function centerNode({ turn, doraIndicator }, marks) {
