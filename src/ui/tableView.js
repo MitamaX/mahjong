@@ -1,13 +1,17 @@
 import { tileNode } from './tileView.js';
 import { SEAT_CLASSES, riverRows, doraTiles } from './board.js';
 import { iconSvg } from './iconView.js';
+import { DiscardInput } from './discardInput.js';
+import { strings } from '../i18n/index.js';
 
 const ANNOUNCE_MS = 900;
+const TOOLS = ['help', 'settings'];
 
 export class TableView {
-  constructor(root, { onDiscard }) {
+  constructor(root, { onDiscard, onTool }) {
     this.root = root;
-    this.onDiscard = onDiscard;
+    this.onTool = onTool;
+    this.input = new DiscardInput((tile) => onDiscard(tile, this.riichiMode));
     this.riichiMode = false;
     this.build();
   }
@@ -26,7 +30,7 @@ export class TableView {
             ${SEAT_CLASSES.map((seatClass, seat) => `
               <div class="plate ${seatClass.replace('seat', 'plate')}" data-plate="${seat}">
                 <span class="plate__wind" data-wind="${seat}"></span>
-                <span class="chip" data-riichi-chip="${seat}">리치</span>
+                <span class="chip" data-riichi-chip="${seat}">${strings().riichi}</span>
               </div>
             `).join('')}
             <div class="center__core">
@@ -36,15 +40,17 @@ export class TableView {
           </div>
           <div class="rack board__corner board__dora" data-dora></div>
           <div class="board__corner board__tools">
-            <button class="btn btn--icon" type="button" data-help aria-label="도움말">${iconSvg('help')}</button>
-            <button class="btn btn--icon" type="button" data-settings aria-label="설정">${iconSvg('settings')}</button>
+            ${TOOLS.map((name) => `
+              <button class="btn btn--icon" type="button" data-tool="${name}"
+                aria-label="${strings()[name].title}">${iconSvg(name)}</button>
+            `).join('')}
           </div>
           <div class="announce" data-announce hidden></div>
         </div>
       </section>
       <section class="dock">
         <div class="hand" data-hand></div>
-        <button class="btn btn--accent dock__riichi" type="button" data-riichi hidden>리치</button>
+        <button class="btn btn--accent dock__riichi" type="button" data-riichi hidden>${strings().riichi}</button>
       </section>
     `;
     this.riichiButton = this.root.querySelector('[data-riichi]');
@@ -52,6 +58,16 @@ export class TableView {
       this.setRiichiMode(!this.riichiMode);
       this.renderHand();
     });
+    this.root.querySelectorAll('[data-tool]').forEach((node) => {
+      node.addEventListener('click', () => this.onTool(node.dataset.tool));
+    });
+    this.setRiichiMode(this.riichiMode);
+  }
+
+  rebuild() {
+    this.input.clear();
+    this.build();
+    if (this.state) this.render(this.state);
   }
 
   seatNode(selector, seat) {
@@ -128,6 +144,7 @@ export class TableView {
   renderHand() {
     const container = this.root.querySelector('[data-hand]');
     container.replaceChildren();
+    this.input.clear();
     const { hand, drawn, riichiChoices, awaiting } = this.state;
     const selectable = this.riichiMode ? new Set(riichiChoices) : null;
 
@@ -136,10 +153,8 @@ export class TableView {
 
     const append = (tile, extraClass) => {
       const allowed = awaiting && (!selectable || selectable.has(tile));
-      const node = tileNode(tile, {
-        dim: !allowed,
-        onSelect: allowed ? (chosen) => this.onDiscard(chosen, this.riichiMode) : null
-      });
+      const node = tileNode(tile, { dim: !allowed, interactive: allowed });
+      if (allowed) this.input.bind(node, tile);
       if (extraClass) node.classList.add(extraClass);
       container.appendChild(node);
     };

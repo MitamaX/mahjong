@@ -26,6 +26,7 @@
   --river-depth: calc(var(--river-rows) * (var(--river-tile-h) + var(--river-tile-gap)));
   --center-reach: calc(var(--river-width) / 2 + var(--board-unit) * 24);
   --board-edge: calc(var(--board-unit) * 22);
+  --board-radius: min(var(--radius-m), calc(var(--board-unit) * 10));
   position: relative;
   background: var(--felt);
   border-radius: var(--radius-l);
@@ -132,7 +133,7 @@
   display: flex;
   gap: calc(var(--rack-unit) * 3);
   padding: calc(var(--rack-unit) * 5);
-  border-radius: var(--radius-m);
+  border-radius: var(--board-radius);
   background: var(--felt-deep);
 }
 

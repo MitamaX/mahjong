@@ -1,30 +1,37 @@
 import { tileNode } from './tileView.js';
+import { OverlayView } from './overlayView.js';
 import { SEAT_CLASSES, riverRows, doraTiles } from './board.js';
+import { box, span } from './dom.js';
 import { PLAYER } from '../core/round.js';
 import { GUARD } from '../core/danger.js';
+import { COPIES } from '../core/tiles.js';
+import { strings } from '../i18n/index.js';
 
-const TILE_COPIES = 4;
 const SAFE_GUARDS = [GUARD.GENBUTSU, GUARD.SUJI, GUARD.HONOR];
 const CITE_SEPARATOR = '·';
-const LEDGER_HEADS = ['순', '선택', '최선', '샨텐', '위험', '판정'];
+const LEDGER_KEYS = ['turn', 'picked', 'best', 'shanten', 'danger', 'verdict'];
 const COMPACT_STATS = 'stats stats--compact';
 const BEST_MARK = 'best';
 const PICK_MARK = 'pick';
 const CITE_MARK = 'cite';
 const EDGES = [
-  { label: '더 안전한', holds: (best, picked) => best.danger < picked.danger },
-  { label: '샨텐수를 늘리지 않는', holds: (best, picked) => best.shanten < picked.shanten },
-  { label: '유효패가 더 많은', holds: (best, picked) => best.ukeire > picked.ukeire }
+  { key: 'danger', holds: (best, picked) => best.danger < picked.danger },
+  { key: 'shanten', holds: (best, picked) => best.shanten < picked.shanten },
+  { key: 'ukeire', holds: (best, picked) => best.ukeire > picked.ukeire }
 ];
 const DASH = '—';
 
 const percent = (value) => `${value.toFixed(1)}%`;
 const points = (value) => value.toFixed(1);
-const score = (value) => `${Math.round(value)}점`;
+const score = (value) => strings().score(Math.round(value));
 const ratio = (value) => `${Math.round(value)}%`;
 const text = (value, format) => (value === null ? DASH : format(value));
 
-const guardText = ({ kind, left }) => (left === null ? kind : `${TILE_COPIES - left}장 보이는 ${kind}`);
+function guardText({ kind, left }) {
+  const name = strings().guard[kind];
+  return left === null ? name : strings().seen(COPIES - left, name);
+}
+
 const citeList = (cites) => cites
   .map((tile) => cited(tile, CITE_MARK))
   .flatMap((part, index) => (index ? [CITE_SEPARATOR, part] : [part]));
@@ -34,28 +41,15 @@ const sharesGuard = (best, picked) => (best.guard?.kind ?? null) === (picked.gua
 function edgeLabel(best, picked) {
   if (best.tile === picked.tile || !sharesGuard(best, picked)) return '';
   const edge = EDGES.find(({ holds }) => holds(best, picked));
-  return edge ? `${edge.label} ` : '';
+  return edge ? strings().edge[edge.key] : '';
 }
 
 function outcomeLabel(result) {
-  if (!result) return '중단';
-  if (result.type === 'draw') return '유국';
-  if (result.type === 'tsumo') return '쯔모';
-  return result.from === PLAYER ? '방총' : '론';
-}
-
-function span(content, className) {
-  const node = document.createElement('span');
-  if (className) node.className = className;
-  if (content !== undefined) node.textContent = content;
-  return node;
-}
-
-function box(className, children) {
-  const node = document.createElement('div');
-  if (className) node.className = className;
-  node.append(...children);
-  return node;
+  const { outcome } = strings();
+  if (!result) return outcome.aborted;
+  if (result.type === 'draw') return outcome.draw;
+  if (result.type === 'tsumo') return outcome.tsumo;
+  return result.from === PLAYER ? outcome.dealIn : outcome.ron;
 }
 
 function tileCell(tile, mark) {
@@ -76,14 +70,15 @@ function cited(tile, mark) {
 }
 
 function noteSegments({ best, picked }) {
+  const { note } = strings();
   const choice = cited(best.tile, BEST_MARK);
   const edge = edgeLabel(best, picked);
-  if (best.guard.kind === GUARD.KABE) return [...citeList(best.guard.cites), '가 벽이기에', choice, '가 최선.'];
-  if (best.guard.kind === GUARD.SUJI) {
-    return [choice, `가 ${edge}`, ...citeList(best.guard.cites), `의 ${guardText(best.guard)}이기에 최선.`];
-  }
-  if (SAFE_GUARDS.includes(best.guard.kind)) return [choice, `가 ${edge}${guardText(best.guard)}이기에 최선.`];
-  return [choice, `가 위험 ${percent(best.danger)}로 최선.`];
+  const cites = citeList(best.guard.cites);
+  const guard = guardText(best.guard);
+  if (best.guard.kind === GUARD.KABE) return note.kabe({ choice, cites });
+  if (best.guard.kind === GUARD.SUJI) return note.suji({ choice, cites, edge, guard });
+  if (SAFE_GUARDS.includes(best.guard.kind)) return note.safe({ choice, edge, guard });
+  return note.risk({ choice, danger: percent(best.danger) });
 }
 
 function noteNode(segments) {
@@ -97,7 +92,7 @@ function doraNode(indicator, marks) {
 
 function centerNode({ turn, doraIndicator }, marks) {
   return box('center', [box('center__core', [
-    span(`${turn}순`, 'center__round'),
+    span(strings().turnMark(turn), 'center__round'),
     doraNode(doraIndicator, marks)
   ])]);
 }
@@ -108,9 +103,14 @@ function citedMarks(segments) {
     .map(({ tile, mark }) => [tile, mark]));
 }
 
-export class ReportView {
+export class ReportView extends OverlayView {
   constructor(root, { onRestart }) {
-    this.root = root;
+    super(root);
+    this.onRestart = onRestart;
+    this.build();
+  }
+
+  build() {
     this.root.innerHTML = `
       <div class="panel">
         <header class="panel__head">
@@ -125,24 +125,29 @@ export class ReportView {
             <div class="table detail__board" data-board></div>
           </div>
         </div>
-        <button class="btn btn--accent btn--wide" type="button" data-restart>다시</button>
+        <button class="btn btn--accent btn--wide" type="button" data-restart>${strings().restart}</button>
       </div>
     `;
-    this.node('restart').addEventListener('click', () => onRestart());
+    this.node('restart').addEventListener('click', () => this.onRestart());
   }
 
-  node(name) {
-    return this.root.querySelector(`[data-${name}]`);
+  rebuild() {
+    const reopen = this.visible && this.report;
+    this.build();
+    if (reopen) this.show(this.report);
+    else this.hide();
   }
 
   show(report) {
+    this.report = report;
+    const { stat } = strings();
     this.node('outcome').textContent = outcomeLabel(report.result);
     this.node('grade').textContent = report.grade;
     this.node('summary').replaceChildren(...statNodes([
-      ['위험', text(report.danger, percent)],
-      ['샨텐', text(report.shanten, points)],
-      ['최선', text(report.hits, ratio)],
-      ['종합', text(report.overall, score)]
+      [stat.danger, text(report.danger, percent)],
+      [stat.shanten, text(report.shanten, points)],
+      [stat.hits, text(report.hits, ratio)],
+      [stat.overall, text(report.overall, score)]
     ]));
 
     const entries = report.records.map((record) => this.entry(record));
@@ -153,15 +158,11 @@ export class ReportView {
     if (entries.length) this.open(entries[0]);
     else this.clearDetail();
 
-    this.root.hidden = false;
-  }
-
-  hide() {
-    this.root.hidden = true;
+    super.show();
   }
 
   headRow() {
-    return box('ledger__row ledger__row--head', LEDGER_HEADS.map((label) => span(label)));
+    return box('ledger__row ledger__row--head', LEDGER_KEYS.map((key) => span(strings().ledger[key])));
   }
 
   entry(record) {
@@ -181,7 +182,7 @@ export class ReportView {
       record.best.tile === record.picked.tile ? span('=', 'ledger__same') : tileCell(record.best.tile),
       span(record.picked.shanten),
       span(percent(record.picked.danger)),
-      span(record.verdict, `verdict verdict--${record.verdict}`)
+      span(strings().verdict[record.verdict], `verdict verdict--${record.verdict}`)
     );
     return row;
   }
@@ -193,9 +194,10 @@ export class ReportView {
   }
 
   compareRows(record) {
-    const best = this.compareRow('최선', record.best, BEST_MARK);
+    const { compare } = strings();
+    const best = this.compareRow(compare.best, record.best, BEST_MARK);
     if (record.picked.tile === record.best.tile) return [best];
-    return [this.compareRow('선택', record.picked, PICK_MARK), best];
+    return [this.compareRow(compare.picked, record.picked, PICK_MARK), best];
   }
 
   open({ record, segments, row, drawer }) {
@@ -232,9 +234,9 @@ export class ReportView {
       span(label, 'compare__label'),
       tileCell(stats.tile, mark),
       statsNode([
-        ['샨텐', stats.shanten],
-        ['유효패', stats.ukeire],
-        ['위험', percent(stats.danger)]
+        [strings().stat.shanten, stats.shanten],
+        [strings().stat.ukeire, stats.ukeire],
+        [strings().stat.danger, percent(stats.danger)]
       ], COMPACT_STATS)
     ]);
   }

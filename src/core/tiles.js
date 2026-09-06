@@ -1,5 +1,8 @@
 export const KINDS = 34;
 export const SUIT_KINDS = 27;
+export const COPIES = 4;
+
+export const SUIT = { MAN: 0, PIN: 1, SOU: 2, HONOR: 3 };
 
 const HONOR_FACES = ['東', '南', '西', '北', '白', '發', '中'];
 const SUIT_FACES = ['萬', '筒', '索'];
@@ -14,6 +17,9 @@ export const Tiles = {
   },
   isHonor(index) {
     return index >= SUIT_KINDS;
+  },
+  indexOf(suit, rank) {
+    return suit * 9 + rank - 1;
   },
   suitName(index) {
     return SUIT_NAMES[this.suitOf(index)];
@@ -49,7 +55,7 @@ export const Tiles = {
   fullSet() {
     const tiles = [];
     for (let index = 0; index < KINDS; index += 1) {
-      for (let copy = 0; copy < 4; copy += 1) tiles.push(index);
+      for (let copy = 0; copy < COPIES; copy += 1) tiles.push(index);
     }
     return tiles;
   }

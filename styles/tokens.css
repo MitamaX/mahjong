@@ -14,6 +14,8 @@
   --pin: #77875C;
   --sou: #5A4632;
 
+  --link: #3F6C9E;
+
   --line: rgba(90, 70, 50, 0.18);
   --shade: rgba(90, 70, 50, 0.22);
   --veil: rgba(90, 70, 50, 0.45);
@@ -39,6 +41,7 @@
   --text-m: 14px;
   --text-l: 20px;
   --text-xl: 26px;
+  --text-xxl: 32px;
 
   --radius-s: 5px;
   --radius-m: 10px;
@@ -65,6 +68,7 @@
   --dora-reserve: 0px;
   --frame-h: calc(var(--viewport-h) - var(--safe-y) - var(--app-pad) * 2 - var(--app-gap)
     - var(--dora-reserve));
+  --panel-h: 600px;
   --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);
   --panel-cap-h: calc((var(--viewport-h) - var(--safe-y)) * 0.94);
   --detail-cap: calc(var(--viewport-h) * 0.5);

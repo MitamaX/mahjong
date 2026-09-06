@@ -1,6 +1,6 @@
-import { KINDS, Tiles } from './tiles.js';
+import { COPIES, KINDS, Tiles } from './tiles.js';
 
-const GUARD = { GENBUTSU: '현물', KABE: '벽', SUJI: '스지', NO_SUJI: '위험패', HONOR: '자패' };
+const GUARD = { GENBUTSU: 'genbutsu', KABE: 'kabe', SUJI: 'suji', NO_SUJI: 'noSuji', HONOR: 'honor' };
 
 const SHAPE = {
   RYANMEN: 'ryanmen',
@@ -128,7 +128,7 @@ function kabeWall(tile, remaining) {
 }
 
 function copiesLeft(tile, remaining) {
-  return Math.max(0, Math.min(4, remaining[tile]));
+  return Math.max(0, Math.min(COPIES, remaining[tile]));
 }
 
 function guardOf(tile, threat, remaining) {

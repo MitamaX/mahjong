@@ -7,7 +7,7 @@ const ROUNDING = 100;
 const bands = (rows) => rows.map(([label, min]) => ({ label, min }));
 
 const VERDICTS = bands([
-  ['최선', 100], ['차선', 92], ['좋음', 80], ['미흡', 62], ['위험', 40], ['최악', -1]
+  ['best', 100], ['second', 92], ['good', 80], ['weak', 62], ['risky', 40], ['worst', -1]
 ]);
 
 const GRADES = bands([

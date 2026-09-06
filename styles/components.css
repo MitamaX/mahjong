@@ -41,6 +41,11 @@
   opacity: 0.45;
 }
 
+.tile--armed {
+  transform: translateY(var(--press-y));
+  box-shadow: var(--press-shadow);
+}
+
 .tile--last {
   box-shadow: 0 0 0 2px var(--tan), 0 2px 6px var(--shade);
 }
@@ -71,7 +76,15 @@
 
 .tile-row {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--tile-gap);
+}
+
+.hand-figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .btn {
@@ -112,7 +125,7 @@
   width: var(--btn-icon-size);
   height: var(--btn-icon-size);
   padding: 10%;
-  border-radius: var(--radius-m);
+  border-radius: var(--board-radius, var(--radius-m));
   background: var(--felt-deep);
   color: var(--ivory);
   box-shadow: none;
@@ -146,12 +159,12 @@
   box-shadow: inset 0 0 0 1px var(--line);
 }
 
-.verdict--최선 { background: var(--tan); color: var(--ivory); }
-.verdict--차선 { background: var(--sage); color: var(--ink); }
-.verdict--좋음 { background: var(--lime); color: var(--ink); }
-.verdict--미흡 { background: var(--ivory); color: var(--ink-soft); }
-.verdict--위험 { background: var(--ink-soft); color: var(--ivory); }
-.verdict--최악 { background: var(--ink); color: var(--ivory); }
+.verdict--best { background: var(--tan); color: var(--ivory); }
+.verdict--second { background: var(--sage); color: var(--ink); }
+.verdict--good { background: var(--lime); color: var(--ink); }
+.verdict--weak { background: var(--ivory); color: var(--ink-soft); }
+.verdict--risky { background: var(--ink-soft); color: var(--ivory); }
+.verdict--worst { background: var(--ink); color: var(--ivory); }
 
 .plate {
   --label-unit: min(max(var(--board-unit), 0.82px), calc(var(--center-size) / 166));
@@ -201,8 +214,47 @@
   box-shadow: 0 18px 40px var(--shade);
 }
 
+.panel--single {
+  width: min(calc(var(--panel-column) + var(--panel-pad) * 2), var(--panel-cap-w));
+}
+
+.panel--help {
+  height: min(var(--panel-h), var(--panel-cap-h));
+}
+
 .panel > * {
   flex: 0 0 auto;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.option__label {
+  color: var(--ink-soft);
+}
+
+.caption,
+.stat__label,
+.compare__label {
+  font-size: var(--text-s);
+  color: var(--ink-soft);
+}
+
+.segment {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.segment .btn {
+  padding: var(--btn-pad-y) var(--space-3);
+}
+
+.segment--wide .btn {
+  flex: 1 1 0;
 }
 
 .panel__head {
@@ -263,8 +315,6 @@
 }
 
 .stat__label {
-  font-size: var(--text-s);
-  color: var(--ink-soft);
   white-space: nowrap;
 }
 
@@ -279,7 +329,8 @@
 }
 
 .ledger,
-.detail {
+.detail,
+.help {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -287,22 +338,26 @@
 }
 
 .ledger > *,
-.detail > * {
+.detail > *,
+.help > * {
   flex: 0 0 auto;
 }
 
 .ledger::-webkit-scrollbar,
-.detail::-webkit-scrollbar {
+.detail::-webkit-scrollbar,
+.help::-webkit-scrollbar {
   width: var(--scrollbar);
 }
 
 .ledger::-webkit-scrollbar-track,
-.detail::-webkit-scrollbar-track {
+.detail::-webkit-scrollbar-track,
+.help::-webkit-scrollbar-track {
   background: transparent;
 }
 
 .ledger::-webkit-scrollbar-thumb,
-.detail::-webkit-scrollbar-thumb {
+.detail::-webkit-scrollbar-thumb,
+.help::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: var(--tan);
 }
@@ -434,6 +489,81 @@
   width: auto;
 }
 
+.help {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--panel-gap);
+  padding-right: var(--space-1);
+}
+
+.help__name {
+  margin-top: var(--panel-gap);
+  font-size: var(--text-xxl);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.help__group,
+.guide,
+.case,
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.surface {
+  padding: var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--cream);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.case__name {
+  font-weight: 700;
+}
+
+.article__title {
+  font-size: var(--text-l);
+  font-weight: 800;
+}
+
+.op {
+  color: var(--ink-soft);
+}
+
+.rack--figure {
+  --rack-unit: 1px;
+  --board-radius: var(--radius-s);
+}
+
+.link {
+  padding: 0;
+  color: var(--link);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .compare {
   display: flex;
   flex-direction: column;
@@ -449,11 +579,6 @@
 
 .compare__row .stats {
   --stat-cols: 3;
-}
-
-.compare__label {
-  font-size: var(--text-s);
-  color: var(--ink-soft);
 }
 
 .loader {

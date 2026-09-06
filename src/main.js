@@ -1,11 +1,15 @@
 import { Round, PLAYER } from './core/round.js';
+import { Settings } from './core/settings.js';
+import { guessLanguage } from './core/locale.js';
 import { TableView } from './ui/tableView.js';
 import { ReportView } from './ui/reportView.js';
 import { LoaderView } from './ui/loaderView.js';
+import { SettingsView } from './ui/settingsView.js';
+import { HelpView } from './ui/helpView.js';
+import { strings } from './i18n/index.js';
 
 const TEMPO = { auto: 40, self: 150, opponent: 280, riichi: 900, result: 1000, load: 420 };
 const MAX_DEALS = 24;
-const CALLS = { ron: '론', tsumo: '쯔모', draw: '유국' };
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -17,15 +21,39 @@ function pauseFor(event) {
 }
 
 class App {
-  constructor(tableRoot, reportRoot, loaderRoot) {
+  constructor(roots) {
     this.busy = false;
-    this.table = new TableView(tableRoot, {
-      onDiscard: (tile, withRiichi) => this.discard(tile, withRiichi)
+    this.panels = {
+      help: new HelpView(roots.help),
+      settings: new SettingsView(roots.settings)
+    };
+    this.table = new TableView(roots.table, {
+      onDiscard: (tile, withRiichi) => this.discard(tile, withRiichi),
+      onTool: (name) => this.panels[name].show()
     });
-    this.report = new ReportView(reportRoot, {
+    this.report = new ReportView(roots.report, {
       onRestart: () => this.start()
     });
-    this.loader = new LoaderView(loaderRoot);
+    this.loader = new LoaderView(roots.loader);
+    Settings.subscribe(() => this.refresh());
+    this.applyLanguage();
+  }
+
+  applyLanguage() {
+    document.title = strings().title;
+    document.documentElement.lang = Settings.get('language');
+  }
+
+  refresh() {
+    this.applyLanguage();
+    Object.values(this.panels).forEach((panel) => panel.build());
+    this.table.rebuild();
+    this.report.rebuild();
+  }
+
+  boot() {
+    if (Settings.isDefault('language')) Settings.set('language', guessLanguage());
+    return this.start();
   }
 
   async start() {
@@ -59,8 +87,8 @@ class App {
     this.busy = true;
     for (const event of events) {
       this.table.render(event.state);
-      if (event.riichi) this.table.announce('리치');
-      if (event.type === 'result') this.table.announce(CALLS[event.state.result.type]);
+      if (event.riichi) this.table.announce(strings().riichi);
+      if (event.type === 'result') this.table.announce(strings().call[event.state.result.type]);
       await wait(pauseFor(event));
     }
     this.table.render(this.round.snapshot());
@@ -69,9 +97,11 @@ class App {
   }
 }
 
-const app = new App(
-  document.querySelector('[data-table]'),
-  document.querySelector('[data-report]'),
-  document.querySelector('[data-loader]')
-);
-app.start();
+const app = new App({
+  table: document.querySelector('[data-table]'),
+  report: document.querySelector('[data-report]'),
+  loader: document.querySelector('[data-loader]'),
+  settings: document.querySelector('[data-settings-panel]'),
+  help: document.querySelector('[data-help-panel]')
+});
+app.boot();

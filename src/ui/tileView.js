@@ -1,4 +1,5 @@
 import { Tiles } from '../core/tiles.js';
+import { Settings } from '../core/settings.js';
 
 const VIEW = { width: 60, height: 84 };
 const FIELD = { x: 8, y: 10, width: 44, height: 64 };
@@ -7,6 +8,7 @@ const HONOR_GLYPHS = ['東', '南', '西', '北', '', '發', '中'];
 const WHITE_DRAGON = 5;
 const GREEN_DRAGON = 6;
 const RED_DRAGON = 7;
+const SIMPLE = { size: 54, baseline: 61 };
 
 const PIP_ROWS = {
   pin: {
@@ -74,12 +76,21 @@ function honorFace(rank) {
   return `<text x="30" y="57" font-size="42">${HONOR_GLYPHS[rank - 1]}</text>`;
 }
 
+function classicFace(suit, rank) {
+  if (suit === 'man') return manFace(rank);
+  if (suit === 'honor') return honorFace(rank);
+  return pipFace(suit, rank);
+}
+
+function simpleFace(suit, rank) {
+  if (suit === 'honor') return honorFace(rank);
+  return `<text x="30" y="${SIMPLE.baseline}" font-size="${SIMPLE.size}">${rank}</text>`;
+}
+
+const FACES = { classic: classicFace, simple: simpleFace };
+
 function faceSvg(tile) {
-  const suit = Tiles.suitName(tile);
-  const rank = Tiles.rankOf(tile);
-  const body = suit === 'man' ? manFace(rank)
-    : suit === 'honor' ? honorFace(rank)
-      : pipFace(suit, rank);
+  const body = FACES[Settings.get('tileStyle')](Tiles.suitName(tile), Tiles.rankOf(tile));
   return `<svg viewBox="0 0 ${VIEW.width} ${VIEW.height}" fill="currentColor" text-anchor="middle" font-weight="700" aria-hidden="true">${body}</svg>`;
 }
 
@@ -91,8 +102,9 @@ function accentOf(tile) {
   return null;
 }
 
-export function tileNode(tile, { back = false, turned = false, dim = false, mark = null, onSelect = null } = {}) {
-  const node = document.createElement(onSelect ? 'button' : 'div');
+export function tileNode(tile, { back = false, turned = false, dim = false, mark = null, interactive = false } = {}) {
+  const node = document.createElement(interactive ? 'button' : 'div');
+  if (interactive) node.type = 'button';
   node.className = 'tile';
   if (back) {
     node.classList.add('tile--back');
@@ -105,9 +117,5 @@ export function tileNode(tile, { back = false, turned = false, dim = false, mark
   if (dim) node.classList.add('tile--dim');
   if (mark) node.classList.add(`tile--${mark}`);
   node.innerHTML = faceSvg(tile);
-  if (onSelect) {
-    node.type = 'button';
-    node.addEventListener('click', () => onSelect(tile));
-  }
   return node;
 }
