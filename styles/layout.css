@@ -1,5 +1,6 @@
 .ad {
   flex: 0 0 var(--ad-rail);
+  isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -275,7 +276,7 @@
   }
 
   body:has(.overlay:not([hidden])) .ad {
-    display: none;
+    visibility: hidden;
   }
 
   .dock__riichi {
