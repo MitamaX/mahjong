@@ -65,10 +65,15 @@
   --viewport-h: 100vh;
   --app-pad: var(--space-3);
   --app-gap: var(--space-3);
-  --frame-w: calc(100vw - var(--safe-x) - var(--app-pad) * 2);
+  --ad-unit-w: 160px;
+  --ad-unit-h: 600px;
+  --ad-rail: var(--ad-unit-w);
+  --ad-span-x: calc(var(--ad-rail) * 2);
+  --ad-span-y: 0px;
+  --frame-w: calc(100vw - var(--safe-x) - var(--app-pad) * 2 - var(--ad-span-x));
   --dora-reserve: 0px;
   --frame-h: calc(var(--viewport-h) - var(--safe-y) - var(--app-pad) * 2 - var(--app-gap)
-    - var(--dora-reserve));
+    - var(--dora-reserve) - var(--ad-span-y));
   --panel-h: 600px;
   --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);
   --panel-cap-h: calc((var(--viewport-h) - var(--safe-y)) * 0.94);

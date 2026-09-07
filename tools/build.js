@@ -7,6 +7,9 @@ import { SETTING_VALUES, STORAGE_KEY } from '../src/core/settings.js';
 import { ZONE_LANGUAGES, FALLBACK_LANGUAGE } from '../src/core/locale.js';
 
 const SITE = 'https://betaori.app';
+const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+const ADSENSE_CLIENT = 'ca-pub-9410921386046089';
+const ADSENSE_SLOTS = ['6622171051', '4362356727'];
 const OG_LOCALES = { ko: 'ko_KR', ja: 'ja_JP', en: 'en_US' };
 const DEFAULT_LANGUAGE = 'ja';
 const LANGUAGES = Object.keys(DICTIONARIES);
@@ -78,6 +81,21 @@ function metadata(language, { url, base, canonical }) {
     `<meta name="twitter:image" content="${image}">`,
     `<script type="application/ld+json">\n${structuredData(language, url)}\n</script>`
   ];
+}
+
+function adLoader() {
+  return `<script async src="${ADSENSE_SRC}?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>`;
+}
+
+function adRail(slot) {
+  return `<aside class="ad">
+  <ins class="adsbygoogle ad__unit" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${slot}"></ins>
+</aside>`;
+}
+
+function adStarter() {
+  const pushes = ADSENSE_SLOTS.map(() => '(adsbygoogle = window.adsbygoogle || []).push({});');
+  return `<script>\n${pushes.join('\n')}\n</script>`;
 }
 
 async function readModules(path, sources = new Map()) {
@@ -166,20 +184,25 @@ ${body}</body>
 function appPage(language, modules, styles) {
   const { brand, tagline } = DICTIONARIES[language];
   const base = '../';
+  const [lead, trail] = ADSENSE_SLOTS.map(adRail);
   return document(language, [
     ...metadata(language, { url: absolute(`${language}/`), base, canonical: true }),
-    ...assets(base, modules, styles)
-  ], `<main class="app" data-table>
+    ...assets(base, modules, styles),
+    adLoader()
+  ], `${lead}
+<main class="app" data-table>
   <div class="splash">
     <h1 class="splash__name">${brand}</h1>
     <p class="splash__tagline">${tagline}</p>
   </div>
 </main>
+${trail}
 <div class="overlay" data-report hidden></div>
 <div class="overlay" data-settings-panel hidden></div>
 <div class="overlay" data-help-panel hidden></div>
 <div class="overlay" data-loader hidden></div>
 <script type="module" src="${base}${modules.get(sitePath(ENTRY))}"></script>
+${adStarter()}
 `);
 }
 

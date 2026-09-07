@@ -1,5 +1,23 @@
+.ad {
+  flex: 0 0 var(--ad-rail);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ad__unit {
+  display: inline-block;
+  width: var(--ad-unit-w);
+  height: var(--ad-unit-h);
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .app {
-  height: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
   isolation: isolate;
   display: flex;
   flex-direction: column;
@@ -245,6 +263,19 @@
   :root {
     --app-pad: var(--space-2);
     --dock-tail: var(--space-2);
+    --ad-unit-w: 320px;
+    --ad-unit-h: 100px;
+    --ad-rail: var(--ad-unit-h);
+    --ad-span-x: 0px;
+    --ad-span-y: calc(var(--ad-rail) * 2);
+  }
+
+  body {
+    flex-direction: column;
+  }
+
+  body:has(.overlay:not([hidden])) .ad {
+    display: none;
   }
 
   .dock__riichi {
