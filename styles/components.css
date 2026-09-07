@@ -14,10 +14,16 @@
 }
 
 .tile svg,
+.tile img,
 .btn--icon svg {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.tile--art img {
+  padding: var(--tile-art-inset);
+  object-fit: contain;
 }
 
 .tile--man { color: var(--man); }
@@ -50,16 +56,24 @@
   box-shadow: 0 0 0 2px var(--tan), 0 2px 6px var(--shade);
 }
 
+.tile--pick { --mark: var(--ink-soft); }
+.tile--best { --mark: var(--tan); }
+.tile--cite { --mark: var(--ink); }
+
 .tile--pick,
 .tile--best,
 .tile--cite {
+  background: var(--mark);
   color: var(--ivory);
   box-shadow: inset 0 -2px 0 var(--shade), 0 1px 2px var(--shade);
 }
 
-.tile--pick { background: var(--ink-soft); }
-.tile--best { background: var(--tan); }
-.tile--cite { background: var(--ink); }
+.tile--art.tile--pick,
+.tile--art.tile--best,
+.tile--art.tile--cite {
+  background: var(--ivory);
+  box-shadow: inset 0 0 0 2px var(--mark), inset 0 -2px 0 var(--line), 0 1px 2px var(--shade);
+}
 
 .tile--drop {
   animation: drop 0.2s ease;
@@ -118,6 +132,22 @@
 .btn--wide {
   width: 100%;
   text-align: center;
+}
+
+.btn--brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--ink);
+  color: var(--ivory);
+  text-decoration: none;
+}
+
+.btn--brand svg {
+  flex: 0 0 auto;
+  width: var(--text-l);
+  height: var(--text-l);
 }
 
 .btn--icon {
@@ -255,6 +285,7 @@
 
 .segment--wide .btn {
   flex: 1 1 0;
+  padding-inline: var(--space-1);
 }
 
 .panel__head {
@@ -507,7 +538,8 @@
 .help__group,
 .guide,
 .case,
-.article {
+.article,
+.info {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);

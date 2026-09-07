@@ -3,7 +3,8 @@ import { SUIT, Tiles } from '../core/tiles.js';
 import { PanelView } from './panelView.js';
 import { tileNode } from './tileView.js';
 import { doraTiles } from './board.js';
-import { box, span } from './dom.js';
+import { box, link, span } from './dom.js';
+import { iconSvg } from './iconView.js';
 import { strings } from '../i18n/index.js';
 
 const CITE_MARK = 'cite';
@@ -12,9 +13,15 @@ const PLUS = '+';
 const EQUAL = '=';
 const BACK = '←';
 const LINK_PATTERN = /\[\[(\w+)(?:\|([^\]]+))?\]\]/g;
-const TABS = ['basic', 'defense', 'terms'];
+const TABS = ['basic', 'defense', 'terms', 'info'];
 const TEXT_SECTIONS = ['control', 'flow'];
 const DEFENSE_CASES = [GUARD.GENBUTSU, GUARD.HONOR, GUARD.KABE, GUARD.SUJI];
+const REPOSITORY = { label: 'MitamaX/mahjong', href: 'https://github.com/MitamaX/mahjong' };
+const INFO_LINKS = [
+  { name: 'issues', label: 'Issues', href: `${REPOSITORY.href}/issues` },
+  { name: 'art', label: 'FluffyStuff', href: 'https://github.com/FluffyStuff/riichi-mahjong-tiles' },
+  { name: 'license', label: 'CC0 1.0', href: 'https://creativecommons.org/publicdomain/zero/1.0/' }
+];
 const GLOSSARY_GROUPS = [
   { name: 'flow', ids: ['turn', 'oya', 'ko', 'dora', 'draw'] },
   { name: 'win', ids: ['agari', 'tenpai', 'shanten', 'ukeire', 'riichi', 'tsumo', 'ron', 'dealIn', 'furiten'] },
@@ -117,6 +124,12 @@ function buttonNode(label, className, onClick) {
   return button;
 }
 
+function brandLink({ label, href }) {
+  const node = link(label, href, 'btn btn--wide btn--brand');
+  node.insertAdjacentHTML('afterbegin', iconSvg('github'));
+  return node;
+}
+
 function textParts(text) {
   const parts = [];
   let read = 0;
@@ -189,7 +202,15 @@ export class HelpView extends PanelView {
   sections() {
     if (this.tab === 'defense') return [box('guide', DEFENSE_CASES.map((id) => this.guardCase(id)))];
     if (this.tab === 'terms') return this.termSections();
+    if (this.tab === 'info') return this.infoSections();
     return this.basicSections();
+  }
+
+  infoSections() {
+    const { help } = strings();
+    const rows = INFO_LINKS.map(({ name, label, href }) =>
+      box('option', [span(help.info[name], 'option__label'), link(label, href, 'link')]));
+    return [span(help.name, 'help__name'), brandLink(REPOSITORY), box('info surface', rows)];
   }
 
   basicSections() {

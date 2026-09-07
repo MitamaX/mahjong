@@ -9,6 +9,7 @@ const WHITE_DRAGON = 5;
 const GREEN_DRAGON = 6;
 const RED_DRAGON = 7;
 const SIMPLE = { size: 54, baseline: 61 };
+const ART_DIR = new URL('../../assets/tiles/', import.meta.url).href;
 
 const PIP_ROWS = {
   pin: {
@@ -30,8 +31,20 @@ const PIP_ROWS = {
     5: [[2, 0], [1, 0], [2, 0]],
     6: [[3, 0], [3, 0]],
     7: [[1, 0], [3, 0], [3, 0]],
-    8: [[4, 0], [4, 0]],
     9: [[3, 0], [3, 0], [3, 0]]
+  }
+};
+
+const PIP_SPOTS = {
+  sou: {
+    8: {
+      columns: 4,
+      rows: 2,
+      spots: [
+        [0.41, 0.5, 0], [1.45, 0.5, 35], [2.55, 0.5, -35], [3.59, 0.5, 0],
+        [0.41, 1.5, 0], [1.45, 1.5, -35], [2.55, 1.5, 35], [3.59, 1.5, 0]
+      ]
+    }
   }
 };
 
@@ -45,23 +58,38 @@ function circlePip(cell) {
 function stickPip(cell) {
   const width = round(Math.min(cell.width * 0.5, 10));
   const height = round(cell.height * 0.78);
-  return (cx, cy) =>
-    `<rect x="${round(cx - width / 2)}" y="${round(cy - height / 2)}" width="${width}" height="${height}" rx="${round(width / 2)}"/>`;
+  return (cx, cy, tilt) => {
+    const bar = `<rect x="${round(cx - width / 2)}" y="${round(cy - height / 2)}" width="${width}" height="${height}" rx="${round(width / 2)}"/>`;
+    return tilt ? `<g transform="rotate(${tilt} ${round(cx)} ${round(cy)})">${bar}</g>` : bar;
+  };
+}
+
+function rowPlacement(rows) {
+  const columns = Math.max(...rows.map(([count]) => count));
+  const cell = { width: FIELD.width / columns, height: FIELD.height / rows.length };
+  const spots = rows.flatMap(([count, offset], row) => {
+    const cy = FIELD.y + cell.height * (row + 0.5);
+    const span = FIELD.width / count;
+    return Array.from({ length: count }, (unused, column) =>
+      [FIELD.x + span * (column + 0.5) + offset, cy, 0]);
+  });
+  return { cell, spots };
+}
+
+function spotPlacement({ columns, rows, spots }) {
+  const cell = { width: FIELD.width / columns, height: FIELD.height / rows };
+  return {
+    cell,
+    spots: spots.map(([column, row, tilt]) =>
+      [FIELD.x + cell.width * column, FIELD.y + cell.height * row, tilt])
+  };
 }
 
 function pipFace(suit, rank) {
-  const rows = PIP_ROWS[suit][rank];
-  const columns = Math.max(...rows.map(([count]) => count));
-  const cell = { width: FIELD.width / columns, height: FIELD.height / rows.length };
+  const free = PIP_SPOTS[suit]?.[rank];
+  const { cell, spots } = free ? spotPlacement(free) : rowPlacement(PIP_ROWS[suit][rank]);
   const pip = suit === 'pin' ? circlePip(cell) : stickPip(cell);
-  return rows
-    .flatMap(([count, offset], row) => {
-      const cy = FIELD.y + cell.height * (row + 0.5);
-      const span = FIELD.width / count;
-      return Array.from({ length: count }, (unused, column) =>
-        pip(FIELD.x + span * (column + 0.5) + offset, cy));
-    })
-    .join('');
+  return spots.map(([cx, cy, tilt]) => pip(cx, cy, tilt)).join('');
 }
 
 function manFace(rank) {
@@ -76,7 +104,7 @@ function honorFace(rank) {
   return `<text x="30" y="57" font-size="42">${HONOR_GLYPHS[rank - 1]}</text>`;
 }
 
-function classicFace(suit, rank) {
+function standardFace(suit, rank) {
   if (suit === 'man') return manFace(rank);
   if (suit === 'honor') return honorFace(rank);
   return pipFace(suit, rank);
@@ -87,12 +115,20 @@ function simpleFace(suit, rank) {
   return `<text x="30" y="${SIMPLE.baseline}" font-size="${SIMPLE.size}">${rank}</text>`;
 }
 
-const FACES = { classic: classicFace, simple: simpleFace };
-
-function faceSvg(tile) {
-  const body = FACES[Settings.get('tileStyle')](Tiles.suitName(tile), Tiles.rankOf(tile));
-  return `<svg viewBox="0 0 ${VIEW.width} ${VIEW.height}" fill="currentColor" text-anchor="middle" font-weight="700" aria-hidden="true">${body}</svg>`;
+function drawnFace(face) {
+  return (suit, rank) =>
+    `<svg viewBox="0 0 ${VIEW.width} ${VIEW.height}" fill="currentColor" text-anchor="middle" font-weight="700" aria-hidden="true">${face(suit, rank)}</svg>`;
 }
+
+function artFace(suit, rank) {
+  return `<img src="${ART_DIR}${suit}${rank}.svg" alt="" draggable="false">`;
+}
+
+const STYLES = {
+  standard: { face: drawnFace(standardFace) },
+  simple: { face: drawnFace(simpleFace) },
+  classic: { face: artFace, art: true }
+};
 
 function accentOf(tile) {
   if (!Tiles.isHonor(tile)) return null;
@@ -110,12 +146,14 @@ export function tileNode(tile, { back = false, turned = false, dim = false, mark
     node.classList.add('tile--back');
     return node;
   }
+  const style = STYLES[Settings.get('tileStyle')];
   node.classList.add(`tile--${Tiles.suitName(tile)}`);
+  if (style.art) node.classList.add('tile--art');
   const accent = accentOf(tile);
   if (accent) node.classList.add(accent);
   if (turned) node.classList.add('tile--turned');
   if (dim) node.classList.add('tile--dim');
   if (mark) node.classList.add(`tile--${mark}`);
-  node.innerHTML = faceSvg(tile);
+  node.innerHTML = style.face(Tiles.suitName(tile), Tiles.rankOf(tile));
   return node;
 }

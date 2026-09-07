@@ -3,11 +3,11 @@ const STORAGE_KEY = 'mahjong.settings';
 export const SETTING_VALUES = {
   language: ['ja', 'en', 'ko'],
   discardInput: ['single', 'double'],
-  tileStyle: ['classic', 'simple']
+  tileStyle: ['standard', 'simple', 'classic']
 };
 
 const NAMES = Object.keys(SETTING_VALUES);
-const DEFAULTS = { language: 'ko', discardInput: 'single', tileStyle: 'classic' };
+const DEFAULTS = { language: 'ko', discardInput: 'single', tileStyle: 'standard' };
 
 function readStored() {
   try {
