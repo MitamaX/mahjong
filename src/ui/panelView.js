@@ -14,7 +14,7 @@ export class PanelView extends OverlayView {
           <span class="panel__title">${this.title}</span>
         </header>
         ${this.content()}
-        <button class="btn btn--accent btn--wide" type="button" data-close>${strings().close}</button>
+        <button class="btn btn--accent btn--wide panel__action" type="button" data-close>${strings().close}</button>
       </div>
     `;
     this.bind();

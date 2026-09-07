@@ -125,7 +125,7 @@ export class ReportView extends OverlayView {
             <div class="table detail__board" data-board></div>
           </div>
         </div>
-        <button class="btn btn--accent btn--wide" type="button" data-restart>${strings().restart}</button>
+        <button class="btn btn--accent btn--wide panel__action" type="button" data-restart>${strings().restart}</button>
       </div>
     `;
     this.node('restart').addEventListener('click', () => this.onRestart());

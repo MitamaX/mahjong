@@ -260,12 +260,21 @@
     --dora-reserve: 60px;
   }
 
+  .board__corner {
+    top: auto;
+    bottom: 100%;
+    margin-bottom: var(--space-3);
+  }
+
   .board__dora {
     --dora-floor: 0.9px;
     --dora-cap: 1px;
-    top: auto;
-    bottom: 100%;
     left: 0;
-    margin-bottom: var(--space-3);
+  }
+
+  .board__tools {
+    --btn-icon-size: inherit;
+    gap: var(--space-2);
+    right: 0;
   }
 }
