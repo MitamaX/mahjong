@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,11 +12,14 @@ const DEFAULT_LANGUAGE = 'ja';
 const LANGUAGES = Object.keys(DICTIONARIES);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ENTRY = join(ROOT, 'src', 'main.js');
+const STYLESHEETS = ['tokens', 'base', 'components', 'layout'];
 const IMPORT_SPECIFIER = /from\s+'([^']+)'/g;
+const VERSION_LENGTH = 8;
 
 const absolute = (path) => `${SITE}/${path}`;
 const literal = (value) => JSON.stringify(value);
 const sitePath = (path) => relative(ROOT, path).split(sep).join('/');
+const version = (source) => createHash('sha256').update(source).digest('hex').slice(0, VERSION_LENGTH);
 
 function alternates() {
   return [
@@ -76,21 +80,42 @@ function metadata(language, { url, base, canonical }) {
   ];
 }
 
-async function collectModules(path, collected = new Set()) {
-  if (collected.has(path)) return collected;
-  collected.add(path);
+async function readModules(path, sources = new Map()) {
+  if (sources.has(path)) return sources;
   const source = await readFile(path, 'utf8');
+  sources.set(path, source);
   for (const [, specifier] of source.matchAll(IMPORT_SPECIFIER)) {
-    await collectModules(resolve(dirname(path), specifier), collected);
+    await readModules(resolve(dirname(path), specifier), sources);
   }
-  return collected;
+  return sources;
 }
 
-function assets(base, modules) {
+function stamped(sources) {
+  return new Map([...sources]
+    .map(([path, source]) => [sitePath(path), `${sitePath(path)}?v=${version(source)}`]));
+}
+
+function ordered(entries) {
+  return new Map([...entries].sort(([left], [right]) => left.localeCompare(right)));
+}
+
+async function readStylesheets() {
+  return new Map(await Promise.all(STYLESHEETS
+    .map((sheet) => join(ROOT, 'styles', `${sheet}.css`))
+    .map(async (path) => [path, await readFile(path, 'utf8')])));
+}
+
+function importMap(base, modules) {
+  const imports = Object.fromEntries([...modules]
+    .map(([path, stampedPath]) => [`${base}${path}`, `${base}${stampedPath}`]));
+  return `<script type="importmap">\n${JSON.stringify({ imports }, null, 2)}\n</script>`;
+}
+
+function assets(base, modules, styles) {
   return [
-    ...['tokens', 'base', 'components', 'layout']
-      .map((sheet) => `<link rel="stylesheet" href="${base}styles/${sheet}.css">`),
-    ...modules.map((path) => `<link rel="modulepreload" href="${base}${path}">`)
+    importMap(base, modules),
+    ...[...styles.values()].map((href) => `<link rel="stylesheet" href="${base}${href}">`),
+    ...[...modules.values()].map((href) => `<link rel="modulepreload" href="${base}${href}">`)
   ];
 }
 
@@ -138,12 +163,12 @@ ${body}</body>
 `;
 }
 
-function appPage(language, modules) {
+function appPage(language, modules, styles) {
   const { brand, tagline } = DICTIONARIES[language];
   const base = '../';
   return document(language, [
     ...metadata(language, { url: absolute(`${language}/`), base, canonical: true }),
-    ...assets(base, modules)
+    ...assets(base, modules, styles)
   ], `<main class="app" data-table>
   <div class="splash">
     <h1 class="splash__name">${brand}</h1>
@@ -154,7 +179,7 @@ function appPage(language, modules) {
 <div class="overlay" data-settings-panel hidden></div>
 <div class="overlay" data-help-panel hidden></div>
 <div class="overlay" data-loader hidden></div>
-<script type="module" src="${base}${sitePath(ENTRY)}"></script>
+<script type="module" src="${base}${modules.get(sitePath(ENTRY))}"></script>
 `);
 }
 
@@ -189,10 +214,12 @@ async function emit(path, content) {
   console.log(path);
 }
 
-const modules = [...await collectModules(ENTRY)].map(sitePath).sort();
+const modules = ordered(stamped(await readModules(ENTRY)));
+const styles = stamped(await readStylesheets());
 
 await emit('index.html', redirectPage());
 
-await Promise.all(LANGUAGES.map((language) => emit(`${language}/index.html`, appPage(language, modules))));
+await Promise.all(LANGUAGES.map((language) => emit(`${language}/index.html`,
+  appPage(language, modules, styles))));
 
 await emit('sitemap.xml', sitemap());
