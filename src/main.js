@@ -53,11 +53,6 @@ class App {
     this.report.rebuild();
   }
 
-  boot() {
-    Settings.set('language', pageLanguage());
-    return this.start();
-  }
-
   async start() {
     if (this.busy) return;
     this.busy = true;
@@ -99,6 +94,8 @@ class App {
   }
 }
 
+Settings.set('language', pageLanguage());
+
 const app = new App({
   table: document.querySelector('[data-table]'),
   report: document.querySelector('[data-report]'),
@@ -106,4 +103,4 @@ const app = new App({
   settings: document.querySelector('[data-settings-panel]'),
   help: document.querySelector('[data-help-panel]')
 });
-app.boot();
+app.start();
