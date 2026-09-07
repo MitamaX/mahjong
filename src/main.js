@@ -1,12 +1,12 @@
 import { Round, PLAYER } from './core/round.js';
 import { Settings } from './core/settings.js';
-import { guessLanguage } from './core/locale.js';
+import { pageLanguage } from './core/locale.js';
 import { TableView } from './ui/tableView.js';
 import { ReportView } from './ui/reportView.js';
 import { LoaderView } from './ui/loaderView.js';
 import { SettingsView } from './ui/settingsView.js';
 import { HelpView } from './ui/helpView.js';
-import { strings } from './i18n/index.js';
+import { strings, titleOf } from './i18n/index.js';
 
 const TEMPO = { auto: 40, self: 150, opponent: 280, riichi: 900, result: 1000, load: 420 };
 const MAX_DEALS = 24;
@@ -40,7 +40,9 @@ class App {
   }
 
   applyLanguage() {
-    document.title = strings().title;
+    const dictionary = strings();
+    document.title = titleOf(dictionary);
+    document.querySelector('meta[name="description"]').content = dictionary.description;
     document.documentElement.lang = Settings.get('language');
   }
 
@@ -52,7 +54,7 @@ class App {
   }
 
   boot() {
-    if (Settings.isDefault('language')) Settings.set('language', guessLanguage());
+    Settings.set('language', pageLanguage());
     return this.start();
   }
 

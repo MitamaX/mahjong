@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#D4A373"/>
+  <rect x="17" y="11" width="30" height="42" rx="4" fill="#FEFAE0"/>
+  <g transform="translate(17 11) scale(0.5)">
+    <text x="30" y="57" font-size="42" fill="#5A4632" text-anchor="middle" font-weight="700"
+      font-family="'Noto Sans KR','Malgun Gothic',system-ui,sans-serif">東</text>
+  </g>
+</svg>

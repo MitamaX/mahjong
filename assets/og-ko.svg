@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'Noto Sans KR','Noto Sans JP','Malgun Gothic','Yu Gothic',system-ui,sans-serif">
+  <defs>
+    <filter id="lift" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#5A4632" flood-opacity="0.22"/>
+    </filter>
+    <g id="face-man9" fill="#B5794C" text-anchor="middle" font-weight="700">
+      <text x="30" y="36" font-size="31">九</text>
+      <text x="30" y="72" font-size="27">萬</text>
+    </g>
+    <g id="face-pin3" fill="#77875C">
+      <circle cx="17" cy="20.7" r="9.2"/>
+      <circle cx="30" cy="42" r="9.2"/>
+      <circle cx="43" cy="63.3" r="9.2"/>
+    </g>
+    <g id="face-honor1" fill="#FEFAE0" text-anchor="middle" font-weight="700">
+      <text x="30" y="57" font-size="42">東</text>
+    </g>
+  </defs>
+
+  <rect width="1200" height="630" fill="#FAEDCD"/>
+
+  <g filter="url(#lift)">
+    <rect x="690" y="202" width="420" height="226" rx="36" fill="#A9B78C"/>
+    <rect x="696.5" y="208.5" width="407" height="213" rx="29.5" fill="none" stroke="#8C9A6E" stroke-width="13"/>
+  </g>
+
+  <g filter="url(#lift)">
+    <g transform="translate(730 242)">
+      <rect width="104" height="146" rx="9" fill="#FEFAE0"/>
+      <g transform="scale(1.7333)"><use href="#face-man9"/></g>
+    </g>
+    <g transform="translate(848 242)">
+      <rect width="104" height="146" rx="9" fill="#FEFAE0"/>
+      <g transform="scale(1.7333)"><use href="#face-pin3"/></g>
+    </g>
+    <g transform="translate(966 242)">
+      <rect width="104" height="146" rx="9" fill="#D4A373"/>
+      <g transform="scale(1.7333)"><use href="#face-honor1"/></g>
+    </g>
+  </g>
+
+  <text x="90" y="286" font-size="104" font-weight="800" fill="#5A4632">베타오리</text>
+  <text x="90" y="348" font-size="44" font-weight="600" fill="#8C7355">마작 수비 시뮬레이터</text>
+  <text x="90" y="430" font-size="32" font-weight="700" fill="#D4A373">betaori.app</text>
+</svg>

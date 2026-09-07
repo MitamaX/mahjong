@@ -1,16 +1,18 @@
 import { spaced } from './phrase.js';
 
 export const en = {
-  title: 'Defense Simulator',
+  brand: 'Betaori',
+  tagline: 'Mahjong Defense Simulator',
+  description: 'Practice riichi mahjong defense against a preemptive riichi. Read the discards, pick the safest tile, and survive the hand without dealing in.',
   riichi: 'Riichi',
   restart: 'Again',
   help: {
     title: 'Help',
     name: 'betaori.app',
-    tab: { basic: 'Basics', defense: 'Defense', terms: 'Terms' },
+    tab: { basic: 'Basics', defense: 'Defense', terms: 'Terms', info: 'About' },
     intro: [
       'A riichi mahjong defense simulator that helps you find [[safeTile|safe tiles]] against a preemptive [[riichi]].',
-      'It helps you read what your opponents discard and find the best tile to cut.'
+      'Read what your opponents discard and go for the best tile to cut.'
     ],
     control: {
       title: 'Controls',
@@ -19,6 +21,7 @@ export const en = {
         'Click a part of the report to see the review for that [[turn]].'
       ]
     },
+    info: { issues: 'Feedback', art: 'Tile art', license: 'License' },
     flow: {
       title: 'Flow',
       lines: [
@@ -85,7 +88,7 @@ export const en = {
     tileStyle: 'Tiles',
     value: {
       discardInput: { single: 'Single', double: 'Double' },
-      tileStyle: { classic: 'Classic', simple: 'Simple' }
+      tileStyle: { standard: 'Standard', simple: 'Simple', classic: 'Classic' }
     }
   }
 };

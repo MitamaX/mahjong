@@ -1,0 +1,9 @@
+{
+  "name": "betaori",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.js",
+    "og": "node tools/og.js"
+  }
+}

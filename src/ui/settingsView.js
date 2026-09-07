@@ -1,4 +1,5 @@
 import { Settings, SETTING_VALUES } from '../core/settings.js';
+import { languageUrl } from '../core/locale.js';
 import { PanelView } from './panelView.js';
 import { strings, LANGUAGE_NAMES } from '../i18n/index.js';
 
@@ -32,7 +33,12 @@ export class SettingsView extends PanelView {
 
   bind() {
     this.root.querySelectorAll('[data-setting]').forEach((node) => {
-      node.addEventListener('click', () => Settings.set(node.dataset.setting, node.dataset.value));
+      node.addEventListener('click', () => this.choose(node.dataset.setting, node.dataset.value));
     });
+  }
+
+  choose(name, value) {
+    if (name !== 'language') return Settings.set(name, value);
+    if (value !== Settings.get('language')) location.assign(languageUrl(value));
   }
 }

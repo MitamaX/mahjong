@@ -1,16 +1,18 @@
 import { spaced } from './phrase.js';
 
 export const ko = {
-  title: '수비 시뮬레이터',
+  brand: '베타오리',
+  tagline: '마작 수비 시뮬레이터',
+  description: '선제 리치에 맞서 안전패를 고르는 리치마작 수비 연습. 상대 버림패를 읽고 최선의 타패를 골라 방총 없이 1국을 버텨보세요.',
   riichi: '리치',
   restart: '다시',
   help: {
     title: '도움말',
     name: 'betaori.app',
-    tab: { basic: '기본', defense: '수비', terms: '용어' },
+    tab: { basic: '기본', defense: '수비', terms: '용어', info: '정보' },
     intro: [
       '선제 [[riichi]]로부터 [[safeTile]]를 찾게 도와드리는 리치마작 수비 시뮬레이터입니다.',
-      '상대방의 버림패를 읽어 최선의 타패를 찾게 도와드립니다.'
+      '상대방의 버림패를 읽어 최선의 타패에 도전해보세요.'
     ],
     control: {
       title: '조작',
@@ -19,6 +21,7 @@ export const ko = {
         '보고서의 각 부분을 눌러 해당 [[turn]]의 평가를 확인할 수 있습니다.'
       ]
     },
+    info: { issues: '제보', art: '패 그림', license: '라이선스' },
     flow: {
       title: '진행',
       lines: [
@@ -85,7 +88,7 @@ export const ko = {
     tileStyle: '패',
     value: {
       discardInput: { single: '원클릭', double: '더블클릭' },
-      tileStyle: { classic: '기본', simple: '심플' }
+      tileStyle: { standard: '기본', simple: '심플', classic: '클래식' }
     }
   }
 };

@@ -1,14 +1,16 @@
 export const ja = {
-  title: '守備シミュレーター',
+  brand: 'ベタオリ',
+  tagline: '麻雀 守備シミュレーター',
+  description: '先制リーチに対する安全牌を選ぶリーチ麻雀の守備練習。相手の捨て牌を読み、最善の打牌で放銃せずに1局を凌いでみてください。',
   riichi: 'リーチ',
   restart: 'もう一度',
   help: {
     title: 'ヘルプ',
     name: 'betaori.app',
-    tab: { basic: '基本', defense: '守備', terms: '用語' },
+    tab: { basic: '基本', defense: '守備', terms: '用語', info: '情報' },
     intro: [
       '先制[[riichi]]に対して[[safeTile]]を見つけるためのリーチ麻雀の守備シミュレーターです。',
-      '相手の捨て牌を読んで最善の打牌を選ぶ手助けをします。'
+      '相手の捨て牌を読んで最善の打牌に挑戦してみてください。'
     ],
     control: {
       title: '操作',
@@ -17,6 +19,7 @@ export const ja = {
         'レポートの各部分をクリックするとその[[turn]]の評価を確認できます。'
       ]
     },
+    info: { issues: '報告', art: '牌画', license: 'ライセンス' },
     flow: {
       title: '進行',
       lines: [
@@ -83,7 +86,7 @@ export const ja = {
     tileStyle: '牌',
     value: {
       discardInput: { single: 'シングル', double: 'ダブル' },
-      tileStyle: { classic: '標準', simple: 'シンプル' }
+      tileStyle: { standard: '標準', simple: 'シンプル', classic: 'クラシック' }
     }
   }
 };
