@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'mahjong.settings';
+export const STORAGE_KEY = 'mahjong.settings';
 
 export const SETTING_VALUES = {
   language: ['ja', 'en', 'ko'],

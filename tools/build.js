@@ -1,15 +1,21 @@
-import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DICTIONARIES, titleOf } from '../src/i18n/index.js';
+import { SETTING_VALUES, STORAGE_KEY } from '../src/core/settings.js';
+import { ZONE_LANGUAGES, FALLBACK_LANGUAGE } from '../src/core/locale.js';
 
 const SITE = 'https://betaori.app';
 const OG_LOCALES = { ko: 'ko_KR', ja: 'ja_JP', en: 'en_US' };
-const DEFAULT_LANGUAGE = 'ko';
+const DEFAULT_LANGUAGE = 'ja';
 const LANGUAGES = Object.keys(DICTIONARIES);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const ENTRY = join(ROOT, 'src', 'main.js');
+const IMPORT_SPECIFIER = /from\s+'([^']+)'/g;
 
 const absolute = (path) => `${SITE}/${path}`;
+const literal = (value) => JSON.stringify(value);
+const sitePath = (path) => relative(ROOT, path).split(sep).join('/');
 
 function alternates() {
   return [
@@ -37,12 +43,11 @@ function structuredData(language, url) {
   }, null, 2);
 }
 
-function head(language, { url, base, canonical }) {
+function metadata(language, { url, base, canonical }) {
   const dictionary = DICTIONARIES[language];
   const title = titleOf(dictionary);
   const image = absolute(`assets/og-${language}.png`);
   return [
-    '<meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
     `<title>${title}</title>`,
     `<meta name="description" content="${dictionary.description}">`,
@@ -67,21 +72,79 @@ function head(language, { url, base, canonical }) {
     `<meta name="twitter:title" content="${title}">`,
     `<meta name="twitter:description" content="${dictionary.description}">`,
     `<meta name="twitter:image" content="${image}">`,
-    `<script type="application/ld+json">\n${structuredData(language, url)}\n</script>`,
-    ...['tokens', 'base', 'components', 'layout']
-      .map((sheet) => `<link rel="stylesheet" href="${base}styles/${sheet}.css">`)
+    `<script type="application/ld+json">\n${structuredData(language, url)}\n</script>`
   ];
 }
 
-function page(language, { url, base, canonical, entry }) {
-  const { brand, tagline } = DICTIONARIES[language];
+async function collectModules(path, collected = new Set()) {
+  if (collected.has(path)) return collected;
+  collected.add(path);
+  const source = await readFile(path, 'utf8');
+  for (const [, specifier] of source.matchAll(IMPORT_SPECIFIER)) {
+    await collectModules(resolve(dirname(path), specifier), collected);
+  }
+  return collected;
+}
+
+function assets(base, modules) {
+  return [
+    ...['tokens', 'base', 'components', 'layout']
+      .map((sheet) => `<link rel="stylesheet" href="${base}styles/${sheet}.css">`),
+    ...modules.map((path) => `<link rel="modulepreload" href="${base}${path}">`)
+  ];
+}
+
+function redirectScript() {
+  return `<script>
+(function () {
+  var languages = ${literal(SETTING_VALUES.language)};
+  var zones = ${literal(ZONE_LANGUAGES)};
+  var supported = function (language) {
+    return languages.indexOf(language) < 0 ? null : language;
+  };
+  var fromStorage = function () {
+    try {
+      return supported((JSON.parse(localStorage.getItem(${literal(STORAGE_KEY)})) || {}).language);
+    } catch (unused) {
+      return null;
+    }
+  };
+  var fromNavigator = function () {
+    var tag = (navigator.languages || [])[0] || navigator.language || '';
+    return supported(tag.toLowerCase().split('-')[0]);
+  };
+  var fromZone = function () {
+    try {
+      return supported(zones[Intl.DateTimeFormat().resolvedOptions().timeZone]);
+    } catch (unused) {
+      return null;
+    }
+  };
+  location.replace((fromStorage() || fromNavigator() || fromZone() || ${literal(FALLBACK_LANGUAGE)}) + '/');
+})();
+</script>`;
+}
+
+function document(language, lines, body) {
   return `<!DOCTYPE html>
 <html lang="${language}">
 <head>
-${head(language, { url, base, canonical }).join('\n')}
+<meta charset="utf-8">
+${lines.join('\n')}
 </head>
 <body>
-<main class="app" data-table>
+${body}</body>
+</html>
+`;
+}
+
+function appPage(language, modules) {
+  const { brand, tagline } = DICTIONARIES[language];
+  const base = '../';
+  return document(language, [
+    ...metadata(language, { url: absolute(`${language}/`), base, canonical: true }),
+    ...assets(base, modules)
+  ], `<main class="app" data-table>
   <div class="splash">
     <h1 class="splash__name">${brand}</h1>
     <p class="splash__tagline">${tagline}</p>
@@ -91,10 +154,15 @@ ${head(language, { url, base, canonical }).join('\n')}
 <div class="overlay" data-settings-panel hidden></div>
 <div class="overlay" data-help-panel hidden></div>
 <div class="overlay" data-loader hidden></div>
-<script type="module" src="${base}src/${entry}"></script>
-</body>
-</html>
-`;
+<script type="module" src="${base}${sitePath(ENTRY)}"></script>
+`);
+}
+
+function redirectPage() {
+  return document(DEFAULT_LANGUAGE, [
+    redirectScript(),
+    ...metadata(DEFAULT_LANGUAGE, { url: absolute(''), base: '', canonical: false })
+  ], '');
 }
 
 function sitemap() {
@@ -121,18 +189,10 @@ async function emit(path, content) {
   console.log(path);
 }
 
-await emit('index.html', page(DEFAULT_LANGUAGE, {
-  url: absolute(''),
-  base: '',
-  canonical: false,
-  entry: 'redirect.js'
-}));
+const modules = [...await collectModules(ENTRY)].map(sitePath).sort();
 
-await Promise.all(LANGUAGES.map((language) => emit(`${language}/index.html`, page(language, {
-  url: absolute(`${language}/`),
-  base: '../',
-  canonical: true,
-  entry: 'main.js'
-}))));
+await emit('index.html', redirectPage());
+
+await Promise.all(LANGUAGES.map((language) => emit(`${language}/index.html`, appPage(language, modules))));
 
 await emit('sitemap.xml', sitemap());

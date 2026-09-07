@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+(function () {
+  var languages = ["ja","en","ko"];
+  var zones = {"Asia/Seoul":"ko","Asia/Tokyo":"ja"};
+  var supported = function (language) {
+    return languages.indexOf(language) < 0 ? null : language;
+  };
+  var fromStorage = function () {
+    try {
+      return supported((JSON.parse(localStorage.getItem("mahjong.settings")) || {}).language);
+    } catch (unused) {
+      return null;
+    }
+  };
+  var fromNavigator = function () {
+    var tag = (navigator.languages || [])[0] || navigator.language || '';
+    return supported(tag.toLowerCase().split('-')[0]);
+  };
+  var fromZone = function () {
+    try {
+      return supported(zones[Intl.DateTimeFormat().resolvedOptions().timeZone]);
+    } catch (unused) {
+      return null;
+    }
+  };
+  location.replace((fromStorage() || fromNavigator() || fromZone() || "en") + '/');
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>베타오리: 마작 수비 시뮬레이터</title>
-<meta name="description" content="선제 리치에 맞서 안전패를 고르는 리치마작 수비 연습. 상대 버림패를 읽고 최선의 타패를 골라 방총 없이 1국을 버텨보세요.">
+<title>ベタオリ: 麻雀 守備シミュレーター</title>
+<meta name="description" content="先制リーチに対する安全牌を選ぶリーチ麻雀の守備練習。相手の捨て牌を読み、最善の打牌で放銃せずに1局を凌いでみてください。">
 <link rel="alternate" hreflang="ko" href="https://betaori.app/ko/">
 <link rel="alternate" hreflang="ja" href="https://betaori.app/ja/">
 <link rel="alternate" hreflang="en" href="https://betaori.app/en/">
@@ -15,36 +43,36 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="betaori.app">
 <meta property="og:url" content="https://betaori.app/">
-<meta property="og:title" content="베타오리: 마작 수비 시뮬레이터">
-<meta property="og:description" content="선제 리치에 맞서 안전패를 고르는 리치마작 수비 연습. 상대 버림패를 읽고 최선의 타패를 골라 방총 없이 1국을 버텨보세요.">
-<meta property="og:image" content="https://betaori.app/assets/og-ko.png">
+<meta property="og:title" content="ベタオリ: 麻雀 守備シミュレーター">
+<meta property="og:description" content="先制リーチに対する安全牌を選ぶリーチ麻雀の守備練習。相手の捨て牌を読み、最善の打牌で放銃せずに1局を凌いでみてください。">
+<meta property="og:image" content="https://betaori.app/assets/og-ja.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="베타오리: 마작 수비 시뮬레이터">
-<meta property="og:locale" content="ko_KR">
-<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:image:alt" content="ベタオリ: 麻雀 守備シミュレーター">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="ko_KR">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="베타오리: 마작 수비 시뮬레이터">
-<meta name="twitter:description" content="선제 리치에 맞서 안전패를 고르는 리치마작 수비 연습. 상대 버림패를 읽고 최선의 타패를 골라 방총 없이 1국을 버텨보세요.">
-<meta name="twitter:image" content="https://betaori.app/assets/og-ko.png">
+<meta name="twitter:title" content="ベタオリ: 麻雀 守備シミュレーター">
+<meta name="twitter:description" content="先制リーチに対する安全牌を選ぶリーチ麻雀の守備練習。相手の捨て牌を読み、最善の打牌で放銃せずに1局を凌いでみてください。">
+<meta name="twitter:image" content="https://betaori.app/assets/og-ja.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "베타오리",
+  "name": "ベタオリ",
   "alternateName": [
     "betaori.app",
-    "ベタオリ",
+    "베타오리",
     "Betaori"
   ],
   "url": "https://betaori.app/",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Web",
   "browserRequirements": "JavaScript",
-  "inLanguage": "ko",
-  "image": "https://betaori.app/assets/og-ko.png",
-  "description": "선제 리치에 맞서 안전패를 고르는 리치마작 수비 연습. 상대 버림패를 읽고 최선의 타패를 골라 방총 없이 1국을 버텨보세요.",
+  "inLanguage": "ja",
+  "image": "https://betaori.app/assets/og-ja.png",
+  "description": "先制リーチに対する安全牌を選ぶリーチ麻雀の守備練習。相手の捨て牌を読み、最善の打牌で放銃せずに1局を凌いでみてください。",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -52,22 +80,7 @@
   }
 }
 </script>
-<link rel="stylesheet" href="styles/tokens.css">
-<link rel="stylesheet" href="styles/base.css">
-<link rel="stylesheet" href="styles/components.css">
-<link rel="stylesheet" href="styles/layout.css">
 </head>
 <body>
-<main class="app" data-table>
-  <div class="splash">
-    <h1 class="splash__name">베타오리</h1>
-    <p class="splash__tagline">마작 수비 시뮬레이터</p>
-  </div>
-</main>
-<div class="overlay" data-report hidden></div>
-<div class="overlay" data-settings-panel hidden></div>
-<div class="overlay" data-help-panel hidden></div>
-<div class="overlay" data-loader hidden></div>
-<script type="module" src="src/redirect.js"></script>
 </body>
 </html>

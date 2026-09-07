@@ -1,14 +1,16 @@
 import { SETTING_VALUES } from './settings.js';
 
-const ZONE_LANGUAGES = { 'Asia/Seoul': 'ko', 'Asia/Tokyo': 'ja' };
-const FALLBACK = 'en';
+export const ZONE_LANGUAGES = { 'Asia/Seoul': 'ko', 'Asia/Tokyo': 'ja' };
+export const FALLBACK_LANGUAGE = 'en';
 const LANGUAGE_SEGMENT = new RegExp(`(?:${SETTING_VALUES.language.join('|')})/$`);
 
 function supported(language) {
   return SETTING_VALUES.language.includes(language) ? language : null;
 }
 
-const DECLARED_LANGUAGE = supported(document.documentElement.lang);
+function fromDocument() {
+  return supported(document.documentElement.lang);
+}
 
 function fromNavigator() {
   const tag = navigator.languages?.[0] ?? navigator.language ?? '';
@@ -28,11 +30,11 @@ function siteRoot() {
 }
 
 export function guessLanguage() {
-  return fromNavigator() ?? fromZone() ?? FALLBACK;
+  return fromNavigator() ?? fromZone() ?? FALLBACK_LANGUAGE;
 }
 
 export function pageLanguage() {
-  return DECLARED_LANGUAGE ?? guessLanguage();
+  return fromDocument() ?? guessLanguage();
 }
 
 export function languageUrl(language) {
