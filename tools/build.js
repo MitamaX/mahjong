@@ -88,14 +88,7 @@ function adLoader() {
 }
 
 function adRail(slot) {
-  return `<aside class="ad">
-  <ins class="adsbygoogle ad__unit" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${slot}"></ins>
-</aside>`;
-}
-
-function adStarter() {
-  const pushes = ADSENSE_SLOTS.map(() => '(adsbygoogle = window.adsbygoogle || []).push({});');
-  return `<script>\n${pushes.join('\n')}\n</script>`;
+  return `<aside class="ad" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${slot}"></aside>`;
 }
 
 async function readModules(path, sources = new Map()) {
@@ -202,7 +195,6 @@ ${trail}
 <div class="overlay" data-help-panel hidden></div>
 <div class="overlay" data-loader hidden></div>
 <script type="module" src="${base}${modules.get(sitePath(ENTRY))}"></script>
-${adStarter()}
 `);
 }
 

@@ -275,10 +275,6 @@
     flex-direction: column;
   }
 
-  body:has(.overlay:not([hidden])) .ad {
-    visibility: hidden;
-  }
-
   .dock__riichi {
     left: auto;
     right: 0;

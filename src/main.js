@@ -6,6 +6,7 @@ import { ReportView } from './ui/reportView.js';
 import { LoaderView } from './ui/loaderView.js';
 import { SettingsView } from './ui/settingsView.js';
 import { HelpView } from './ui/helpView.js';
+import { AdView } from './ui/adView.js';
 import { strings, titleOf } from './i18n/index.js';
 
 const TEMPO = { auto: 40, self: 150, opponent: 280, riichi: 900, result: 1000, load: 420 };
@@ -35,6 +36,7 @@ class App {
       onRestart: () => this.start()
     });
     this.loader = new LoaderView(roots.loader);
+    this.ads = new AdView(roots.ads);
     Settings.subscribe(() => this.refresh());
     this.applyLanguage();
   }
@@ -90,6 +92,7 @@ class App {
     }
     this.table.render(this.round.snapshot());
     this.busy = false;
+    this.ads.place();
     if (this.round.result) this.report.show(this.round.report());
   }
 }
@@ -101,6 +104,7 @@ const app = new App({
   report: document.querySelector('[data-report]'),
   loader: document.querySelector('[data-loader]'),
   settings: document.querySelector('[data-settings-panel]'),
-  help: document.querySelector('[data-help-panel]')
+  help: document.querySelector('[data-help-panel]'),
+  ads: document.querySelectorAll('[data-ad-slot]')
 });
 app.start();
