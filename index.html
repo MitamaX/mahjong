@@ -27,7 +27,7 @@
       return null;
     }
   };
-  location.replace((fromStorage() || fromNavigator() || fromZone() || "en") + '/');
+  location.replace("/" + (fromStorage() || fromNavigator() || fromZone() || "en") + '/');
 })();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">

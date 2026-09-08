@@ -2,7 +2,7 @@ import { SETTING_VALUES } from './settings.js';
 
 export const ZONE_LANGUAGES = { 'Asia/Seoul': 'ko', 'Asia/Tokyo': 'ja' };
 export const FALLBACK_LANGUAGE = 'en';
-const LANGUAGE_SEGMENT = new RegExp(`(?:${SETTING_VALUES.language.join('|')})/$`);
+export const SITE_ROOT = '/';
 
 function supported(language) {
   return SETTING_VALUES.language.includes(language) ? language : null;
@@ -25,14 +25,10 @@ function fromZone() {
   }
 }
 
-function siteRoot() {
-  return location.pathname.replace(/[^/]*$/, '').replace(LANGUAGE_SEGMENT, '');
-}
-
 export function pageLanguage() {
   return fromDocument() ?? fromNavigator() ?? fromZone() ?? FALLBACK_LANGUAGE;
 }
 
 export function languageUrl(language) {
-  return `${siteRoot()}${language}/`;
+  return `${SITE_ROOT}${language}/`;
 }

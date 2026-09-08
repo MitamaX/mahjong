@@ -4,7 +4,7 @@ import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DICTIONARIES, titleOf } from '../src/i18n/index.js';
 import { SETTING_VALUES, STORAGE_KEY } from '../src/core/settings.js';
-import { ZONE_LANGUAGES, FALLBACK_LANGUAGE } from '../src/core/locale.js';
+import { ZONE_LANGUAGES, FALLBACK_LANGUAGE, SITE_ROOT } from '../src/core/locale.js';
 import { div, tag } from '../src/ui/markup.js';
 import { backTilesHtml } from '../src/ui/board.js';
 import { splashMarkup, tableMarkup } from '../src/ui/tableView.js';
@@ -167,7 +167,7 @@ function redirectScript() {
       return null;
     }
   };
-  location.replace((fromStorage() || fromNavigator() || fromZone() || ${literal(FALLBACK_LANGUAGE)}) + '/');
+  location.replace(${literal(SITE_ROOT)} + (fromStorage() || fromNavigator() || fromZone() || ${literal(FALLBACK_LANGUAGE)}) + '/');
 })();
 </script>`;
 }
