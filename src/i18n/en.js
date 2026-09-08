@@ -12,7 +12,7 @@ export const en = {
     tab: { basic: 'Basics', defense: 'Defense', terms: 'Terms', info: 'About' },
     intro: [
       'A riichi mahjong defense simulator that helps you find [[safeTile|safe tiles]] against a preemptive [[riichi]].',
-      'Read what your opponents discard and go for the best tile to cut.'
+      'This site does not grade push-or-fold judgment. Practice rule-based defense built to never deal in.'
     ],
     control: {
       title: 'Controls',
