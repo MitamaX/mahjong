@@ -17,6 +17,7 @@ const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle
 const ADSENSE_CLIENT = 'ca-pub-9410921386046089';
 const ADSENSE_SLOTS = ['6622171051', '4362356727'];
 const LOADER_TILES = 4;
+const NOT_FOUND = '404';
 const OG_LOCALES = { ko: 'ko_KR', ja: 'ja_JP', en: 'en_US' };
 const DEFAULT_LANGUAGE = 'ja';
 const LANGUAGES = Object.keys(DICTIONARIES);
@@ -212,6 +213,13 @@ function redirectPage() {
   ], []);
 }
 
+function notFoundPage() {
+  return document(DEFAULT_LANGUAGE, [
+    '<meta name="robots" content="noindex">',
+    `<title>${NOT_FOUND}</title>`
+  ], [NOT_FOUND]);
+}
+
 function sitemap() {
   const links = LANGUAGES
     .map((language) => `      <xhtml:link rel="alternate" hreflang="${language}" href="${absolute(`${language}/`)}"/>`)
@@ -243,5 +251,7 @@ await emit('index.html', redirectPage());
 
 await Promise.all(LANGUAGES.map((language) => emit(`${language}/index.html`,
   appPage(language, modules, styles))));
+
+await emit('404.html', notFoundPage());
 
 await emit('sitemap.xml', sitemap());
