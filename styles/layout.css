@@ -114,7 +114,7 @@
   width: var(--center-size);
   height: var(--center-size);
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: auto 1fr auto;
   place-items: center;
   gap: calc(var(--board-unit) * 4);

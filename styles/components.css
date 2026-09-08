@@ -169,12 +169,13 @@
   color: var(--ivory);
   font-size: var(--badge-text);
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .chip {
-  --badge-pad-y: calc(var(--board-unit) * 2);
-  --badge-pad-x: calc(var(--board-unit) * 8);
-  --badge-text: calc(var(--label-unit) * 11);
+  --badge-pad-y: 3cqw;
+  --badge-pad-x: 8cqw;
+  --badge-text: 22cqw;
   visibility: hidden;
 }
 
@@ -198,7 +199,8 @@
 
 .plate {
   --label-unit: min(max(var(--board-unit), 0.82px), calc(var(--center-size) / 166));
-  min-width: calc(var(--board-unit) * 62);
+  container-type: inline-size;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
