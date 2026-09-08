@@ -7,7 +7,7 @@ export const SETTING_VALUES = {
 };
 
 const NAMES = Object.keys(SETTING_VALUES);
-const DEFAULTS = { language: 'ko', discardInput: 'single', tileStyle: 'standard' };
+export const SETTING_DEFAULTS = { language: 'ko', discardInput: 'single', tileStyle: 'standard' };
 
 function readStored() {
   try {
@@ -26,16 +26,12 @@ function accepted(stored) {
 class SettingsStore {
   constructor() {
     this.chosen = accepted(readStored());
-    this.values = { ...DEFAULTS, ...this.chosen };
+    this.values = { ...SETTING_DEFAULTS, ...this.chosen };
     this.listeners = new Set();
   }
 
   get(name) {
     return this.values[name];
-  }
-
-  isDefault(name) {
-    return !(name in this.chosen);
   }
 
   set(name, value) {

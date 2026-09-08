@@ -1,16 +1,18 @@
 import { Round, PLAYER } from './core/round.js';
 import { Settings } from './core/settings.js';
 import { pageLanguage } from './core/locale.js';
+import { OverlayView } from './ui/overlayView.js';
 import { TableView } from './ui/tableView.js';
 import { ReportView } from './ui/reportView.js';
-import { LoaderView } from './ui/loaderView.js';
 import { SettingsView } from './ui/settingsView.js';
 import { HelpView } from './ui/helpView.js';
 import { AdView } from './ui/adView.js';
-import { strings, titleOf } from './i18n/index.js';
+import { repaintTiles } from './ui/tileView.js';
+import { strings } from './i18n/index.js';
 
 const TEMPO = { auto: 40, self: 150, opponent: 280, riichi: 900, result: 1000, load: 420 };
 const MAX_DEALS = 24;
+const STYLED_SETTING = 'tileStyle';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -35,24 +37,11 @@ class App {
     this.report = new ReportView(roots.report, {
       onRestart: () => this.start()
     });
-    this.loader = new LoaderView(roots.loader);
+    this.loader = new OverlayView(roots.loader);
     this.ads = new AdView(roots.ads);
-    Settings.subscribe(() => this.refresh());
-    this.applyLanguage();
-  }
-
-  applyLanguage() {
-    const dictionary = strings();
-    document.title = titleOf(dictionary);
-    document.querySelector('meta[name="description"]').content = dictionary.description;
-    document.documentElement.lang = Settings.get('language');
-  }
-
-  refresh() {
-    this.applyLanguage();
-    Object.values(this.panels).forEach((panel) => panel.build());
-    this.table.rebuild();
-    this.report.rebuild();
+    Settings.subscribe((name) => {
+      if (name === STYLED_SETTING) repaintTiles(document);
+    });
   }
 
   async start() {
@@ -98,6 +87,7 @@ class App {
 }
 
 Settings.set('language', pageLanguage());
+repaintTiles(document);
 
 const app = new App({
   table: document.querySelector('[data-table]'),

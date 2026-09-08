@@ -256,10 +256,6 @@
   background: var(--veil);
 }
 
-.overlay[hidden] {
-  display: none;
-}
-
 @media (max-width: 780px) {
   :root {
     --app-pad: var(--space-2);

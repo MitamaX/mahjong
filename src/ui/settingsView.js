@@ -1,39 +1,47 @@
-import { Settings, SETTING_VALUES } from '../core/settings.js';
+import { Settings, SETTING_VALUES, SETTING_DEFAULTS } from '../core/settings.js';
 import { languageUrl } from '../core/locale.js';
-import { PanelView } from './panelView.js';
-import { strings, LANGUAGE_NAMES } from '../i18n/index.js';
+import { PanelView, panelMarkup } from './panelView.js';
+import { button, classNames, div, escape, text } from './markup.js';
+import { LANGUAGE_NAMES } from '../i18n/index.js';
 
 const ROWS = ['language', 'discardInput', 'tileStyle'];
+const ACTIVE_CLASS = 'btn--on';
 
-function valueLabel(name, value) {
-  return name === 'language' ? LANGUAGE_NAMES[value] : strings().settings.value[name][value];
-}
+const valueLabel = (dictionary, name, value) =>
+  (name === 'language' ? LANGUAGE_NAMES[value] : dictionary.settings.value[name][value]);
 
-function optionRow(name) {
-  const choices = SETTING_VALUES[name].map((value) => `
-    <button class="btn ${Settings.get(name) === value ? 'btn--on' : ''}" type="button"
-      data-setting="${name}" data-value="${value}">${valueLabel(name, value)}</button>
-  `).join('');
-  return `
-    <div class="option">
-      <span class="option__label">${strings().settings[name]}</span>
-      <div class="segment">${choices}</div>
-    </div>
-  `;
-}
+const optionRow = (dictionary, language, name) => {
+  const active = name === 'language' ? language : SETTING_DEFAULTS[name];
+  return div('option', [
+    text(dictionary.settings[name], 'option__label'),
+    div('segment', SETTING_VALUES[name].map((value) =>
+      button(escape(valueLabel(dictionary, name, value)), {
+        class: classNames('btn', value === active && ACTIVE_CLASS),
+        'data-setting': name,
+        'data-value': value
+      })))
+  ]);
+};
+
+export const settingsMarkup = (dictionary, language) => panelMarkup({
+  modifier: 'panel--single',
+  title: dictionary.settings.title,
+  close: dictionary.close
+}, ROWS.map((name) => optionRow(dictionary, language, name)));
 
 export class SettingsView extends PanelView {
-  get title() {
-    return strings().settings.title;
-  }
-
-  content() {
-    return ROWS.map(optionRow).join('');
-  }
-
-  bind() {
+  constructor(root) {
+    super(root);
     this.root.querySelectorAll('[data-setting]').forEach((node) => {
       node.addEventListener('click', () => this.choose(node.dataset.setting, node.dataset.value));
+    });
+    ROWS.forEach((name) => this.sync(name));
+    Settings.subscribe((name) => this.sync(name));
+  }
+
+  sync(name) {
+    this.root.querySelectorAll(`[data-setting="${name}"]`).forEach((node) => {
+      node.classList.toggle(ACTIVE_CLASS, node.dataset.value === Settings.get(name));
     });
   }
 

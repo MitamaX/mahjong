@@ -5,11 +5,18 @@ import { fileURLToPath } from 'node:url';
 import { DICTIONARIES, titleOf } from '../src/i18n/index.js';
 import { SETTING_VALUES, STORAGE_KEY } from '../src/core/settings.js';
 import { ZONE_LANGUAGES, FALLBACK_LANGUAGE } from '../src/core/locale.js';
+import { div, tag } from '../src/ui/markup.js';
+import { backTilesHtml } from '../src/ui/board.js';
+import { splashMarkup, tableMarkup } from '../src/ui/tableView.js';
+import { reportMarkup } from '../src/ui/reportView.js';
+import { settingsMarkup } from '../src/ui/settingsView.js';
+import { helpMarkup } from '../src/ui/helpView.js';
 
 const SITE = 'https://betaori.app';
 const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
 const ADSENSE_CLIENT = 'ca-pub-9410921386046089';
 const ADSENSE_SLOTS = ['6622171051', '4362356727'];
+const LOADER_TILES = 4;
 const OG_LOCALES = { ko: 'ko_KR', ja: 'ja_JP', en: 'en_US' };
 const DEFAULT_LANGUAGE = 'ja';
 const LANGUAGES = Object.keys(DICTIONARIES);
@@ -88,7 +95,11 @@ function adLoader() {
 }
 
 function adRail(slot) {
-  return `<aside class="ad" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${slot}"></aside>`;
+  return tag('aside', { class: 'ad', 'data-ad-client': ADSENSE_CLIENT, 'data-ad-slot': slot });
+}
+
+function overlay(name, content) {
+  return tag('div', { class: 'overlay', [`data-${name}`]: true, hidden: true }, content);
 }
 
 async function readModules(path, sources = new Map()) {
@@ -169,40 +180,36 @@ function document(language, lines, body) {
 ${lines.join('\n')}
 </head>
 <body>
-${body}</body>
+${body.map((line) => `${line}\n`).join('')}</body>
 </html>
 `;
 }
 
 function appPage(language, modules, styles) {
-  const { brand, tagline } = DICTIONARIES[language];
+  const dictionary = DICTIONARIES[language];
   const base = '../';
   const [lead, trail] = ADSENSE_SLOTS.map(adRail);
   return document(language, [
     ...metadata(language, { url: absolute(`${language}/`), base, canonical: true }),
     ...assets(base, modules, styles),
     adLoader()
-  ], `${lead}
-<main class="app" data-table>
-  <div class="splash">
-    <h1 class="splash__name">${brand}</h1>
-    <p class="splash__tagline">${tagline}</p>
-  </div>
-</main>
-${trail}
-<div class="overlay" data-report hidden></div>
-<div class="overlay" data-settings-panel hidden></div>
-<div class="overlay" data-help-panel hidden></div>
-<div class="overlay" data-loader hidden></div>
-<script type="module" src="${base}${modules.get(sitePath(ENTRY))}"></script>
-`);
+  ], [
+    lead,
+    tag('main', { class: 'app', 'data-table': true }, [splashMarkup(dictionary), tableMarkup(dictionary)]),
+    trail,
+    overlay('report', reportMarkup(dictionary)),
+    overlay('settings-panel', settingsMarkup(dictionary, language)),
+    overlay('help-panel', helpMarkup(dictionary)),
+    overlay('loader', div('loader', backTilesHtml(LOADER_TILES))),
+    `<script type="module" src="${base}${modules.get(sitePath(ENTRY))}"></script>`
+  ]);
 }
 
 function redirectPage() {
   return document(DEFAULT_LANGUAGE, [
     redirectScript(),
     ...metadata(DEFAULT_LANGUAGE, { url: absolute(''), base: '', canonical: false })
-  ], '');
+  ], []);
 }
 
 function sitemap() {

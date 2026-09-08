@@ -29,12 +29,8 @@ function siteRoot() {
   return location.pathname.replace(/[^/]*$/, '').replace(LANGUAGE_SEGMENT, '');
 }
 
-export function guessLanguage() {
-  return fromNavigator() ?? fromZone() ?? FALLBACK_LANGUAGE;
-}
-
 export function pageLanguage() {
-  return fromDocument() ?? guessLanguage();
+  return fromDocument() ?? fromNavigator() ?? fromZone() ?? FALLBACK_LANGUAGE;
 }
 
 export function languageUrl(language) {

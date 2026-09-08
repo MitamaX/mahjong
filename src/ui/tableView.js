@@ -1,73 +1,84 @@
-import { tileNode } from './tileView.js';
-import { SEAT_CLASSES, riverRows, doraTiles } from './board.js';
+import { tileHtml } from './tileView.js';
+import { SEAT_CLASSES, backTilesHtml, doraTilesHtml, riverRowsHtml } from './board.js';
 import { iconSvg } from './iconView.js';
 import { DiscardInput } from './discardInput.js';
-import { strings } from '../i18n/index.js';
+import { button, classNames, div, escape, html, tag, text } from './markup.js';
 
 const ANNOUNCE_MS = 900;
 const TOOLS = ['help', 'settings'];
+const OPENING_ROUND = '東1';
+const DRAWN_MARK = 'drawn';
+const PLAYER_SEAT = 0;
+
+const seatHtml = (seatClass, seat) => tag('div', { class: classNames('seat', seatClass), 'data-seat': seat }, [
+  tag('div', { class: 'seat__hand', 'data-hidden-hand': seat }),
+  tag('div', { class: 'river', 'data-river': seat })
+]);
+
+const plateHtml = (dictionary) => (seatClass, seat) => tag('div', {
+  class: classNames('plate', seatClass.replace('seat', 'plate')),
+  'data-plate': seat
+}, [
+  tag('span', { class: 'plate__wind', 'data-wind': seat }),
+  tag('span', { class: 'chip', 'data-riichi-chip': seat }, escape(dictionary.riichi))
+]);
+
+const centerHtml = (dictionary) => div('center', [
+  SEAT_CLASSES.map(plateHtml(dictionary)),
+  div('center__core', [
+    text(OPENING_ROUND, 'center__round'),
+    tag('span', { class: 'center__wall', 'data-wall': true })
+  ])
+]);
+
+const toolsHtml = (dictionary) => div('board__corner board__tools', TOOLS.map((name) =>
+  button(iconSvg(name), {
+    class: 'btn btn--icon',
+    'aria-label': dictionary[name].title,
+    'data-tool': name
+  })));
+
+export const splashMarkup = (dictionary) => tag('div', { class: 'splash', 'data-splash': true }, [
+  tag('h1', { class: 'splash__name' }, escape(dictionary.brand)),
+  tag('p', { class: 'splash__tagline' }, escape(dictionary.tagline))
+]);
+
+export const tableMarkup = (dictionary) => html([
+  tag('section', { class: 'board', 'data-stage': true, hidden: true },
+    div('table board__square', [
+      SEAT_CLASSES.map(seatHtml),
+      centerHtml(dictionary),
+      tag('div', { class: 'rack board__corner board__dora', 'data-dora': true }),
+      toolsHtml(dictionary),
+      tag('div', { class: 'announce', 'data-announce': true, hidden: true })
+    ])),
+  tag('section', { class: 'dock', 'data-stage': true, hidden: true }, [
+    tag('div', { class: 'hand', 'data-hand': true }),
+    button(escape(dictionary.riichi), {
+      class: 'btn btn--accent dock__riichi',
+      'data-riichi': true,
+      hidden: true
+    })
+  ])
+]);
 
 export class TableView {
   constructor(root, { onDiscard, onTool }) {
     this.root = root;
-    this.onTool = onTool;
     this.input = new DiscardInput((tile) => onDiscard(tile, this.riichiMode));
     this.riichiMode = false;
-    this.build();
-  }
-
-  build() {
-    this.root.innerHTML = `
-      <section class="board">
-        <div class="table board__square">
-          ${SEAT_CLASSES.map((seatClass, seat) => `
-            <div class="seat ${seatClass}" data-seat="${seat}">
-              <div class="seat__hand" data-hidden-hand="${seat}"></div>
-              <div class="river" data-river="${seat}"></div>
-            </div>
-          `).join('')}
-          <div class="center">
-            ${SEAT_CLASSES.map((seatClass, seat) => `
-              <div class="plate ${seatClass.replace('seat', 'plate')}" data-plate="${seat}">
-                <span class="plate__wind" data-wind="${seat}"></span>
-                <span class="chip" data-riichi-chip="${seat}">${strings().riichi}</span>
-              </div>
-            `).join('')}
-            <div class="center__core">
-              <span class="center__round">東1</span>
-              <span class="center__wall" data-wall></span>
-            </div>
-          </div>
-          <div class="rack board__corner board__dora" data-dora></div>
-          <div class="board__corner board__tools">
-            ${TOOLS.map((name) => `
-              <button class="btn btn--icon" type="button" data-tool="${name}"
-                aria-label="${strings()[name].title}">${iconSvg(name)}</button>
-            `).join('')}
-          </div>
-          <div class="announce" data-announce hidden></div>
-        </div>
-      </section>
-      <section class="dock">
-        <div class="hand" data-hand></div>
-        <button class="btn btn--accent dock__riichi" type="button" data-riichi hidden>${strings().riichi}</button>
-      </section>
-    `;
-    this.riichiButton = this.root.querySelector('[data-riichi]');
+    this.riichiButton = this.node('riichi');
     this.riichiButton.addEventListener('click', () => {
       this.setRiichiMode(!this.riichiMode);
       this.renderHand();
     });
     this.root.querySelectorAll('[data-tool]').forEach((node) => {
-      node.addEventListener('click', () => this.onTool(node.dataset.tool));
+      node.addEventListener('click', () => onTool(node.dataset.tool));
     });
-    this.setRiichiMode(this.riichiMode);
   }
 
-  rebuild() {
-    this.input.clear();
-    this.build();
-    if (this.state) this.render(this.state);
+  node(name) {
+    return this.root.querySelector(`[data-${name}]`);
   }
 
   seatNode(selector, seat) {
@@ -79,9 +90,9 @@ export class TableView {
     this.riichiButton.classList.toggle('btn--on', on);
   }
 
-  announce(text) {
-    const banner = this.root.querySelector('[data-announce]');
-    banner.textContent = text;
+  announce(content) {
+    const banner = this.node('announce');
+    banner.textContent = content;
     banner.hidden = false;
     banner.classList.remove('announce--on');
     void banner.offsetWidth;
@@ -90,34 +101,31 @@ export class TableView {
     this.announceTimer = setTimeout(() => { banner.hidden = true; }, ANNOUNCE_MS);
   }
 
+  revealStage() {
+    this.node('splash').hidden = true;
+    this.root.querySelectorAll('[data-stage]').forEach((node) => { node.hidden = false; });
+  }
+
   render(state) {
     const previous = this.state;
     this.state = state;
+    this.revealStage();
     if (!state.riichiChoices.length && this.riichiMode) this.setRiichiMode(false);
     this.renderSeats(previous);
     this.renderInfo();
     this.renderHand();
-    this.markTurn(state.last ? state.last.seat : 0);
+    this.markTurn(state.last ? state.last.seat : PLAYER_SEAT);
   }
 
   renderSeats(previous) {
     this.state.seats.forEach((seat) => {
       this.seatNode('data-wind', seat.seat).textContent = seat.wind;
       this.seatNode('data-riichi-chip', seat.seat).classList.toggle('chip--on', seat.declared);
-
-      const hidden = this.seatNode('data-hidden-hand', seat.seat);
-      hidden.replaceChildren();
-      if (seat.seat !== 0) {
-        for (let index = 0; index < seat.handSize; index += 1) hidden.appendChild(tileNode(0, { back: true }));
-      }
-
-      this.renderRiver(seat.seat, seat.river);
+      this.seatNode('data-hidden-hand', seat.seat).innerHTML =
+        seat.seat === PLAYER_SEAT ? '' : backTilesHtml(seat.handSize);
+      this.seatNode('data-river', seat.seat).innerHTML = riverRowsHtml(seat.river);
     });
     this.markLast(previous);
-  }
-
-  renderRiver(seat, entries) {
-    this.seatNode('data-river', seat).replaceChildren(...riverRows(entries));
   }
 
   markLast(previous) {
@@ -137,30 +145,30 @@ export class TableView {
   }
 
   renderInfo() {
-    this.root.querySelector('[data-wall]').textContent = this.state.wall;
-    this.root.querySelector('[data-dora]').replaceChildren(...doraTiles(this.state.doraIndicator));
+    this.node('wall').textContent = this.state.wall;
+    this.node('dora').innerHTML = doraTilesHtml(this.state.doraIndicator);
   }
 
   renderHand() {
-    const container = this.root.querySelector('[data-hand]');
-    container.replaceChildren();
-    this.input.clear();
     const { hand, drawn, riichiChoices, awaiting } = this.state;
     const selectable = this.riichiMode ? new Set(riichiChoices) : null;
-
     const concealed = hand.slice();
     if (drawn !== null) concealed.splice(concealed.indexOf(drawn), 1);
 
-    const append = (tile, extraClass) => {
+    const face = (tile, mark) => {
       const allowed = awaiting && (!selectable || selectable.has(tile));
-      const node = tileNode(tile, { dim: !allowed, interactive: allowed });
-      if (allowed) this.input.bind(node, tile);
-      if (extraClass) node.classList.add(extraClass);
-      container.appendChild(node);
+      return tileHtml(tile, { dim: !allowed, interactive: allowed, mark });
     };
 
-    concealed.forEach((tile) => append(tile));
-    if (drawn !== null) append(drawn, 'tile--drawn');
+    const container = this.node('hand');
+    this.input.clear();
+    container.innerHTML = html([
+      concealed.map((tile) => face(tile, null)),
+      drawn !== null && face(drawn, DRAWN_MARK)
+    ]);
+    container.querySelectorAll('button[data-tile]').forEach((node) => {
+      this.input.bind(node, Number(node.dataset.tile));
+    });
 
     this.riichiButton.hidden = !riichiChoices.length;
   }

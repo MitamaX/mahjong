@@ -1,7 +1,7 @@
-import { tileNode } from './tileView.js';
+import { tileHtml } from './tileView.js';
 import { OverlayView } from './overlayView.js';
-import { SEAT_CLASSES, riverRows, doraTiles } from './board.js';
-import { box, span } from './dom.js';
+import { SEAT_CLASSES, doraTilesHtml, riverRowsHtml } from './board.js';
+import { button, classNames, div, escape, html, tag, text } from './markup.js';
 import { PLAYER } from '../core/round.js';
 import { GUARD } from '../core/danger.js';
 import { COPIES } from '../core/tiles.js';
@@ -14,6 +14,7 @@ const COMPACT_STATS = 'stats stats--compact';
 const BEST_MARK = 'best';
 const PICK_MARK = 'pick';
 const CITE_MARK = 'cite';
+const SAME_MARK = '=';
 const EDGES = [
   { key: 'danger', holds: (best, picked) => best.danger < picked.danger },
   { key: 'shanten', holds: (best, picked) => best.shanten < picked.shanten },
@@ -25,7 +26,14 @@ const percent = (value) => `${value.toFixed(1)}%`;
 const points = (value) => value.toFixed(1);
 const score = (value) => strings().score(Math.round(value));
 const ratio = (value) => `${Math.round(value)}%`;
-const text = (value, format) => (value === null ? DASH : format(value));
+const formatted = (value, format) => (value === null ? DASH : format(value));
+
+const SUMMARY_STATS = [
+  { key: 'danger', format: percent },
+  { key: 'shanten', format: points },
+  { key: 'hits', format: ratio },
+  { key: 'overall', format: score }
+];
 
 function guardText({ kind, left }) {
   const name = strings().guard[kind];
@@ -52,18 +60,15 @@ function outcomeLabel(result) {
   return result.from === PLAYER ? outcome.dealIn : outcome.ron;
 }
 
-function tileCell(tile, mark) {
-  return box(null, [tileNode(tile, { mark })]);
-}
+const tileCell = (tile, mark) => div(null, tileHtml(tile, { mark }));
 
-function statNodes(entries) {
-  return entries.map(([label, value]) =>
-    box('stat', [span(label, 'stat__label'), span(value, 'stat__value')]));
-}
+const statHtml = (label, value, key) => div('stat', [
+  text(label, 'stat__label'),
+  tag('span', { class: 'stat__value', 'data-stat': key }, escape(value))
+]);
 
-function statsNode(entries, className = 'stats') {
-  return box(className, statNodes(entries));
-}
+const statsHtml = (entries, className = 'stats') =>
+  div(className, entries.map(([label, value]) => statHtml(label, value)));
 
 function cited(tile, mark) {
   return { tile, mark };
@@ -81,116 +86,86 @@ function noteSegments({ best, picked }) {
   return note.risk({ choice, danger: percent(best.danger) });
 }
 
-function noteNode(segments) {
-  return box('note', segments.map((part) =>
-    (typeof part === 'string' ? span(part) : tileNode(part.tile, { mark: part.mark }))));
-}
+const noteHtml = (segments) => div('note', segments.map((part) =>
+  (typeof part === 'string' ? text(part) : tileHtml(part.tile, { mark: part.mark }))));
 
-function doraNode(indicator, marks) {
-  return box('rack center__dora', doraTiles(indicator, marks.get(indicator) ?? null));
-}
+const centerHtml = ({ turn, doraIndicator }, marks) => div('center', div('center__core', [
+  text(strings().turnMark(turn), 'center__round'),
+  div('rack center__dora', doraTilesHtml(doraIndicator, marks.get(doraIndicator) ?? null))
+]));
 
-function centerNode({ turn, doraIndicator }, marks) {
-  return box('center', [box('center__core', [
-    span(strings().turnMark(turn), 'center__round'),
-    doraNode(doraIndicator, marks)
-  ])]);
-}
+const citedMarks = (segments) => new Map(segments
+  .filter((part) => typeof part !== 'string')
+  .map(({ tile, mark }) => [tile, mark]));
 
-function citedMarks(segments) {
-  return new Map(segments
-    .filter((part) => typeof part !== 'string')
-    .map(({ tile, mark }) => [tile, mark]));
-}
+const ledgerHead = (dictionary) =>
+  div('ledger__row ledger__row--head', LEDGER_KEYS.map((key) => text(dictionary.ledger[key])));
+
+export const reportMarkup = (dictionary) => div('panel', [
+  tag('header', { class: 'panel__head' }, [
+    tag('span', { class: 'panel__title', 'data-outcome': true }),
+    tag('span', { class: 'grade', 'data-grade': true })
+  ]),
+  div('stats stats--summary', SUMMARY_STATS.map(({ key }) => statHtml(dictionary.stat[key], '', key))),
+  div('panel__body', [
+    div('ledger', [ledgerHead(dictionary), tag('div', { class: 'ledger__records', 'data-records': true })]),
+    div('detail', [
+      tag('div', { class: 'detail__note', 'data-note': true }),
+      tag('div', { class: 'table detail__board', 'data-board': true })
+    ])
+  ]),
+  button(escape(dictionary.restart), { class: 'btn btn--accent btn--wide panel__action', 'data-restart': true })
+]);
 
 export class ReportView extends OverlayView {
   constructor(root, { onRestart }) {
     super(root);
-    this.onRestart = onRestart;
-    this.build();
-  }
-
-  build() {
-    this.root.innerHTML = `
-      <div class="panel">
-        <header class="panel__head">
-          <span class="panel__title" data-outcome></span>
-          <span class="grade" data-grade></span>
-        </header>
-        <div class="stats stats--summary" data-summary></div>
-        <div class="panel__body">
-          <div class="ledger" data-ledger></div>
-          <div class="detail">
-            <div class="detail__note" data-note></div>
-            <div class="table detail__board" data-board></div>
-          </div>
-        </div>
-        <button class="btn btn--accent btn--wide panel__action" type="button" data-restart>${strings().restart}</button>
-      </div>
-    `;
-    this.node('restart').addEventListener('click', () => this.onRestart());
-  }
-
-  rebuild() {
-    const reopen = this.visible && this.report;
-    this.build();
-    if (reopen) this.show(this.report);
-    else this.hide();
+    this.entries = [];
+    this.node('restart').addEventListener('click', () => onRestart());
+    this.node('records').addEventListener('click', (event) => {
+      const row = event.target.closest('[data-record]');
+      if (row) this.open(Number(row.dataset.record));
+    });
   }
 
   show(report) {
-    this.report = report;
-    const { stat } = strings();
     this.node('outcome').textContent = outcomeLabel(report.result);
     this.node('grade').textContent = report.grade;
-    this.node('summary').replaceChildren(...statNodes([
-      [stat.danger, text(report.danger, percent)],
-      [stat.shanten, text(report.shanten, points)],
-      [stat.hits, text(report.hits, ratio)],
-      [stat.overall, text(report.overall, score)]
+    SUMMARY_STATS.forEach(({ key, format }) => {
+      this.root.querySelector(`[data-stat="${key}"]`).textContent = formatted(report[key], format);
+    });
+
+    this.entries = report.records.map((record) => ({ record, segments: noteSegments(record) }));
+    this.node('records').innerHTML = html(this.entries.map((entry, index) => [
+      this.summaryRow(entry.record, index),
+      this.drawerHtml(entry, index)
     ]));
 
-    const entries = report.records.map((record) => this.entry(record));
-    this.node('ledger').replaceChildren(
-      this.headRow(),
-      ...entries.flatMap(({ row, drawer }) => [row, drawer])
-    );
-    if (entries.length) this.open(entries[0]);
+    if (this.entries.length) this.open(0);
     else this.clearDetail();
 
     super.show();
   }
 
-  headRow() {
-    return box('ledger__row ledger__row--head', LEDGER_KEYS.map((key) => span(strings().ledger[key])));
-  }
-
-  entry(record) {
-    const segments = noteSegments(record);
-    const entry = { record, segments, row: this.summaryRow(record), drawer: this.drawerNode(record, segments) };
-    entry.row.addEventListener('click', () => this.open(entry));
-    return entry;
-  }
-
-  summaryRow(record) {
-    const row = document.createElement('button');
-    row.type = 'button';
-    row.className = 'ledger__row';
-    row.append(
-      span(record.turn),
+  summaryRow(record, index) {
+    return button([
+      text(record.turn),
       tileCell(record.picked.tile),
-      record.best.tile === record.picked.tile ? span('=', 'ledger__same') : tileCell(record.best.tile),
-      span(record.picked.shanten),
-      span(percent(record.picked.danger)),
-      span(strings().verdict[record.verdict], `verdict verdict--${record.verdict}`)
-    );
-    return row;
+      record.best.tile === record.picked.tile
+        ? text(SAME_MARK, 'ledger__same')
+        : tileCell(record.best.tile),
+      text(record.picked.shanten),
+      text(percent(record.picked.danger)),
+      text(strings().verdict[record.verdict], `verdict verdict--${record.verdict}`)
+    ], { class: 'ledger__row', 'data-record': index });
   }
 
-  drawerNode(record, segments) {
-    const hand = box('tile-tray', record.hand.map((tile) => tileNode(tile, { mark: this.markOf(tile, record) })));
-    const compare = box('compare', this.compareRows(record));
-    return box('drawer', [box('drawer__inner', [hand, compare, noteNode(segments)])]);
+  drawerHtml({ record, segments }, index) {
+    return tag('div', { class: 'drawer', 'data-drawer': index }, div('drawer__inner', [
+      div('tile-tray', record.hand.map((tile) => tileHtml(tile, { mark: this.markOf(tile, record) }))),
+      div('compare', this.compareRows(record)),
+      noteHtml(segments)
+    ]));
   }
 
   compareRows(record) {
@@ -200,44 +175,43 @@ export class ReportView extends OverlayView {
     return [this.compareRow(compare.picked, record.picked, PICK_MARK), best];
   }
 
-  open({ record, segments, row, drawer }) {
+  compareRow(label, stats, mark) {
+    return div('compare__row', [
+      text(label, 'compare__label'),
+      tileCell(stats.tile, mark),
+      statsHtml([
+        [strings().stat.shanten, stats.shanten],
+        [strings().stat.ukeire, stats.ukeire],
+        [strings().stat.danger, percent(stats.danger)]
+      ], COMPACT_STATS)
+    ]);
+  }
+
+  open(index) {
+    const drawer = this.root.querySelector(`[data-drawer="${index}"]`);
     if (drawer.classList.contains('drawer--on')) return;
     this.root.querySelectorAll('.ledger__row--on').forEach((node) => node.classList.remove('ledger__row--on'));
     this.root.querySelectorAll('.drawer--on').forEach((node) => node.classList.remove('drawer--on'));
-    row.classList.add('ledger__row--on');
+    this.root.querySelector(`[data-record="${index}"]`).classList.add('ledger__row--on');
     drawer.classList.add('drawer--on');
+
+    const { record, segments } = this.entries[index];
     const marks = citedMarks(segments);
-    this.node('note').replaceChildren(noteNode(segments));
-    this.node('board').replaceChildren(
-      ...this.seatFrames(record.rivers, marks),
-      centerNode(record, marks)
-    );
+    this.node('note').innerHTML = noteHtml(segments);
+    this.node('board').innerHTML = html([
+      SEAT_CLASSES.map((seatClass, seat) =>
+        div(classNames('seat', seatClass), div('river', riverRowsHtml(record.rivers[seat], marks)))),
+      centerHtml(record, marks)
+    ]);
   }
 
   clearDetail() {
-    ['note', 'board'].forEach((name) => this.node(name).replaceChildren());
-  }
-
-  seatFrames(rivers, marks) {
-    return SEAT_CLASSES.map((seatClass, seat) =>
-      box(`seat ${seatClass}`, [box('river', riverRows(rivers[seat], marks))]));
+    ['note', 'board'].forEach((name) => { this.node(name).innerHTML = ''; });
   }
 
   markOf(tile, record) {
     if (tile === record.best.tile) return BEST_MARK;
     if (tile === record.picked.tile) return PICK_MARK;
     return null;
-  }
-
-  compareRow(label, stats, mark) {
-    return box('compare__row', [
-      span(label, 'compare__label'),
-      tileCell(stats.tile, mark),
-      statsNode([
-        [strings().stat.shanten, stats.shanten],
-        [strings().stat.ukeire, stats.ukeire],
-        [strings().stat.danger, percent(stats.danger)]
-      ], COMPACT_STATS)
-    ]);
   }
 }

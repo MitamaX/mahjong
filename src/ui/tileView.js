@@ -1,5 +1,6 @@
 import { Tiles } from '../core/tiles.js';
 import { Settings } from '../core/settings.js';
+import { classNames, tag } from './markup.js';
 
 const VIEW = { width: 60, height: 84 };
 const FIELD = { x: 8, y: 10, width: 44, height: 64 };
@@ -9,7 +10,7 @@ const WHITE_DRAGON = 5;
 const GREEN_DRAGON = 6;
 const RED_DRAGON = 7;
 const SIMPLE = { size: 54, baseline: 61 };
-const ART_DIR = new URL('../../assets/tiles/', import.meta.url).href;
+const ART_DIR = '../assets/tiles/';
 
 const PIP_ROWS = {
   pin: {
@@ -138,22 +139,23 @@ function accentOf(tile) {
   return null;
 }
 
-export function tileNode(tile, { back = false, turned = false, dim = false, mark = null, interactive = false } = {}) {
-  const node = document.createElement(interactive ? 'button' : 'div');
-  if (interactive) node.type = 'button';
-  node.className = 'tile';
-  if (back) {
-    node.classList.add('tile--back');
-    return node;
-  }
+const faceOf = (tile) => STYLES[Settings.get('tileStyle')].face(Tiles.suitName(tile), Tiles.rankOf(tile));
+
+export function tileHtml(tile, { back = false, turned = false, dim = false, mark = null, interactive = false } = {}) {
+  if (back) return tag('div', { class: 'tile tile--back' });
   const style = STYLES[Settings.get('tileStyle')];
-  node.classList.add(`tile--${Tiles.suitName(tile)}`);
-  if (style.art) node.classList.add('tile--art');
-  const accent = accentOf(tile);
-  if (accent) node.classList.add(accent);
-  if (turned) node.classList.add('tile--turned');
-  if (dim) node.classList.add('tile--dim');
-  if (mark) node.classList.add(`tile--${mark}`);
-  node.innerHTML = style.face(Tiles.suitName(tile), Tiles.rankOf(tile));
-  return node;
+  return tag(interactive ? 'button' : 'div', {
+    class: classNames('tile', `tile--${Tiles.suitName(tile)}`, style.art && 'tile--art', accentOf(tile),
+      turned && 'tile--turned', dim && 'tile--dim', mark && `tile--${mark}`),
+    type: interactive && 'button',
+    'data-tile': tile
+  }, faceOf(tile));
+}
+
+export function repaintTiles(root) {
+  const art = Boolean(STYLES[Settings.get('tileStyle')].art);
+  root.querySelectorAll('[data-tile]').forEach((node) => {
+    node.classList.toggle('tile--art', art);
+    node.innerHTML = faceOf(Number(node.dataset.tile));
+  });
 }

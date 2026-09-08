@@ -1,11 +1,10 @@
 import { GUARD } from '../core/danger.js';
 import { SUIT, Tiles } from '../core/tiles.js';
-import { PanelView } from './panelView.js';
-import { tileNode } from './tileView.js';
-import { doraTiles } from './board.js';
-import { box, link, span } from './dom.js';
+import { PanelView, panelMarkup } from './panelView.js';
+import { tileHtml } from './tileView.js';
+import { doraTilesHtml } from './board.js';
+import { anchor, button, classNames, div, escape, html, tag, text } from './markup.js';
 import { iconSvg } from './iconView.js';
-import { strings } from '../i18n/index.js';
 
 const CITE_MARK = 'cite';
 const SAFE_MARK = 'best';
@@ -16,6 +15,8 @@ const LINK_PATTERN = /\[\[(\w+)(?:\|([^\]]+))?\]\]/g;
 const TABS = ['basic', 'defense', 'terms', 'info'];
 const TEXT_SECTIONS = ['control', 'flow'];
 const DEFENSE_CASES = [GUARD.GENBUTSU, GUARD.HONOR, GUARD.KABE, GUARD.SUJI];
+const STACK_CLASS = 'help__stack';
+const ACTIVE_CLASS = 'btn--on';
 const REPOSITORY = { label: 'MitamaX/mahjong', href: 'https://github.com/MitamaX/mahjong' };
 const INFO_LINKS = [
   { name: 'issues', label: 'Issues', href: `${REPOSITORY.href}/issues` },
@@ -92,169 +93,162 @@ const FIGURES = {
   noSuji: [{ hold: [cite(man(3))], safe: [man(5)] }]
 };
 
-const term = (id) => strings().glossary.term[id];
+const term = (dictionary, id) => dictionary.glossary.term[id];
 
 const tileRow = (tiles, mark, turned) =>
-  box('tile-row', tiles.map((tile) => tileNode(tile, { mark, turned })));
+  div('tile-row', tiles.map((tile) => tileHtml(tile, { mark, turned })));
 
-const groupNode = ({ tiles, mark }, { turned, rack } = {}) =>
-  (rack ? box('rack rack--figure', doraTiles(tiles[0], mark)) : tileRow(tiles, mark, turned));
+const groupHtml = ({ tiles, mark }, { turned, rack } = {}) =>
+  (rack ? div('rack rack--figure', doraTilesHtml(tiles[0], mark)) : tileRow(tiles, mark, turned));
 
-const handNode = (groups, options) => box('hand-figure', groups.map((group) => groupNode(group, options)));
+const handHtml = (groups, options) => div('hand-figure', groups.map((group) => groupHtml(group, options)));
 
-const sectionNode = (title, body) => box('help__group', [span(title, 'caption'), body]);
+const sectionHtml = (title, body) => div('help__group', [text(title, 'caption'), body]);
 
-function figureParts({ hold, draw, safe, turned, rack, shanten }) {
-  const parts = [];
-  if (shanten !== undefined) parts.push(span(strings().shantenMark(shanten), 'caption'));
-  parts.push(handNode(hold, { turned, rack }));
-  if (draw) parts.push(span(PLUS, 'op'), tileRow(draw, SAFE_MARK));
-  if (safe) parts.push(span(EQUAL, 'op'), tileRow(safe, SAFE_MARK));
-  return parts;
+const termLink = (dictionary, id, label) =>
+  button(escape(label ?? term(dictionary, id).name), { class: 'link', 'data-term': id });
+
+function figureParts(dictionary, { hold, draw, safe, turned, rack, shanten }) {
+  return html([
+    shanten !== undefined && text(dictionary.shantenMark(shanten), 'caption'),
+    handHtml(hold, { turned, rack }),
+    draw && [text(PLUS, 'op'), tileRow(draw, SAFE_MARK)],
+    safe && [text(EQUAL, 'op'), tileRow(safe, SAFE_MARK)]
+  ]);
 }
 
-const figureRows = (id) => (FIGURES[id] ?? []).map((row) => box('row', figureParts(row)));
+const figureRows = (dictionary, id) =>
+  (FIGURES[id] ?? []).map((row) => div('row', figureParts(dictionary, row)));
 
-function buttonNode(label, className, onClick) {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = className;
-  button.textContent = label;
-  button.addEventListener('click', onClick);
-  return button;
-}
-
-function brandLink({ label, href }) {
-  const node = link(label, href, 'btn btn--wide btn--brand');
-  node.insertAdjacentHTML('afterbegin', iconSvg('github'));
-  return node;
-}
-
-function textParts(text) {
+function lineHtml(dictionary, source) {
   const parts = [];
   let read = 0;
-  for (const match of text.matchAll(LINK_PATTERN)) {
-    if (match.index > read) parts.push(text.slice(read, match.index));
-    parts.push({ id: match[1], label: match[2] });
+  for (const match of source.matchAll(LINK_PATTERN)) {
+    if (match.index > read) parts.push(escape(source.slice(read, match.index)));
+    parts.push(termLink(dictionary, match[1], match[2]));
     read = match.index + match[0].length;
   }
-  if (read < text.length) parts.push(text.slice(read));
-  return parts;
+  if (read < source.length) parts.push(escape(source.slice(read)));
+  return tag('span', {}, parts);
 }
 
+const linesHtml = (dictionary, lines, className) =>
+  div(className, lines.map((line) => lineHtml(dictionary, line)));
+
+const guardCase = (dictionary, id) => div('case surface', [
+  div('row', [
+    text(term(dictionary, id).name, 'case__name'),
+    FIGURES[id].map((row) => figureParts(dictionary, row))
+  ]),
+  lineHtml(dictionary, term(dictionary, id).text)
+]);
+
+const articleHtml = (dictionary, id) => tag('div', { class: 'article surface', 'data-article': id, hidden: true }, [
+  div('row', [
+    button(BACK, { class: 'link', 'data-back': true }),
+    text(term(dictionary, id).name, 'article__title')
+  ]),
+  figureRows(dictionary, id),
+  lineHtml(dictionary, term(dictionary, id).text)
+]);
+
+const basicPane = (dictionary) => [
+  text(dictionary.help.name, 'help__name'),
+  linesHtml(dictionary, dictionary.help.intro, 'lines'),
+  TEXT_SECTIONS.map((name) => sectionHtml(dictionary.help[name].title,
+    linesHtml(dictionary, dictionary.help[name].lines, 'lines surface')))
+];
+
+const defensePane = (dictionary) =>
+  div('guide', DEFENSE_CASES.map((id) => guardCase(dictionary, id)));
+
+const termsPane = (dictionary) => [
+  tag('div', { class: STACK_CLASS, 'data-glossary': true }, GLOSSARY_GROUPS.map(({ name, ids }) =>
+    sectionHtml(dictionary.glossary.group[name],
+      div('index surface', ids.map((id) => termLink(dictionary, id)))))),
+  Object.keys(dictionary.glossary.term).map((id) => articleHtml(dictionary, id))
+];
+
+const infoPane = (dictionary) => [
+  text(dictionary.help.name, 'help__name'),
+  anchor([iconSvg('github'), escape(REPOSITORY.label)], REPOSITORY.href, 'btn btn--wide btn--brand'),
+  div('info surface', INFO_LINKS.map(({ name, label, href }) => div('option', [
+    text(dictionary.help.info[name], 'option__label'),
+    anchor(escape(label), href, 'link')
+  ])))
+];
+
+const PANES = { basic: basicPane, defense: defensePane, terms: termsPane, info: infoPane };
+
+const paneHtml = (dictionary, name) => tag('div', {
+  class: STACK_CLASS,
+  'data-pane': name,
+  hidden: name !== TABS[0]
+}, PANES[name](dictionary));
+
+export const helpMarkup = (dictionary) => panelMarkup({
+  modifier: 'panel--help',
+  title: dictionary.help.title,
+  close: dictionary.close
+}, [
+  tag('div', { class: 'segment segment--wide' },
+    TABS.map((name) => button(escape(dictionary.help.tab[name]), {
+      class: classNames('btn', name === TABS[0] && ACTIVE_CLASS),
+      'data-tab': name
+    }))),
+  tag('div', { class: 'help', 'data-help-body': true }, TABS.map((name) => paneHtml(dictionary, name)))
+]);
+
 export class HelpView extends PanelView {
-  get modifier() {
-    return 'panel--help';
+  constructor(root) {
+    super(root);
+    this.tab = TABS[0];
+    this.article = null;
+    this.trail = [];
+    this.body = this.node('help-body');
+    this.root.addEventListener('click', (event) => this.dispatch(event.target.closest('[data-tab], [data-term], [data-back]')));
   }
 
-  get title() {
-    return strings().help.title;
-  }
-
-  content() {
-    return `
-      <div class="segment segment--wide" data-tabs></div>
-      <div class="help" data-help-body></div>
-    `;
-  }
-
-  bind() {
-    this.trail = this.trail ?? [];
-    this.render(this.tab ?? TABS[0]);
-  }
-
-  render(tab, scroll = 0) {
-    this.tab = tab;
-    this.node('tabs').replaceChildren(...TABS.map((name) => this.tabButton(name)));
-    const body = this.node('help-body');
-    body.replaceChildren(...this.sections());
-    body.scrollTop = scroll;
-  }
-
-  spot() {
-    return { tab: this.tab, article: this.article ?? null, scroll: this.node('help-body').scrollTop };
+  dispatch(node) {
+    if (!node) return;
+    if (node.dataset.tab) return this.openTab(node.dataset.tab);
+    if (node.dataset.term) return this.openTerm(node.dataset.term);
+    return this.back();
   }
 
   openTab(name) {
+    this.tab = name;
     this.article = null;
     this.trail = [];
-    this.render(name);
+    this.render();
   }
 
   openTerm(id) {
-    this.trail.push(this.spot());
+    this.trail.push({ tab: this.tab, article: this.article, scroll: this.body.scrollTop });
+    this.tab = 'terms';
     this.article = id;
-    this.render('terms');
+    this.render();
   }
 
   back() {
     const spot = this.trail.pop();
     if (!spot) return;
+    this.tab = spot.tab;
     this.article = spot.article;
-    this.render(spot.tab, spot.scroll);
+    this.render(spot.scroll);
   }
 
-  tabButton(name) {
-    const active = name === this.tab ? 'btn--on' : '';
-    return buttonNode(strings().help.tab[name], `btn ${active}`, () => this.openTab(name));
-  }
-
-  sections() {
-    if (this.tab === 'defense') return [box('guide', DEFENSE_CASES.map((id) => this.guardCase(id)))];
-    if (this.tab === 'terms') return this.termSections();
-    if (this.tab === 'info') return this.infoSections();
-    return this.basicSections();
-  }
-
-  infoSections() {
-    const { help } = strings();
-    const rows = INFO_LINKS.map(({ name, label, href }) =>
-      box('option', [span(help.info[name], 'option__label'), link(label, href, 'link')]));
-    return [span(help.name, 'help__name'), brandLink(REPOSITORY), box('info surface', rows)];
-  }
-
-  basicSections() {
-    const { help } = strings();
-    return [
-      span(help.name, 'help__name'),
-      this.linesNode(help.intro, 'lines'),
-      ...TEXT_SECTIONS.map((name) =>
-        sectionNode(help[name].title, this.linesNode(help[name].lines, 'lines surface')))
-    ];
-  }
-
-  guardCase(id) {
-    const head = box('row', [span(term(id).name, 'case__name'), ...FIGURES[id].flatMap(figureParts)]);
-    return box('case surface', [head, this.lineNode(term(id).text)]);
-  }
-
-  termSections() {
-    if (this.article) return [this.articleNode(this.article)];
-    return GLOSSARY_GROUPS.map(({ name, ids }) =>
-      sectionNode(strings().glossary.group[name], box('index surface', ids.map((id) => this.linkNode(id)))));
-  }
-
-  articleNode(id) {
-    const head = box('row', [
-      buttonNode(BACK, 'link', () => this.back()),
-      span(term(id).name, 'article__title')
-    ]);
-    return box('article surface', [head, ...figureRows(id), this.lineNode(term(id).text)]);
-  }
-
-  linesNode(lines, className) {
-    return box(className, lines.map((line) => this.lineNode(line)));
-  }
-
-  lineNode(text) {
-    const line = span();
-    textParts(text).forEach((part) => {
-      line.append(typeof part === 'string' ? part : this.linkNode(part.id, part.label));
+  render(scroll = 0) {
+    this.root.querySelectorAll('[data-tab]').forEach((node) => {
+      node.classList.toggle(ACTIVE_CLASS, node.dataset.tab === this.tab);
     });
-    return line;
-  }
-
-  linkNode(id, label) {
-    return buttonNode(label ?? term(id).name, 'link', () => this.openTerm(id));
+    this.root.querySelectorAll('[data-pane]').forEach((node) => {
+      node.hidden = node.dataset.pane !== this.tab;
+    });
+    this.node('glossary').hidden = this.article !== null;
+    this.root.querySelectorAll('[data-article]').forEach((node) => {
+      node.hidden = node.dataset.article !== this.article;
+    });
+    this.body.scrollTop = scroll;
   }
 }

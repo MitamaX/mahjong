@@ -1,29 +1,16 @@
 import { OverlayView } from './overlayView.js';
-import { strings } from '../i18n/index.js';
+import { button, classNames, div, escape, tag, text } from './markup.js';
+
+export const panelMarkup = ({ modifier, title, close }, content) =>
+  div(classNames('panel', modifier), [
+    tag('header', { class: 'panel__head' }, text(title, 'panel__title')),
+    content,
+    button(escape(close), { class: 'btn btn--accent btn--wide panel__action', 'data-close': true })
+  ]);
 
 export class PanelView extends OverlayView {
   constructor(root) {
     super(root);
-    this.build();
-  }
-
-  build() {
-    this.root.innerHTML = `
-      <div class="panel ${this.modifier}">
-        <header class="panel__head">
-          <span class="panel__title">${this.title}</span>
-        </header>
-        ${this.content()}
-        <button class="btn btn--accent btn--wide panel__action" type="button" data-close>${strings().close}</button>
-      </div>
-    `;
-    this.bind();
     this.node('close').addEventListener('click', () => this.hide());
   }
-
-  get modifier() {
-    return 'panel--single';
-  }
-
-  bind() {}
 }

@@ -406,6 +406,10 @@
   padding-right: var(--space-1);
 }
 
+.ledger__records {
+  display: contents;
+}
+
 .ledger__row {
   display: grid;
   grid-template-columns: var(--ledger-cols);
@@ -530,6 +534,12 @@
   flex-direction: column;
   gap: var(--panel-gap);
   padding-right: var(--space-1);
+}
+
+.help__stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--panel-gap);
 }
 
 .help__name {
