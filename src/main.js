@@ -6,7 +6,6 @@ import { TableView } from './ui/tableView.js';
 import { ReportView } from './ui/reportView.js';
 import { SettingsView } from './ui/settingsView.js';
 import { HelpView } from './ui/helpView.js';
-import { AdView } from './ui/adView.js';
 import { repaintTiles } from './ui/tileView.js';
 import { strings } from './i18n/index.js';
 
@@ -38,7 +37,6 @@ class App {
       onRestart: () => this.start()
     });
     this.loader = new OverlayView(roots.loader);
-    this.ads = new AdView(roots.ads);
     Settings.subscribe((name) => {
       if (name === STYLED_SETTING) repaintTiles(document);
     });
@@ -81,7 +79,6 @@ class App {
     }
     this.table.render(this.round.snapshot());
     this.busy = false;
-    this.ads.place();
     if (this.round.result) this.report.show(this.round.report());
   }
 }
@@ -94,7 +91,6 @@ const app = new App({
   report: document.querySelector('[data-report]'),
   loader: document.querySelector('[data-loader]'),
   settings: document.querySelector('[data-settings-panel]'),
-  help: document.querySelector('[data-help-panel]'),
-  ads: document.querySelectorAll('[data-ad-slot]')
+  help: document.querySelector('[data-help-panel]')
 });
 app.start();

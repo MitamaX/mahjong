@@ -134,6 +134,10 @@
   text-align: center;
 }
 
+a.btn {
+  text-decoration: none;
+}
+
 .btn--brand {
   display: flex;
   align-items: center;
@@ -225,7 +229,6 @@
 
 .panel {
   --tile-base-w: 24px;
-  --tile-aspect: 1.375;
   --tile-base-h: calc(var(--tile-base-w) * var(--tile-aspect));
   --note-scale: 0.75;
   --tile-w: var(--tile-base-w);
@@ -243,7 +246,7 @@
   padding: var(--panel-pad);
   border-radius: var(--radius-l);
   background: var(--ivory);
-  box-shadow: 0 18px 40px var(--shade);
+  box-shadow: var(--shadow-card);
 }
 
 .panel--single {
@@ -277,12 +280,19 @@
 }
 
 .segment {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(max-content, 1fr);
   gap: var(--space-1);
 }
 
 .segment .btn {
   padding: var(--btn-pad-y) var(--space-3);
+  text-align: center;
+}
+
+.segment--wide {
+  display: flex;
 }
 
 .segment--wide .btn {
@@ -367,7 +377,8 @@
 
 .ledger,
 .detail,
-.help {
+.help,
+.term {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -376,25 +387,29 @@
 
 .ledger > *,
 .detail > *,
-.help > * {
+.help > *,
+.term > * {
   flex: 0 0 auto;
 }
 
 .ledger::-webkit-scrollbar,
 .detail::-webkit-scrollbar,
-.help::-webkit-scrollbar {
+.help::-webkit-scrollbar,
+.term::-webkit-scrollbar {
   width: var(--scrollbar);
 }
 
 .ledger::-webkit-scrollbar-track,
 .detail::-webkit-scrollbar-track,
-.help::-webkit-scrollbar-track {
+.help::-webkit-scrollbar-track,
+.term::-webkit-scrollbar-track {
   background: transparent;
 }
 
 .ledger::-webkit-scrollbar-thumb,
 .detail::-webkit-scrollbar-thumb,
-.help::-webkit-scrollbar-thumb {
+.help::-webkit-scrollbar-thumb,
+.term::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: var(--tan);
 }
@@ -544,21 +559,43 @@
   gap: var(--panel-gap);
 }
 
-.help__name {
-  margin-top: var(--panel-gap);
+.doc__title,
+.help__name,
+.splash__name {
+  margin: 0;
   font-size: var(--text-xxl);
   font-weight: 800;
   line-height: 1.2;
+}
+
+.help__name {
+  margin-top: var(--panel-gap);
 }
 
 .help__group,
 .guide,
 .case,
 .article,
-.info {
+.info,
+.stack {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.split--center {
+  align-items: center;
+}
+
+.split .btn {
+  display: grid;
+  place-items: center;
 }
 
 .index {
@@ -571,6 +608,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+}
+
+.lines__break {
+  height: var(--space-2);
 }
 
 .surface {
@@ -590,13 +631,70 @@
   font-weight: 700;
 }
 
-.article__title {
+.rank {
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: var(--space-3);
+}
+
+.rank__item {
+  display: grid;
+  grid-template-columns: var(--rank-mark-w) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.rank__number {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  text-align: center;
+}
+
+.rank .case__name {
+  font-size: var(--text-l);
+}
+
+.article__title,
+.doc__subheading {
+  margin: 0;
   font-size: var(--text-l);
   font-weight: 800;
 }
 
+.doc__heading {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.doc__brand {
+  color: inherit;
+  font-size: var(--text-l);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+
 .op {
   color: var(--ink-soft);
+}
+
+.annotated {
+  position: relative;
+}
+
+.annotated__note {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.row:has(.annotated) {
+  row-gap: calc(var(--space-2) + var(--annotation-h));
+  padding-bottom: var(--annotation-h);
 }
 
 .rack--figure {
@@ -634,12 +732,6 @@
   gap: var(--space-2);
   justify-items: center;
   text-align: center;
-}
-
-.splash__name {
-  margin: 0;
-  font-size: var(--text-xxl);
-  font-weight: 800;
 }
 
 .splash__tagline {
@@ -702,6 +794,8 @@ button.ledger__row:not(.ledger__row--on):active {
   :root {
     --btn-pad-y: var(--space-3);
     --panel-pad: var(--space-3);
+    --doc-nav-h: 62px;
+    --doc-pad: var(--space-3);
   }
 
   .panel {

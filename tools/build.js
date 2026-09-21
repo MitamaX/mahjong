@@ -4,22 +4,27 @@ import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DICTIONARIES, titleOf } from '../src/i18n/index.js';
 import { SETTING_VALUES, STORAGE_KEY } from '../src/core/settings.js';
-import { ZONE_LANGUAGES, FALLBACK_LANGUAGE, SITE_ROOT } from '../src/core/locale.js';
+import { DOC_PAGES, ZONE_LANGUAGES, FALLBACK_LANGUAGE, SITE_ROOT } from '../src/core/locale.js';
 import { div, tag } from '../src/ui/markup.js';
 import { backTilesHtml } from '../src/ui/board.js';
 import { splashMarkup, tableMarkup } from '../src/ui/tableView.js';
 import { reportMarkup } from '../src/ui/reportView.js';
 import { settingsMarkup } from '../src/ui/settingsView.js';
 import { helpMarkup } from '../src/ui/helpView.js';
+import { AD_PAGES, docMarkup } from '../src/ui/docView.js';
 
 const SITE = 'https://betaori.app';
 const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
 const ADSENSE_CLIENT = 'ca-pub-9410921386046089';
 const ADSENSE_SLOTS = ['6622171051', '4362356727'];
+const ADSENSE_PUSH = '<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>';
 const LOADER_TILES = 4;
 const NOT_FOUND = '404';
 const OG_LOCALES = { ko: 'ko_KR', ja: 'ja_JP', en: 'en_US' };
+const DOC_SCHEMA = { guide: 'Article', privacy: 'WebPage' };
 const DEFAULT_LANGUAGE = 'ja';
+const APP_KIND = '';
+const PAGE_KINDS = [APP_KIND, ...DOC_PAGES.map((name) => `${name}/`)];
 const LANGUAGES = Object.keys(DICTIONARIES);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ENTRY = join(ROOT, 'src', 'main.js');
@@ -31,18 +36,21 @@ const absolute = (path) => `${SITE}/${path}`;
 const literal = (value) => JSON.stringify(value);
 const sitePath = (path) => relative(ROOT, path).split(sep).join('/');
 const version = (source) => createHash('sha256').update(source).digest('hex').slice(0, VERSION_LENGTH);
+const pagePath = (language, kind) => `${language}/${kind}`;
 
-function alternates() {
-  return [
-    ...LANGUAGES.map((language) => [language, absolute(`${language}/`)]),
-    ['x-default', absolute('')]
-  ].map(([hreflang, href]) => `<link rel="alternate" hreflang="${hreflang}" href="${href}">`);
+function alternateTargets(kind) {
+  const targets = LANGUAGES.map((language) => [language, absolute(pagePath(language, kind))]);
+  return kind === APP_KIND ? [...targets, ['x-default', absolute('')]] : targets;
 }
 
-function structuredData(language, url) {
+function alternates(kind) {
+  return alternateTargets(kind)
+    .map(([hreflang, href]) => `<link rel="alternate" hreflang="${hreflang}" href="${href}">`);
+}
+
+function appSchema(language, url) {
   const dictionary = DICTIONARIES[language];
-  return JSON.stringify({
-    '@context': 'https://schema.org',
+  return {
     '@type': 'WebApplication',
     name: dictionary.brand,
     alternateName: [dictionary.help.name,
@@ -55,27 +63,45 @@ function structuredData(language, url) {
     image: absolute(`assets/og-${language}.png`),
     description: dictionary.description,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }
-  }, null, 2);
+  };
 }
 
-function metadata(language, { url, base, canonical }) {
+function docSchema(language, url, name) {
   const dictionary = DICTIONARIES[language];
-  const title = titleOf(dictionary);
+  const page = dictionary.doc[name];
+  return {
+    '@type': DOC_SCHEMA[name],
+    headline: page.title,
+    name: page.title,
+    url,
+    inLanguage: language,
+    image: absolute(`assets/og-${language}.png`),
+    description: page.description,
+    isPartOf: { '@type': 'WebApplication', name: dictionary.brand, url: absolute(`${language}/`) }
+  };
+}
+
+function structuredData(schema) {
+  const source = JSON.stringify({ '@context': 'https://schema.org', ...schema }, null, 2);
+  return `<script type="application/ld+json">\n${source}\n</script>`;
+}
+
+function metadata(language, { url, base, kind, title, description, schema, canonical = true }) {
   const image = absolute(`assets/og-${language}.png`);
   return [
     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
     `<title>${title}</title>`,
-    `<meta name="description" content="${dictionary.description}">`,
+    `<meta name="description" content="${description}">`,
     ...(canonical ? [`<link rel="canonical" href="${url}">`] : []),
-    ...alternates(),
+    ...alternates(kind),
     '<meta name="theme-color" content="#FAEDCD">',
     `<link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">`,
     `<link rel="apple-touch-icon" href="${base}assets/icon-180.png">`,
     '<meta property="og:type" content="website">',
-    `<meta property="og:site_name" content="${dictionary.help.name}">`,
+    `<meta property="og:site_name" content="${DICTIONARIES[language].help.name}">`,
     `<meta property="og:url" content="${url}">`,
     `<meta property="og:title" content="${title}">`,
-    `<meta property="og:description" content="${dictionary.description}">`,
+    `<meta property="og:description" content="${description}">`,
     `<meta property="og:image" content="${image}">`,
     '<meta property="og:image:width" content="1200">',
     '<meta property="og:image:height" content="630">',
@@ -85,9 +111,9 @@ function metadata(language, { url, base, canonical }) {
       .map((code) => `<meta property="og:locale:alternate" content="${OG_LOCALES[code]}">`),
     '<meta name="twitter:card" content="summary_large_image">',
     `<meta name="twitter:title" content="${title}">`,
-    `<meta name="twitter:description" content="${dictionary.description}">`,
+    `<meta name="twitter:description" content="${description}">`,
     `<meta name="twitter:image" content="${image}">`,
-    `<script type="application/ld+json">\n${structuredData(language, url)}\n</script>`
+    structuredData(schema)
   ];
 }
 
@@ -95,8 +121,18 @@ function adLoader() {
   return `<script async src="${ADSENSE_SRC}?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>`;
 }
 
-function adRail(slot) {
-  return tag('aside', { class: 'ad', 'data-ad-client': ADSENSE_CLIENT, 'data-ad-slot': slot });
+function adUnit(slot) {
+  return tag('aside', { class: 'ad' }, [
+    tag('ins', {
+      class: 'adsbygoogle ad__unit',
+      style: 'display:block',
+      'data-ad-client': ADSENSE_CLIENT,
+      'data-ad-slot': slot,
+      'data-ad-format': 'auto',
+      'data-full-width-responsive': 'true'
+    }),
+    ADSENSE_PUSH
+  ]);
 }
 
 function overlay(name, content) {
@@ -134,10 +170,13 @@ function importMap(base, modules) {
   return `<script type="importmap">\n${JSON.stringify({ imports }, null, 2)}\n</script>`;
 }
 
+const styleLinks = (base, styles) =>
+  [...styles.values()].map((href) => `<link rel="stylesheet" href="${base}${href}">`);
+
 function assets(base, modules, styles) {
   return [
     importMap(base, modules),
-    ...[...styles.values()].map((href) => `<link rel="stylesheet" href="${base}${href}">`),
+    ...styleLinks(base, styles),
     ...[...modules.values()].map((href) => `<link rel="modulepreload" href="${base}${href}">`)
   ];
 }
@@ -173,14 +212,18 @@ function redirectScript() {
 </script>`;
 }
 
-function document(language, lines, body) {
+function bodyTag(bodyClass) {
+  return bodyClass ? `<body class="${bodyClass}">` : '<body>';
+}
+
+function document(language, lines, body, bodyClass = null) {
   return `<!DOCTYPE html>
 <html lang="${language}">
 <head>
 <meta charset="utf-8">
 ${lines.join('\n')}
 </head>
-<body>
+${bodyTag(bodyClass)}
 ${body.map((line) => `${line}\n`).join('')}</body>
 </html>
 `;
@@ -189,15 +232,19 @@ ${body.map((line) => `${line}\n`).join('')}</body>
 function appPage(language, modules, styles) {
   const dictionary = DICTIONARIES[language];
   const base = '../';
-  const [lead, trail] = ADSENSE_SLOTS.map(adRail);
+  const url = absolute(pagePath(language, APP_KIND));
   return document(language, [
-    ...metadata(language, { url: absolute(`${language}/`), base, canonical: true }),
-    ...assets(base, modules, styles),
-    adLoader()
+    ...metadata(language, {
+      url,
+      base,
+      kind: APP_KIND,
+      title: titleOf(dictionary),
+      description: dictionary.description,
+      schema: appSchema(language, url)
+    }),
+    ...assets(base, modules, styles)
   ], [
-    lead,
     tag('main', { class: 'app', 'data-table': true }, [splashMarkup(dictionary), tableMarkup(dictionary)]),
-    trail,
     overlay('report', reportMarkup(dictionary)),
     overlay('settings-panel', settingsMarkup(dictionary, language)),
     overlay('help-panel', helpMarkup(dictionary)),
@@ -206,10 +253,40 @@ function appPage(language, modules, styles) {
   ]);
 }
 
+function docPage(language, name, styles) {
+  const dictionary = DICTIONARIES[language];
+  const base = '../../';
+  const kind = `${name}/`;
+  const url = absolute(pagePath(language, kind));
+  const monetized = AD_PAGES.includes(name);
+  return document(language, [
+    ...metadata(language, {
+      url,
+      base,
+      kind,
+      title: titleOf(dictionary, dictionary.doc[name].title),
+      description: dictionary.doc[name].description,
+      schema: docSchema(language, url, name)
+    }),
+    ...styleLinks(base, styles),
+    ...(monetized ? [adLoader()] : [])
+  ], docMarkup(dictionary, language, name, monetized ? ADSENSE_SLOTS.map(adUnit) : []), 'page');
+}
+
 function redirectPage() {
+  const dictionary = DICTIONARIES[DEFAULT_LANGUAGE];
+  const url = absolute('');
   return document(DEFAULT_LANGUAGE, [
     redirectScript(),
-    ...metadata(DEFAULT_LANGUAGE, { url: absolute(''), base: '', canonical: false })
+    ...metadata(DEFAULT_LANGUAGE, {
+      url,
+      base: '',
+      kind: APP_KIND,
+      title: titleOf(dictionary),
+      description: dictionary.description,
+      schema: appSchema(DEFAULT_LANGUAGE, url),
+      canonical: false
+    })
   ], []);
 }
 
@@ -220,16 +297,21 @@ function notFoundPage() {
   ], [NOT_FOUND]);
 }
 
-function sitemap() {
-  const links = LANGUAGES
-    .map((language) => `      <xhtml:link rel="alternate" hreflang="${language}" href="${absolute(`${language}/`)}"/>`)
-    .concat(`      <xhtml:link rel="alternate" hreflang="x-default" href="${absolute('')}"/>`)
+function sitemapEntry(language, kind) {
+  const links = alternateTargets(kind)
+    .map(([hreflang, href]) => `      <xhtml:link rel="alternate" hreflang="${hreflang}" href="${href}"/>`)
     .join('\n');
-  const entries = LANGUAGES.map((language) => `    <url>
-      <loc>${absolute(`${language}/`)}</loc>
+  return `    <url>
+      <loc>${absolute(pagePath(language, kind))}</loc>
 ${links}
       <changefreq>monthly</changefreq>
-    </url>`).join('\n');
+    </url>`;
+}
+
+function sitemap() {
+  const entries = PAGE_KINDS
+    .flatMap((kind) => LANGUAGES.map((language) => sitemapEntry(language, kind)))
+    .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entries}
@@ -251,6 +333,9 @@ await emit('index.html', redirectPage());
 
 await Promise.all(LANGUAGES.map((language) => emit(`${language}/index.html`,
   appPage(language, modules, styles))));
+
+await Promise.all(LANGUAGES.flatMap((language) => DOC_PAGES.map((name) =>
+  emit(`${language}/${name}/index.html`, docPage(language, name, styles)))));
 
 await emit('404.html', notFoundPage());
 

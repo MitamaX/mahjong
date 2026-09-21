@@ -7,8 +7,8 @@ export const DICTIONARIES = { ko, ja, en };
 
 export const LANGUAGE_NAMES = { ko: '한국어', ja: '日本語', en: 'English' };
 
-export function titleOf(dictionary) {
-  return `${dictionary.brand}: ${dictionary.tagline}`;
+export function titleOf(dictionary, subtitle = dictionary.tagline) {
+  return `${dictionary.brand}: ${subtitle}`;
 }
 
 export function strings() {

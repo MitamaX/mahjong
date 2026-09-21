@@ -7,6 +7,8 @@ export const escape = (value) => String(value).replace(ESCAPABLE, (char) => ESCA
 
 export const classNames = (...names) => names.filter(Boolean).join(' ');
 
+export const outlineNumber = (...indices) => indices.map((index) => index + 1).join('.');
+
 export const html = (children) => [children].flat(Infinity)
   .filter((part) => !OMITTED.has(part))
   .join('');
@@ -29,5 +31,8 @@ export const text = (content, className) => tag('span', { class: className }, es
 
 export const button = (content, attrs) => tag('button', { type: 'button', ...attrs }, content);
 
+export const link = (content, href, className, attrs = {}) =>
+  tag('a', { class: className, href, ...attrs }, content);
+
 export const anchor = (content, href, className) =>
-  tag('a', { class: className, href, target: '_blank', rel: 'noreferrer' }, content);
+  link(content, href, className, { target: '_blank', rel: 'noreferrer' });

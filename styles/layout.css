@@ -1,18 +1,153 @@
 .ad {
-  flex: 0 0 var(--ad-rail);
   isolation: isolate;
   display: flex;
-  align-items: center;
   justify-content: center;
+  min-height: var(--ad-min-h);
   overflow: hidden;
 }
 
 .ad__unit {
-  display: inline-block;
-  width: var(--ad-unit-w);
-  height: var(--ad-unit-h);
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+}
+
+:root:has(.page) {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--space-3);
+}
+
+.page {
+  height: auto;
+  min-height: var(--viewport-h);
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  overscroll-behavior: auto;
+}
+
+.doc__bar {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: var(--doc-w);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3);
+}
+
+.doc {
+  --doc-gap: var(--space-6);
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: var(--doc-w);
+  display: flex;
+  flex-direction: column;
+  gap: var(--doc-gap);
+  margin-bottom: var(--space-5);
+  padding: var(--space-5) var(--doc-pad);
+  border-radius: var(--radius-l);
+  background: var(--ivory);
+  box-shadow: var(--shadow-card);
+  font-size: var(--doc-text);
+  line-height: 1.7;
+  scroll-margin-top: var(--space-3);
+}
+
+.term-layer {
+  --term-w: min(var(--term-cap), calc(100vw - var(--safe-x)));
+  position: fixed;
+  top: 50%;
+  right: var(--safe-right);
+  z-index: var(--layer-overlay);
+  width: var(--term-w);
+  height: var(--term-h);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.term {
+  --figure-gaps: calc(var(--tile-gap) * 8 + var(--space-2) * 6 + var(--doc-text));
+  --figure-room: calc(var(--term-w) - var(--space-3) * 2 - var(--scrollbar));
+  --tile-w: calc((var(--figure-room) - var(--figure-gaps)) / var(--term-figure-tiles));
+  --tile-h: calc(var(--tile-w) * var(--tile-aspect));
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-l) 0 0 var(--radius-l);
+  background: var(--ivory);
+  box-shadow: var(--shadow-rail);
+  font-size: var(--doc-text);
+  line-height: 1.6;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+  transition: transform var(--term-slide) ease, opacity var(--term-slide) ease,
+    visibility var(--term-slide);
+}
+
+.term:target {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.term .row,
+.term .hand-figure,
+.term .tile-row {
+  flex-wrap: nowrap;
+}
+
+.term__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.term__close {
+  color: var(--ink-soft);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.doc__nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--layer-dock);
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: var(--doc-w);
+  height: var(--doc-nav-h);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  background: var(--cream);
+  font-size: var(--text-m);
+  line-height: normal;
+}
+
+.doc__nav .segment {
+  flex: 1 1 auto;
+}
+
+.doc__part {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  scroll-margin-top: var(--doc-nav-h);
+}
+
+.doc .lines {
+  gap: var(--space-2);
 }
 
 .app {
@@ -260,19 +395,6 @@
   :root {
     --app-pad: var(--space-2);
     --dock-tail: var(--space-2);
-    --ad-unit-w: 320px;
-    --ad-unit-h: 100px;
-    --ad-rail: var(--ad-unit-h);
-    --ad-span-x: 0px;
-    --ad-span-y: calc(var(--ad-rail) * 2);
-  }
-
-  body {
-    flex-direction: column;
-  }
-
-  body:has(.overlay:not([hidden])) .ad {
-    visibility: hidden;
   }
 
   .dock__riichi {

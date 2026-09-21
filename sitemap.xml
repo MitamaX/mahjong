@@ -24,4 +24,46 @@
       <xhtml:link rel="alternate" hreflang="x-default" href="https://betaori.app/"/>
       <changefreq>monthly</changefreq>
     </url>
+    <url>
+      <loc>https://betaori.app/ko/guide/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/guide/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/guide/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/guide/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/guide/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/guide/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/guide/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/guide/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/guide/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/guide/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/guide/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/guide/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ko/privacy/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/privacy/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/privacy/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/privacy/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/privacy/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/privacy/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/privacy/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/privacy/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/privacy/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/privacy/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/privacy/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/privacy/"/>
+      <changefreq>monthly</changefreq>
+    </url>
 </urlset>

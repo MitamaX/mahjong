@@ -3,6 +3,7 @@ import { SETTING_VALUES } from './settings.js';
 export const ZONE_LANGUAGES = { 'Asia/Seoul': 'ko', 'Asia/Tokyo': 'ja' };
 export const FALLBACK_LANGUAGE = 'en';
 export const SITE_ROOT = '/';
+export const DOC_PAGES = ['guide', 'privacy'];
 
 function supported(language) {
   return SETTING_VALUES.language.includes(language) ? language : null;

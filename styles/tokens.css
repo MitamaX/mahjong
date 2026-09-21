@@ -23,6 +23,7 @@
   --tile-w: 30px;
   --tile-h: 42px;
   --tile-gap: 2px;
+  --tile-aspect: 1.375;
   --tile-art-inset: 13%;
   --hand-tiles: 14;
   --scrollbar: 8px;
@@ -32,6 +33,7 @@
   --space-3: 14px;
   --space-4: 22px;
   --space-5: 34px;
+  --space-6: 54px;
 
   --layer-center: 1;
   --layer-dock: 2;
@@ -43,13 +45,18 @@
   --text-l: 20px;
   --text-xl: 26px;
   --text-xxl: 32px;
+  --annotation-h: calc(var(--text-s) + var(--space-1));
 
   --radius-s: 5px;
   --radius-m: 10px;
   --radius-l: 18px;
 
+  --shadow-card: 0 18px 40px var(--shade);
+  --shadow-rail: -12px 0 32px var(--shade);
+
   --btn-pad-y: var(--space-2);
   --grade-size: 52px;
+  --rank-mark-w: 44px;
   --btn-icon-size: 34px;
   --panel-pad: var(--space-4);
   --panel-gap: var(--space-3);
@@ -65,15 +72,19 @@
   --viewport-h: 100vh;
   --app-pad: var(--space-3);
   --app-gap: var(--space-3);
-  --ad-unit-w: 160px;
-  --ad-unit-h: 600px;
-  --ad-rail: var(--ad-unit-w);
-  --ad-span-x: calc(var(--ad-rail) * 2);
-  --ad-span-y: 0px;
-  --frame-w: calc(100vw - var(--safe-x) - var(--app-pad) * 2 - var(--ad-span-x));
+  --doc-w: 880px;
+  --doc-pad: var(--space-4);
+  --doc-nav-h: 52px;
+  --term-cap: 520px;
+  --term-h: 350px;
+  --term-slide: 0.28s;
+  --term-figure-tiles: 15;
+  --doc-text: 16px;
+  --ad-min-h: 120px;
+  --frame-w: calc(100vw - var(--safe-x) - var(--app-pad) * 2);
   --dora-reserve: 0px;
   --frame-h: calc(var(--viewport-h) - var(--safe-y) - var(--app-pad) * 2 - var(--app-gap)
-    - var(--dora-reserve) - var(--ad-span-y));
+    - var(--dora-reserve));
   --panel-h: 600px;
   --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);
   --panel-cap-h: calc((var(--viewport-h) - var(--safe-y)) * 0.94);
