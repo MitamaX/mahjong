@@ -129,9 +129,9 @@ export const en = {
               ]
             },
             {
-              title: 'No-suji',
+              title: 'Dangerous tiles',
               lines: [
-                'With no [[genbutsu]], [[honor]], [[kabe]], or [[suji]] tile left, pick from the [[noSuji]] tiles. Even then, some are less dangerous than others.',
+                'With no [[genbutsu]], [[honor]], [[kabe]], or [[suji]] tile left, pick from the [[noSuji|dangerous tiles]]. Even then, some are less dangerous than others.',
                 '',
                 '1 and 9 are the least dangerous; 4, 5, and 6 are the most. The closer a tile sits to the edge, the fewer [[wait|waits]] can use it.',
                 '',
@@ -182,7 +182,7 @@ export const en = {
   ledger: { turn: 'Turn', picked: 'Pick', best: 'Best', shanten: 'Shanten', danger: 'Risk', verdict: 'Grade' },
   compare: { best: 'Best', picked: 'Pick' },
   verdict: { best: 'Best', second: 'Second', good: 'Good', weak: 'Weak', risky: 'Risky', worst: 'Worst' },
-  guard: { genbutsu: 'genbutsu', kabe: 'kabe', suji: 'suji', noSuji: 'no-suji', honor: 'honor' },
+  guard: { genbutsu: 'genbutsu', kabe: 'kabe', suji: 'suji', noSuji: 'dangerous tile', honor: 'honor' },
   annotation: { safe: 'Safe', discard: 'Discard', seen: 'Seen', indicator: 'Dora indicator', declare: 'Declared' },
   edge: { danger: 'safer', shanten: 'shanten-keeping', ukeire: 'wider-ukeire' },
   seen: (count, guard) => `${count}-seen ${guard}`,
@@ -225,7 +225,7 @@ export const en = {
       kataSuji: { name: 'Kata-suji', text: 'Only one side of the [[suji]] is [[genbutsu]]. The other side of the [[ryanmen]] [[wait]] is still live, so it is riskier than [[nakaSuji]].' },
       kabe: { name: 'Kabe', text: 'All four copies of a tile are visible, so every [[ryanmen]] [[wait]] using that tile is gone. Relatively safe. Count your hand, the discards, and the [[dora|dora indicator]] together.' },
       honor: { name: 'Honor', text: 'Winds and dragons. No [[ryanmen]] [[wait]] is possible, only [[shanpon]] and [[tanki]], so the more copies seen, the safer it is. With three copies seen, [[shanpon]] is gone and only [[tanki]] remains.' },
-      noSuji: { name: 'No-suji', text: 'A tile covered by none of [[genbutsu]], [[suji]], or [[kabe]]. Tiles around the [[riichi]] declaration tile are especially dangerous.' }
+      noSuji: { name: 'Dangerous tile', text: 'A tile covered by none of [[genbutsu]], [[suji]], or [[kabe]]. Tiles around the [[riichi]] declaration tile are especially dangerous.' }
     }
   },
   settings: {

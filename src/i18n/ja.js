@@ -127,7 +127,7 @@ export const ja = {
               ]
             },
             {
-              title: '無筋',
+              title: '危険牌',
               lines: [
                 '[[genbutsu]]・[[honor]]・[[kabe]]・[[suji]]がどれもなければ、[[noSuji]]の中から選びます。その中でも、少しでも危険の少ない牌があります。',
                 '',
@@ -180,7 +180,7 @@ export const ja = {
   ledger: { turn: '巡', picked: '選択', best: '最善', shanten: 'シャンテン', danger: '危険', verdict: '判定' },
   compare: { best: '最善', picked: '選択' },
   verdict: { best: '最善', second: '次善', good: '良好', weak: '不足', risky: '危険', worst: '最悪' },
-  guard: { genbutsu: '現物', kabe: '壁', suji: '筋', noSuji: '無筋', honor: '字牌' },
+  guard: { genbutsu: '現物', kabe: '壁', suji: '筋', noSuji: '危険牌', honor: '字牌' },
   annotation: { safe: '安全', discard: '捨て牌', seen: '見えている牌', indicator: 'ドラ表示牌', declare: '宣言牌' },
   edge: { danger: 'より安全な', shanten: 'シャンテンを戻さない', ukeire: '受け入れの広い' },
   seen: (count, guard) => `${count}枚見えの${guard}`,
@@ -223,7 +223,7 @@ export const ja = {
       kataSuji: { name: '片筋', text: '片側の[[suji]]だけが[[genbutsu]]の牌です。残った側の[[ryanmen]][[wait|待ち]]が生きているため[[nakaSuji]]より危険です。' },
       kabe: { name: '壁', text: 'ある牌が4枚見えて、その牌を使う[[ryanmen]][[wait|待ち]]が消えた状態です。比較的安全です。手牌と捨て牌、[[dora|ドラ表示牌]]を合わせて数えます。' },
       honor: { name: '字牌', text: '風牌と三元牌です。[[ryanmen]]で待てないので[[shanpon]]と[[tanki]][[wait|待ち]]だけが残り、見えている枚数が多いほど安全になります。3枚見えていれば[[shanpon]]が消えて[[tanki]]だけが残ります。' },
-      noSuji: { name: '無筋', text: '[[genbutsu]]・[[suji]]・[[kabe]]のどれにも当てはまらない牌です。[[riichi]]宣言牌の周りは特に危険です。' }
+      noSuji: { name: '危険牌', text: '[[genbutsu]]・[[suji]]・[[kabe]]のどれにも当てはまらない牌です。[[riichi]]宣言牌の周りは特に危険です。' }
     }
   },
   settings: {
