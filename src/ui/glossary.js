@@ -106,6 +106,8 @@ export const termAnchorId = (id) => `${TERM_PREFIX}${id}`;
 
 const termLabel = (dictionary, id, label) => escape(label ?? termOf(dictionary, id).name);
 
+const inlineName = (dictionary, id) => termOf(dictionary, id).name.toLowerCase();
+
 export const termButton = (dictionary, id, label) =>
   button(termLabel(dictionary, id, label), { class: 'link', 'data-term': id });
 
@@ -146,7 +148,7 @@ export function lineHtml(dictionary, source, linkTerm) {
   let read = 0;
   for (const match of source.matchAll(LINK_PATTERN)) {
     if (match.index > read) parts.push(escape(source.slice(read, match.index)));
-    parts.push(linkTerm(dictionary, match[1], match[2]));
+    parts.push(linkTerm(dictionary, match[1], match[2] ?? inlineName(dictionary, match[1])));
     read = match.index + match[0].length;
   }
   if (read < source.length) parts.push(escape(source.slice(read)));

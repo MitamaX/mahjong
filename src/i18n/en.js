@@ -43,15 +43,15 @@ export const en = {
           title: 'Basics',
           lines: [
             'Betaori is a defense style that gives up on [[agari]] and focuses only on avoiding a [[dealIn]].',
-            'Put discarding safely ahead of building your hand.',
+            'Prioritize safe discards over building your hand.',
             'With one [[safeTile|safe tile]] for every [[turn]] left, you can hold out to the end.'
           ],
           groups: [
             {
               title: 'Safety',
               lines: [
-                'Without a [[safeTile|safe tile]], pick the tile with the fewest [[wait|waits]] left.',
-                'Risk generally rises as you go down. [[honor|Honors]] vary widely with how many copies are visible.'
+                'Without a [[safeTile|safe tile]], pick the tile the fewest [[wait|waits]] can hit.',
+                'Risk generally rises down the list. [[honor|Honor]] safety varies widely with how many copies are visible.'
               ],
               cases: true
             }
@@ -67,28 +67,28 @@ export const en = {
                 'A tile the [[riichi]] player has discarded is [[genbutsu]] against that player.',
                 'After the [[riichi]], any tile passed up for [[ron]] also becomes [[genbutsu]], no matter who discarded it.',
                 '',
-                '[[genbutsu]] is safe only against that player.'
+                'A [[genbutsu]] tile is safe only against its own riichi player.'
               ]
             },
             {
               title: 'Suji',
               lines: [
-                'A tile three steps from a [[genbutsu]] is [[suji]]. 1-4-7, 2-5-8, and 3-6-9 are suji to each other.',
-                '[[suji]] only stops [[ryanmen]]. [[tanki]] and [[shanpon]] survive on any [[suji]]. [[kanchan]] and [[penchan]] cannot be ruled out either.',
+                'A tile three ranks away from a [[genbutsu]] tile is [[suji]]. 1-4-7, 2-5-8, and 3-6-9 form the suji lines.',
+                '[[suji|Suji]] only stops [[ryanmen]]. [[tanki|Tanki]] and [[shanpon]] can still hit any [[suji]] tile. [[kanchan|Kanchan]] and [[penchan]] cannot be ruled out either.',
                 '',
-                'A 4, 5, or 6 is [[nakaSuji]] only when both sides are [[genbutsu]]. One side alone makes it [[kataSuji]].',
-                '[[kataSuji]] is far riskier than [[nakaSuji]].'
+                'A 4, 5, or 6 is [[nakaSuji]] only when the suji on both sides are [[genbutsu]]. One side alone makes it [[kataSuji]].',
+                '[[kataSuji|Kata-suji]] is far riskier than [[nakaSuji]].'
               ]
             },
             {
               title: 'Kabe',
               lines: [
-                'When all four copies of a tile are visible, that tile is a [[kabe]]. Count your hand, the discards, and the [[dora|dora indicator]] together.',
+                'When all four copies of a tile are visible, that tile forms a [[kabe]]. Count your hand, the discards, and the [[dora|dora indicator]] together.',
                 '',
-                'If 3 is a [[kabe]], 1 and 2 cannot cause a [[dealIn]] on a [[ryanmen]]. 2 is safe from [[kanchan]] as well.',
-                'If 4 is a [[kabe]], 1 is still open to a 2-3 [[ryanmen]], so it is not safe. In short, [[kabe]] is strongest on 2, 3, 7, and 8.',
+                'If 3 forms a [[kabe]], 1 and 2 cannot [[dealIn|deal into]] a [[ryanmen]]. 2 is safe from [[kanchan]] as well.',
+                'If 4 forms a [[kabe]], 1 is still open to a 2-3 [[ryanmen]], so it is not safe. In short, [[kabe]] is strongest on 2, 3, 7, and 8.',
                 '',
-                '[[kabe]] cannot stop [[tanki]] or [[shanpon]].'
+                '[[kabe|Kabe]] cannot stop [[tanki]] or [[shanpon]].'
               ]
             },
             {
@@ -97,7 +97,7 @@ export const en = {
                 '[[honor|Honors]] have no [[ryanmen]], so only [[tanki]] and [[shanpon]] remain.',
                 'Count the copies in your own hand too. With three visible, [[shanpon]] is impossible and only [[tanki]] remains.',
                 '',
-                'An [[honor]] with no copies visible is riskier than [[nakaSuji]]. It grows riskier as the hand goes on.'
+                'An [[honor]] with no copies visible is riskier than a [[nakaSuji]] tile. It grows riskier as the hand goes on.'
               ]
             }
           ]
@@ -110,34 +110,34 @@ export const en = {
               title: 'Order',
               lines: [
                 'Discard the safest tile first, even if it breaks a set or your [[tenpai]].',
-                'Do not throw [[suji]] while you still hold a [[safeTile|safe tile]]. One [[turn]] later, you may have more [[safeTile|safe tiles]].',
+                'Do not discard a [[suji]] tile while you still hold a [[safeTile|safe tile]]. One [[turn]] later, you may have more [[safeTile|safe tiles]].',
                 '',
                 'With several [[safeTile|safe tiles]], keep the ones that are also [[genbutsu]] against other players. That prepares you for a chase [[riichi]].',
                 '',
-                'As [[genbutsu]] piles up, tiles that have not passed yet grow riskier. Each one narrows the [[wait|waits]] that remain.'
+                'As [[genbutsu]] piles up, tiles not yet shown safe grow riskier, because the remaining [[wait|waits]] narrow just as much.'
               ]
             },
             {
               title: 'Chase riichi',
               lines: [
-                'Against two [[riichi]] players, a tile is a [[safeTile|safe tile]] only if it cannot be a [[dealIn]] to either.',
+                'Against two [[riichi]] players, only a tile that [[dealIn|deals into]] neither is a [[safeTile|safe tile]].',
                 'After the second [[riichi]], a tile both players pass up for [[ron]] is [[genbutsu]] against both.',
-                'When the first [[riichi]] player does not [[ron]] the declaration tile of the second [[riichi]], that tile is [[genbutsu]] against both as well.',
+                'If the first [[riichi]] player lets the second player’s declaration tile pass without a [[ron]], that tile is [[genbutsu]] against both as well.',
                 '',
-                '[[kabe]] and [[honor]] counts apply to both players equally. [[suji]] is read separately for each player.',
+                '[[kabe|Kabe]] and [[honor]] counts apply to both players equally. [[suji|Suji]] is read separately for each player.',
                 'A tile that is [[suji]] against both can beat one that is [[genbutsu]] against only one.'
               ]
             },
             {
               title: 'No-suji',
               lines: [
-                'With no [[genbutsu]], [[honor]], [[kabe]], or [[suji]] left, pick from the [[noSuji]] tiles. Even then, some are less dangerous than others.',
+                'With no [[genbutsu]], [[honor]], [[kabe]], or [[suji]] tile left, pick from the [[noSuji]] tiles. Even then, some are less dangerous than others.',
                 '',
                 '1 and 9 are the least dangerous; 4, 5, and 6 are the most. The closer a tile sits to the edge, the fewer [[wait|waits]] can use it.',
                 '',
-                'Without an edge tile, discard the one where the tile itself and its neighbors are most visible. The more you see, the fewer [[wait|waits]] remain on it.',
-                'More visible copies of the tile itself means fewer [[tanki]] and [[shanpon]].',
-                'More visible neighbors means fewer [[ryanmen]] and [[kanchan]] using it.'
+                'Without an edge tile, discard the tile whose copies and neighbors are most visible. The more you see, the fewer [[wait|waits]] remain on it.',
+                'More visible copies of the tile itself mean fewer [[tanki]] and [[shanpon]] waits.',
+                'More visible neighbors mean fewer [[ryanmen]] and [[kanchan]] waits using it.'
               ]
             }
           ]
@@ -204,7 +204,7 @@ export const en = {
       dora: { name: 'Dora', text: 'Bonus tiles that raise the score of an [[agari]]. The dora is the tile after the dora indicator.' },
       draw: { name: 'Draw', text: 'The wall runs out with nobody reaching an [[agari]].' },
       agari: { name: 'Agari', text: 'Completing the hand for points, either by [[tsumo]] or by [[ron]].' },
-      tenpai: { name: 'Tenpai', text: 'One tile away from an [[agari]]. [[shanten]] of zero.' },
+      tenpai: { name: 'Tenpai', text: 'One tile away from an [[agari]]. [[shanten|Shanten]] of zero.' },
       shanten: { name: 'Shanten', text: 'How many more [[ukeire]] you need to reach [[tenpai]]. Lower is closer.' },
       ukeire: { name: 'Ukeire', text: 'The tiles that lower [[shanten]], counted by kind and copies.' },
       riichi: { name: 'Riichi', text: 'A yaku declared at [[tenpai]]. The hand is locked afterwards.' },
@@ -218,14 +218,14 @@ export const en = {
       penchan: { name: 'Penchan', text: 'A 1-2 shape waiting on one end only.' },
       tanki: { name: 'Tanki', text: 'A single tile waiting to become the pair.' },
       shanpon: { name: 'Shanpon', text: 'Two pairs waiting for either one to become a triplet. One turns into the triplet, the other stays as the pair.' },
-      safeTile: { name: 'Safe tile', text: 'A tile that cannot cause a [[dealIn]]. [[genbutsu]] is the safest, followed by [[honor]], [[kabe]], and [[suji]].' },
-      genbutsu: { name: 'Genbutsu', text: 'A tile a given [[riichi]] player has discarded, or has passed up for [[ron]]. [[furiten]] keeps it from becoming a [[dealIn]]. Perfectly safe. Against two [[riichi]] players, only a tile safe to both is complete.' },
-      suji: { name: 'Suji', text: 'A tile three away from a [[safeTile|safe tile]] (4-6 only). [[furiten]] keeps it from a [[dealIn]] on a [[ryanmen]] [[wait]]. Relatively safe. It does not cover [[kanchan]], [[penchan]], [[tanki]], or [[shanpon]] [[wait|waits]].' },
+      safeTile: { name: 'Safe tile', text: 'A tile that cannot cause a [[dealIn]]. [[genbutsu|Genbutsu]] is the safest, followed by [[honor]], [[kabe]], and [[suji]].' },
+      genbutsu: { name: 'Genbutsu', text: 'A tile a given [[riichi]] player has discarded, or has passed up for [[ron]]. [[furiten|Furiten]] keeps it from becoming a [[dealIn]]. Perfectly safe. Against two [[riichi]] players, it must be genbutsu to both.' },
+      suji: { name: 'Suji', text: 'A tile three away from a [[safeTile|safe tile]] (4-6 only). [[furiten|Furiten]] keeps it from a [[dealIn]] on a [[ryanmen]] [[wait]]. Relatively safe. It does not cover [[kanchan]], [[penchan]], [[tanki]], or [[shanpon]] [[wait|waits]].' },
       nakaSuji: { name: 'Naka-suji', text: 'A 4, 5, or 6 whose [[suji]] on both sides are [[genbutsu]]. Every [[ryanmen]] [[wait]] using it is gone.' },
       kataSuji: { name: 'Kata-suji', text: 'Only one side of the [[suji]] is [[genbutsu]]. The other side of the [[ryanmen]] [[wait]] is still live, so it is riskier than [[nakaSuji]].' },
-      kabe: { name: 'Kabe', text: 'All four copies are visible, so every [[ryanmen]] [[wait]] using them is gone. Relatively safe. Count your hand, the discards, and the dora indicator together.' },
-      honor: { name: 'Honor', text: 'Winds and dragons. No [[ryanmen]] [[wait]] is possible, only [[shanpon]] and [[tanki]], so more copies seen means safer. With three copies seen, [[shanpon]] is gone and only [[tanki]] remains.' },
-      noSuji: { name: 'No-suji', text: 'A tile covered by none of [[genbutsu]], [[suji]], or [[kabe]]. Tiles around the [[riichi]] declaration are the most dangerous.' }
+      kabe: { name: 'Kabe', text: 'All four copies of a tile are visible, so every [[ryanmen]] [[wait]] using that tile is gone. Relatively safe. Count your hand, the discards, and the dora indicator together.' },
+      honor: { name: 'Honor', text: 'Winds and dragons. No [[ryanmen]] [[wait]] is possible, only [[shanpon]] and [[tanki]], so the more copies seen, the safer it is. With three copies seen, [[shanpon]] is gone and only [[tanki]] remains.' },
+      noSuji: { name: 'No-suji', text: 'A tile covered by none of [[genbutsu]], [[suji]], or [[kabe]]. Tiles around the [[riichi]] declaration tile are especially dangerous.' }
     }
   },
   settings: {
