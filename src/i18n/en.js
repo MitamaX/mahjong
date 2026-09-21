@@ -36,21 +36,22 @@ export const en = {
     guide: {
       title: 'Defense Guide',
       nav: 'Defense Guide',
-      description: 'How genbutsu, honors, kabe, and suji sort out the safe tiles in riichi mahjong defense, with a full glossary.',
+      description: 'How genbutsu, honors, kabe, and suji rank tile danger in riichi mahjong defense, with a full glossary.',
       parts: [
         {
           name: 'ranking',
-          title: 'Ranking',
+          title: 'Basics',
           lines: [
-            'When a preemptive [[riichi]] lands, count your [[safeTile|safe tiles]] before you protect the hand.',
-            'One safe tile for every [[turn]] left is enough to survive the hand.'
+            'Betaori is a defense style that gives up on [[agari]] and focuses only on avoiding a [[dealIn]].',
+            'Put discarding safely ahead of building your hand.',
+            'With one [[safeTile|safe tile]] for every [[turn]] left, you can hold out to the end.'
           ],
           groups: [
             {
-              title: 'Grades',
+              title: 'Safety',
               lines: [
-                'Work down the list from the top.',
-                'Only [[genbutsu]] is absolute; everything below it is relative.'
+                'Without a [[safeTile|safe tile]], pick the tile with the fewest [[wait|waits]] left.',
+                'Risk generally rises as you go down. [[honor|Honors]] vary widely with how many copies are visible.'
               ],
               cases: true
             }
@@ -61,50 +62,82 @@ export const en = {
           title: 'Reading',
           groups: [
             {
-              title: 'Honors',
+              title: 'Genbutsu',
               lines: [
-                '[[honor|Honors]] cannot form a [[ryanmen]] [[wait]], so only [[shanpon]] and [[tanki]] remain.',
-                'With no copies seen, both waits are live. Past the middle of the hand that is close to a [[noSuji]].',
-                'Two copies seen cuts [[shanpon]] to one shape; three copies leaves [[tanki]] alone.'
+                'A tile the [[riichi]] player has discarded is [[genbutsu]] against that player.',
+                'After the [[riichi]], any tile passed up for [[ron]] also becomes [[genbutsu]], no matter who discarded it.',
+                '',
+                '[[genbutsu]] is safe only against that player.'
               ]
             },
             {
               title: 'Suji',
               lines: [
-                '[[suji]] only covers [[ryanmen]]. [[kanchan]], [[penchan]], [[tanki]], and [[shanpon]] stay live.',
-                '4, 5, and 6 need both sides to become [[nakaSuji]]. One side alone is [[kataSuji]].',
-                '1-2-3 and 7-8-9 have a single [[suji]] side, so [[kataSuji]] is all they ever get.',
-                'The [[suji]] of the [[riichi]] declaration tile is worse. It was drawn right before the call, so the [[wait]] may have changed on that tile.'
+                'A tile three steps from a [[genbutsu]] is [[suji]]. 1-4-7, 2-5-8, and 3-6-9 are suji to each other.',
+                '[[suji]] only stops [[ryanmen]]. [[tanki]] and [[shanpon]] survive on any [[suji]]. [[kanchan]] and [[penchan]] cannot be ruled out either.',
+                '',
+                'A 4, 5, or 6 is [[nakaSuji]] only when both sides are [[genbutsu]]. One side alone makes it [[kataSuji]].',
+                '[[kataSuji]] is far riskier than [[nakaSuji]].'
               ]
             },
             {
               title: 'Kabe',
               lines: [
-                'Count [[kabe]] across your hand, the discards, and the [[dora|indicator]].',
-                'With all four 3s gone, 1s and 2s cannot build a [[ryanmen]].',
-                '[[kabe]] also covers only [[ryanmen]]. [[kanchan]] and [[tanki]] remain.'
+                'When all four copies of a tile are visible, that tile is a [[kabe]]. Count your hand, the discards, and the [[dora|dora indicator]] together.',
+                '',
+                'If 3 is a [[kabe]], 1 and 2 cannot cause a [[dealIn]] on a [[ryanmen]]. 2 is safe from [[kanchan]] as well.',
+                'If 4 is a [[kabe]], 1 is still open to a 2-3 [[ryanmen]], so it is not safe. In short, [[kabe]] is strongest on 2, 3, 7, and 8.',
+                '',
+                '[[kabe]] cannot stop [[tanki]] or [[shanpon]].'
+              ]
+            },
+            {
+              title: 'Honors',
+              lines: [
+                '[[honor|Honors]] have no [[ryanmen]], so only [[tanki]] and [[shanpon]] remain.',
+                'Count the copies in your own hand too. With three visible, [[shanpon]] is impossible and only [[tanki]] remains.',
+                '',
+                'An [[honor]] with no copies visible is riskier than [[nakaSuji]]. It grows riskier as the hand goes on.'
               ]
             }
           ]
         },
         {
           name: 'fold',
-          title: 'Folding',
+          title: 'Discarding',
           groups: [
             {
               title: 'Order',
               lines: [
-                'Match the [[turn|turns]] left against the [[safeTile|safe tiles]] in hand first.',
-                'Spend them freely and discard the safest tile you hold.',
-                'Hold them back and you run out late, then draw into a [[noSuji]].'
+                'Discard the safest tile first, even if it breaks a set or your [[tenpai]].',
+                'Do not throw [[suji]] while you still hold a [[safeTile|safe tile]]. One [[turn]] later, you may have more [[safeTile|safe tiles]].',
+                '',
+                'With several [[safeTile|safe tiles]], keep the ones that are also [[genbutsu]] against other players. That prepares you for a chase [[riichi]].',
+                '',
+                'As [[genbutsu]] piles up, tiles that have not passed yet grow riskier. Each one narrows the [[wait|waits]] that remain.'
               ]
             },
             {
               title: 'Chase riichi',
               lines: [
-                'Against two [[riichi]] players, only a tile that is [[genbutsu]] to both is complete.',
-                'With no overlap, look at [[honor|honors]] and [[kabe]] first.',
-                '[[suji]] passes one player only; to the other it is a [[noSuji]].'
+                'Against two [[riichi]] players, a tile is a [[safeTile|safe tile]] only if it cannot be a [[dealIn]] to either.',
+                'After the second [[riichi]], a tile both players pass up for [[ron]] is [[genbutsu]] against both.',
+                'When the first [[riichi]] player does not [[ron]] the declaration tile of the second [[riichi]], that tile is [[genbutsu]] against both as well.',
+                '',
+                '[[kabe]] and [[honor]] counts apply to both players equally. [[suji]] is read separately for each player.',
+                'A tile that is [[suji]] against both can beat one that is [[genbutsu]] against only one.'
+              ]
+            },
+            {
+              title: 'No-suji',
+              lines: [
+                'With no [[genbutsu]], [[honor]], [[kabe]], or [[suji]] left, pick from the [[noSuji]] tiles. Even then, some are less dangerous than others.',
+                '',
+                '1 and 9 are the least dangerous; 4, 5, and 6 are the most. The closer a tile sits to the edge, the fewer [[wait|waits]] can use it.',
+                '',
+                'Without an edge tile, discard the one where the tile itself and its neighbors are most visible. The more you see, the fewer [[wait|waits]] remain on it.',
+                'More visible copies of the tile itself means fewer [[tanki]] and [[shanpon]].',
+                'More visible neighbors means fewer [[ryanmen]] and [[kanchan]] using it.'
               ]
             }
           ]
@@ -150,7 +183,7 @@ export const en = {
   compare: { best: 'Best', picked: 'Pick' },
   verdict: { best: 'Best', second: 'Second', good: 'Good', weak: 'Weak', risky: 'Risky', worst: 'Worst' },
   guard: { genbutsu: 'genbutsu', kabe: 'kabe', suji: 'suji', noSuji: 'no-suji', honor: 'honor' },
-  annotation: { safe: 'Safe', discard: 'Discard', seen: 'Seen', indicator: 'Indicator', declare: 'Declared' },
+  annotation: { safe: 'Safe', discard: 'Discard', seen: 'Seen', indicator: 'Dora indicator', declare: 'Declared' },
   edge: { danger: 'safer', shanten: 'shanten-keeping', ukeire: 'wider-ukeire' },
   seen: (count, guard) => `${count}-seen ${guard}`,
   turnMark: (turn) => `Turn ${turn}`,
@@ -168,7 +201,7 @@ export const en = {
       turn: { name: 'Turn', text: 'One go around the table, starting from the [[oya]].' },
       oya: { name: 'Oya', text: 'The seat that scores 1.5x and keeps the deal on an [[agari]].' },
       ko: { name: 'Ko', text: 'The three seats that are not the [[oya]].' },
-      dora: { name: 'Dora', text: 'Bonus tiles that raise the score of an [[agari]]. The dora is the tile after the indicator.' },
+      dora: { name: 'Dora', text: 'Bonus tiles that raise the score of an [[agari]]. The dora is the tile after the dora indicator.' },
       draw: { name: 'Draw', text: 'The wall runs out with nobody reaching an [[agari]].' },
       agari: { name: 'Agari', text: 'Completing the hand for points, either by [[tsumo]] or by [[ron]].' },
       tenpai: { name: 'Tenpai', text: 'One tile away from an [[agari]]. [[shanten]] of zero.' },
@@ -190,7 +223,7 @@ export const en = {
       suji: { name: 'Suji', text: 'A tile three away from a [[safeTile|safe tile]] (4-6 only). [[furiten]] keeps it from a [[dealIn]] on a [[ryanmen]] [[wait]]. Relatively safe. It does not cover [[kanchan]], [[penchan]], [[tanki]], or [[shanpon]] [[wait|waits]].' },
       nakaSuji: { name: 'Naka-suji', text: 'A 4, 5, or 6 whose [[suji]] on both sides are [[genbutsu]]. Every [[ryanmen]] [[wait]] using it is gone.' },
       kataSuji: { name: 'Kata-suji', text: 'Only one side of the [[suji]] is [[genbutsu]]. The other side of the [[ryanmen]] [[wait]] is still live, so it is riskier than [[nakaSuji]].' },
-      kabe: { name: 'Kabe', text: 'All four copies are visible, so every [[ryanmen]] [[wait]] using them is gone. Relatively safe. Count your hand, the discards, and the indicator together.' },
+      kabe: { name: 'Kabe', text: 'All four copies are visible, so every [[ryanmen]] [[wait]] using them is gone. Relatively safe. Count your hand, the discards, and the dora indicator together.' },
       honor: { name: 'Honor', text: 'Winds and dragons. No [[ryanmen]] [[wait]] is possible, only [[shanpon]] and [[tanki]], so more copies seen means safer. With three copies seen, [[shanpon]] is gone and only [[tanki]] remains.' },
       noSuji: { name: 'No-suji', text: 'A tile covered by none of [[genbutsu]], [[suji]], or [[kabe]]. Tiles around the [[riichi]] declaration are the most dangerous.' }
     }

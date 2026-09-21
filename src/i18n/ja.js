@@ -34,21 +34,22 @@ export const ja = {
     guide: {
       title: '守備ガイド',
       nav: '守備ガイド',
-      description: '現物・字牌・壁・筋で安全牌を見抜くリーチ麻雀の守備の基準と用語解説。',
+      description: '現物・字牌・壁・筋で牌の危険度を見分けるリーチ麻雀の守備の基準と用語解説。',
       parts: [
         {
           name: 'ranking',
-          title: '判定',
+          title: '基本',
           lines: [
-            '先制[[riichi]]を受けたら、手牌を守る前に[[safeTile]]を数えます。',
-            '残りの[[turn|巡]]の分だけ[[safeTile]]があれば1局を凌げます。'
+            'ベタオリは[[agari]]を諦め、[[dealIn]]しないことだけに集中する守備です。',
+            '手作りよりも、牌を安全に切ることに集中しましょう。',
+            '残りの[[turn|巡]]の数だけ[[safeTile]]があれば、最後まで凌げます。'
           ],
           groups: [
             {
-              title: '等級',
+              title: '安全度',
               lines: [
-                '下の順に上から選びます。',
-                '[[genbutsu]]だけが完全で、残りはすべて相対的です。'
+                '[[safeTile]]がなければ、残りの[[wait|待ち]]が少ない牌から選びます。',
+                'おおむね下に行くほど危険です。[[honor]]は見えている枚数によって大きく変わります。'
               ],
               cases: true
             }
@@ -59,50 +60,82 @@ export const ja = {
           title: '読み',
           groups: [
             {
-              title: '字牌',
+              title: '現物',
               lines: [
-                '[[honor]]は[[ryanmen]]で[[wait|待ち]]できないので[[shanpon]]と[[tanki]]だけが残ります。',
-                '1枚も見えていなければ両方の[[wait|待ち]]が生きています。中盤以降は[[noSuji]]と大きな差がありません。',
-                '2枚見えれば[[shanpon]]が一通りに減り、3枚見えれば[[tanki]]だけが残ります。'
+                '[[riichi]]をかけた人が切った牌は、その人に対して[[genbutsu]]です。',
+                '[[riichi]]の後、誰が切った牌であれ[[ron]]せずに見逃した牌も[[genbutsu]]になります。',
+                '',
+                '[[genbutsu]]はその人に対してのみ安全です。'
               ]
             },
             {
               title: '筋',
               lines: [
-                '[[suji]]は[[ryanmen]]だけを防ぎます。[[kanchan]]・[[penchan]]・[[tanki]]・[[shanpon]]はそのまま残ります。',
-                '4・5・6は両側が立って初めて[[nakaSuji]]になります。片側だけなら[[kataSuji]]です。',
-                '1・2・3と7・8・9は[[suji]]が片側だけなので[[kataSuji]]がすべてです。',
-                '[[riichi]]宣言牌の[[suji]]はより危険です。宣言直前に引いた牌なので[[wait|待ち]]がその場で変わっている可能性があります。'
+                '[[genbutsu]]から3つ離れた牌が[[suji]]です。1・4・7 / 2・5・8 / 3・6・9が互いに筋です。',
+                '[[suji]]は[[ryanmen]]だけを防ぎます。[[tanki]]と[[shanpon]]はどの[[suji]]にも残ります。[[kanchan]]、[[penchan]]の可能性も否定できません。',
+                '',
+                '4・5・6は両側がどちらも[[genbutsu]]で初めて[[nakaSuji]]になります。片側だけなら[[kataSuji]]です。',
+                '[[kataSuji]]は[[nakaSuji]]に比べてはるかに危険です。'
               ]
             },
             {
               title: '壁',
               lines: [
-                '[[kabe]]は手牌と捨て牌、[[dora|表示牌]]を合わせて数えます。',
-                '3索が4枚見えていれば1索・2索で[[ryanmen]]を作れません。',
-                '[[kabe]]も[[ryanmen]]だけを防ぎます。[[kanchan]]と[[tanki]]は残ります。'
+                '同じ牌が4枚すべて見えていれば、その牌を[[kabe]]と呼びます。手牌と捨て牌、[[dora|ドラ表示牌]]を合わせて数えます。',
+                '',
+                '3が[[kabe]]なら、1と2は[[ryanmen]]に[[dealIn]]しません。2は[[kanchan]]にも当たりません。',
+                '4が[[kabe]]でも、1は2・3の[[ryanmen]]が残るため安全ではありません。つまり、[[kabe]]は2、3、7、8のときに強力です。',
+                '',
+                '[[tanki]]と[[shanpon]]は[[kabe]]では防げません。'
+              ]
+            },
+            {
+              title: '字牌',
+              lines: [
+                '[[honor]]には[[ryanmen]]がないため、[[tanki]]と[[shanpon]]だけが残ります。',
+                '枚数は自分の手牌も含めて数えます。3枚見えれば[[shanpon]]が不可能になり、[[tanki]]だけが残ります。',
+                '',
+                '1枚も見えていない[[honor]]は[[nakaSuji]]より危険です。終盤に近づくほどさらに危険になります。'
               ]
             }
           ]
         },
         {
           name: 'fold',
-          title: 'オリ',
+          title: '切り方',
           groups: [
             {
               title: '順番',
               lines: [
-                '残りの[[turn|巡]]と手の中の[[safeTile]]の枚数をまず突き合わせます。',
-                '[[safeTile]]を出し惜しみせず、最も安全な牌から切ります。',
-                '後回しにすると終盤に[[safeTile]]が足りず[[noSuji]]を掴みます。'
+                '最も安全な牌から切ります。面子や[[tenpai]]が崩れても構いません。',
+                '[[safeTile]]があるのに[[suji]]から切ることはしません。1[[turn|巡]]経てば[[safeTile]]が増えることもあります。',
+                '',
+                '[[safeTile]]が複数あれば、他の人の[[genbutsu]]でもある牌を残しておきます。追いかけ[[riichi]]に備えられます。',
+                '',
+                '[[genbutsu]]が増えるほど、まだ通っていない牌はより危険になります。残りの[[wait|待ち]]がそれだけ絞られるからです。'
               ]
             },
             {
               title: '追いかけリーチ',
               lines: [
-                '[[riichi]]者が二人なら、両方に対する[[genbutsu]]だけが完全です。',
-                '重なる[[genbutsu]]がなければ[[honor]]と[[kabe]]から見ます。',
-                '[[suji]]は片方にしか通らないので、もう一人には[[noSuji]]です。'
+                '[[riichi]]者が二人なら、両方に[[dealIn]]しない牌だけが[[safeTile]]です。',
+                '二人目の[[riichi]]の後、二人とも[[ron]]しなかった牌は両方に対して[[genbutsu]]です。',
+                '二人目の[[riichi]]の宣言牌を、先に[[riichi]]した人が[[ron]]しなかったなら、その牌も両方に対して[[genbutsu]]です。',
+                '',
+                '[[kabe]]と[[honor]]の枚数は二人に等しく当てはまります。[[suji]]は人ごとに別々に見ます。',
+                '一人にだけ[[genbutsu]]の牌より、二人ともに[[suji]]の牌のほうが良いこともあります。'
+              ]
+            },
+            {
+              title: '無筋',
+              lines: [
+                '[[genbutsu]]・[[honor]]・[[kabe]]・[[suji]]がどれもなければ、[[noSuji]]の中から選びます。その中でも、少しでも危険の少ない牌があります。',
+                '',
+                '1・9が最も危険が少なく、4・5・6が最も危険です。端に近いほど、その牌を使う[[wait|待ち]]の形が少ないからです。',
+                '',
+                '端の牌がなければ、切る牌とその周りの牌が多く見えているほうを切ります。多く見えているほど、その牌に当たる[[wait|待ち]]が少なくなります。',
+                '切ろうとする牌が多く見えているほど、[[tanki]]と[[shanpon]]が減ります。',
+                '周りの牌が多く見えているほど、その牌を使う[[ryanmen]]と[[kanchan]]が減ります。'
               ]
             }
           ]
@@ -148,7 +181,7 @@ export const ja = {
   compare: { best: '最善', picked: '選択' },
   verdict: { best: '最善', second: '次善', good: '良好', weak: '不足', risky: '危険', worst: '最悪' },
   guard: { genbutsu: '現物', kabe: '壁', suji: '筋', noSuji: '無筋', honor: '字牌' },
-  annotation: { safe: '安全', discard: '捨て牌', seen: '見えている牌', indicator: '表示牌', declare: '宣言牌' },
+  annotation: { safe: '安全', discard: '捨て牌', seen: '見えている牌', indicator: 'ドラ表示牌', declare: '宣言牌' },
   edge: { danger: 'より安全な', shanten: 'シャンテンを戻さない', ukeire: '受け入れの広い' },
   seen: (count, guard) => `${count}枚見えの${guard}`,
   turnMark: (turn) => `${turn}巡目`,
@@ -166,7 +199,7 @@ export const ja = {
       turn: { name: '巡', text: '一周を数える単位です。[[oya]]から一人ずつ回ります。' },
       oya: { name: '親', text: '点数を1.5倍受け取り、[[agari]]すると連荘できる席です。' },
       ko: { name: '子', text: '[[oya]]以外の残り三席です。' },
-      dora: { name: 'ドラ', text: '[[agari]]の点数を上げるボーナス牌です。表示牌の次の牌がドラです。' },
+      dora: { name: 'ドラ', text: '[[agari]]の点数を上げるボーナス牌です。ドラ表示牌の次の牌がドラです。' },
       draw: { name: '流局', text: '誰も[[agari]]できないまま山が尽きて終わることです。' },
       agari: { name: '和了', text: '手牌を完成させて点数を得ることです。[[tsumo]]と[[ron]]の二つがあります。' },
       tenpai: { name: 'テンパイ', text: 'あと一枚で[[agari]]する状態です。[[shanten]]0です。' },
@@ -188,7 +221,7 @@ export const ja = {
       suji: { name: '筋', text: '[[safeTile]]（4～6限定）の±3になる牌です。[[furiten]]により[[ryanmen]][[wait|待ち]]では[[dealIn]]になりません。比較的安全です。[[kanchan]]・[[penchan]]・[[tanki]]・[[shanpon]][[wait|待ち]]は防げません。' },
       nakaSuji: { name: '中筋', text: '4・5・6のうち両側の[[suji]]がどちらも[[genbutsu]]の牌です。その牌を使う[[ryanmen]][[wait|待ち]]がすべて消えます。' },
       kataSuji: { name: '片筋', text: '片側の[[suji]]だけが[[genbutsu]]の牌です。残った側の[[ryanmen]][[wait|待ち]]が生きているため[[nakaSuji]]より危険です。' },
-      kabe: { name: '壁', text: 'ある牌が4枚見えて、その牌を使う[[ryanmen]][[wait|待ち]]が消えた状態です。比較的安全です。手牌と捨て牌、表示牌を合わせて数えます。' },
+      kabe: { name: '壁', text: 'ある牌が4枚見えて、その牌を使う[[ryanmen]][[wait|待ち]]が消えた状態です。比較的安全です。手牌と捨て牌、ドラ表示牌を合わせて数えます。' },
       honor: { name: '字牌', text: '風牌と三元牌です。[[ryanmen]]で待てないので[[shanpon]]と[[tanki]][[wait|待ち]]だけが残り、見えている枚数が多いほど安全になります。3枚見えていれば[[shanpon]]が消えて[[tanki]]だけが残ります。' },
       noSuji: { name: '無筋', text: '[[genbutsu]]・[[suji]]・[[kabe]]のどれにも当てはまらない牌です。[[riichi]]宣言牌の周りは特に危険です。' }
     }
