@@ -34,7 +34,7 @@ export const en = {
   },
   doc: {
     guide: {
-      title: 'Defense Guide',
+      title: 'Riichi Mahjong Defense Guide',
       nav: 'Defense Guide',
       description: 'How genbutsu, honors, kabe, and suji rank tile danger in riichi mahjong defense, with a full glossary.',
       parts: [

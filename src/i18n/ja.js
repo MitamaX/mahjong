@@ -32,7 +32,7 @@ export const ja = {
   },
   doc: {
     guide: {
-      title: '守備ガイド',
+      title: 'リーチ麻雀 守備ガイド',
       nav: '守備ガイド',
       description: '現物・字牌・壁・筋で牌の危険度を見分けるリーチ麻雀の守備基準と用語解説。',
       parts: [

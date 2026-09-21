@@ -34,7 +34,7 @@ export const ko = {
   },
   doc: {
     guide: {
-      title: '수비 가이드',
+      title: '리치마작 수비 가이드',
       nav: '수비 가이드',
       description: '현물·자패·벽·스지로 패의 위험도를 가려내는 리치마작 수비 기준과 용어 해설.',
       parts: [
