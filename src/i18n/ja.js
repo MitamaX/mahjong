@@ -74,7 +74,7 @@ export const ja = {
                 '[[genbutsu]]から3つ離れた牌が[[suji]]です。1・4・7 / 2・5・8 / 3・6・9が互いに筋です。',
                 '[[suji]]は[[ryanmen]]だけを防ぎます。[[tanki]]と[[shanpon]]はどの[[suji]]にも当たります。[[kanchan]]・[[penchan]]の可能性も否定できません。',
                 '',
-                '4・5・6は両側の筋がどちらも[[genbutsu]]のときだけ[[nakaSuji]]になります。片側だけなら[[kataSuji]]です。',
+                '4・5・6は両側の[[suji]]がどちらも[[genbutsu]]のときだけ[[nakaSuji]]になります。片側だけなら[[kataSuji]]です。',
                 '[[kataSuji]]は[[nakaSuji]]に比べてはるかに危険です。'
               ]
             },
@@ -221,7 +221,7 @@ export const ja = {
       suji: { name: '筋', text: '[[safeTile]]（4～6限定）の±3になる牌です。[[furiten]]により[[ryanmen]][[wait|待ち]]では[[dealIn]]になりません。比較的安全です。[[kanchan]]・[[penchan]]・[[tanki]]・[[shanpon]][[wait|待ち]]は防げません。' },
       nakaSuji: { name: '中筋', text: '4・5・6のうち両側の[[suji]]がどちらも[[genbutsu]]の牌です。その牌を使う[[ryanmen]][[wait|待ち]]がすべて消えます。' },
       kataSuji: { name: '片筋', text: '片側の[[suji]]だけが[[genbutsu]]の牌です。残った側の[[ryanmen]][[wait|待ち]]が生きているため[[nakaSuji]]より危険です。' },
-      kabe: { name: '壁', text: 'ある牌が4枚見えて、その牌を使う[[ryanmen]][[wait|待ち]]が消えた状態です。比較的安全です。手牌と捨て牌、ドラ表示牌を合わせて数えます。' },
+      kabe: { name: '壁', text: 'ある牌が4枚見えて、その牌を使う[[ryanmen]][[wait|待ち]]が消えた状態です。比較的安全です。手牌と捨て牌、[[dora|ドラ表示牌]]を合わせて数えます。' },
       honor: { name: '字牌', text: '風牌と三元牌です。[[ryanmen]]で待てないので[[shanpon]]と[[tanki]][[wait|待ち]]だけが残り、見えている枚数が多いほど安全になります。3枚見えていれば[[shanpon]]が消えて[[tanki]]だけが残ります。' },
       noSuji: { name: '無筋', text: '[[genbutsu]]・[[suji]]・[[kabe]]のどれにも当てはまらない牌です。[[riichi]]宣言牌の周りは特に危険です。' }
     }

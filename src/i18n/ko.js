@@ -223,7 +223,7 @@ export const ko = {
       suji: { name: '스지', text: '[[safeTile]](4~6 한정)의 ±3이 되는 패입니다. [[furiten]]으로 인해 [[ryanmen]] [[wait|대기]]에 [[dealIn]]당하지 않습니다. 상대적으로 안전합니다. [[kanchan]]·[[penchan]]·[[tanki]]·[[shanpon]] [[wait|대기]]는 막지 못합니다.' },
       nakaSuji: { name: '나카스지', text: '4·5·6 중 양쪽 [[suji]]가 모두 [[genbutsu]]인 패입니다. 그 패를 쓰는 [[ryanmen]] [[wait|대기]]가 전부 막힙니다.' },
       kataSuji: { name: '카타스지', text: '한쪽 [[suji]]만 [[genbutsu]]인 패입니다. 남은 쪽 [[ryanmen]] [[wait|대기]]가 살아 있어 [[nakaSuji]]보다 위험합니다.' },
-      kabe: { name: '벽', text: '어떤 패가 4장 다 보여 그 패를 쓰는 [[ryanmen]] [[wait|대기]]가 사라진 상태입니다. 상대적으로 안전합니다. 손패와 버림패, 도라 표시패를 합쳐 셉니다.' },
+      kabe: { name: '벽', text: '어떤 패가 4장 다 보여 그 패를 쓰는 [[ryanmen]] [[wait|대기]]가 사라진 상태입니다. 상대적으로 안전합니다. 손패와 버림패, [[dora|도라 표시패]]를 합쳐 셉니다.' },
       honor: { name: '자패', text: '풍패와 삼원패입니다. [[ryanmen]]으로 [[wait|대기]]할 수 없어 [[shanpon]]와 [[tanki]] [[wait|대기]]만 남기에 보이는 장수가 많을수록 안전해집니다. 3장 보이면 [[shanpon]]가 사라져 [[tanki]]만 남습니다.' },
       noSuji: { name: '위험패', text: '[[genbutsu]]·[[suji]]·[[kabe]] 어디에도 들지 않는 패입니다. [[riichi]] 선언패 주변이 특히 위험합니다.' }
     }
