@@ -1,10 +1,13 @@
-import { DOC_PAGES } from '../core/locale.js';
+import { DOC_PAGES, GUIDE_PAGE, HOME_PAGE } from '../core/locale.js';
 import { PanelView, panelMarkup } from './panelView.js';
-import { anchor, button, classNames, div, escape, link, tag, text } from './markup.js';
+import { anchor, button, classNames, div, escape, tag, text } from './markup.js';
 import { iconSvg } from './iconView.js';
-import { HREF, INFO_ROWS, REPOSITORY } from './linkView.js';
+import { REPOSITORY } from './linkView.js';
+import { infoRowsHtml, pageLink } from './siteView.js';
 import {
+  CASE_FIGURE_STYLE,
   PANEL_CASES,
+  TERM_FIGURE_STYLE,
   articleBodyHtml,
   glossaryIndexHtml,
   guardCaseHtml,
@@ -20,8 +23,7 @@ const TABS = ['basic', 'defense', 'terms', 'info'];
 const TEXT_SECTIONS = ['control', 'flow'];
 const STACK_CLASS = 'help__stack';
 const ACTIVE_CLASS = 'btn--on';
-const [GUIDE_PAGE] = DOC_PAGES;
-const docPath = (name) => `${name}/`;
+const INFO_PAGES = [HOME_PAGE, ...DOC_PAGES];
 
 const articleHtml = (dictionary, id) => tag('div', { class: 'article surface', 'data-article': id, hidden: true }, [
   div('row', [
@@ -38,13 +40,13 @@ const basicPane = (dictionary) => [
     linesHtml(dictionary, dictionary.help[name].lines, 'lines surface', termButton)))
 ];
 
-const guideLinkHtml = (dictionary) => div('split split--center', [
+const guideLinkHtml = (dictionary, language) => div('split split--center', [
   text(dictionary.help.guide),
-  link(escape(dictionary.doc[GUIDE_PAGE].nav), docPath(GUIDE_PAGE), 'btn btn--wide')
+  pageLink(dictionary, language, GUIDE_PAGE, 'btn btn--wide')
 ]);
 
-const defensePane = (dictionary) => div('guide', [
-  guideLinkHtml(dictionary),
+const defensePane = (dictionary, language) => div('guide', [
+  guideLinkHtml(dictionary, language),
   PANEL_CASES.map((id) => guardCaseHtml(dictionary, id, termButton))
 ]);
 
@@ -53,39 +55,38 @@ const termsPane = (dictionary) => [
   termIds(dictionary).map((id) => articleHtml(dictionary, id))
 ];
 
-const infoPane = (dictionary) => [
+const infoPane = (dictionary, language) => [
   text(dictionary.help.name, 'help__name'),
   anchor([iconSvg('github'), escape(REPOSITORY.label)], REPOSITORY.href, 'btn btn--wide btn--brand'),
   div('split', [
-    div('info surface', INFO_ROWS.map(({ name, label }) => div('option', [
-      text(dictionary.help.info[name], 'option__label'),
-      anchor(escape(label), HREF[name], 'link')
-    ]))),
-    div('stack', DOC_PAGES.map((name) =>
-      link(escape(dictionary.doc[name].nav), docPath(name), 'btn btn--wide')))
+    div('info surface', infoRowsHtml(dictionary, 'link')),
+    div('stack', INFO_PAGES.map((name) => pageLink(dictionary, language, name, 'btn btn--wide')))
   ])
 ];
 
 const PANES = { basic: basicPane, defense: defensePane, terms: termsPane, info: infoPane };
+const PANE_STYLES = { defense: CASE_FIGURE_STYLE, terms: TERM_FIGURE_STYLE };
 
-const paneHtml = (dictionary, name) => tag('div', {
+const paneHtml = (dictionary, language, name) => tag('div', {
   class: STACK_CLASS,
   'data-pane': name,
+  style: PANE_STYLES[name],
   hidden: name !== TABS[0]
-}, PANES[name](dictionary));
+}, PANES[name](dictionary, language));
 
 const tabHtml = (dictionary, name) => button(escape(dictionary.help.tab[name]), {
   class: classNames('btn', name === TABS[0] && ACTIVE_CLASS),
   'data-tab': name
 });
 
-export const helpMarkup = (dictionary) => panelMarkup({
+export const helpMarkup = (dictionary, language) => panelMarkup({
+  name: 'help-panel',
   modifier: 'panel--help',
   title: dictionary.help.title,
   close: dictionary.close
 }, [
   tag('div', { class: 'segment segment--wide' }, TABS.map((name) => tabHtml(dictionary, name))),
-  tag('div', { class: 'help', 'data-help-body': true }, TABS.map((name) => paneHtml(dictionary, name)))
+  tag('div', { class: 'help', 'data-help-body': true }, TABS.map((name) => paneHtml(dictionary, language, name)))
 ]);
 
 export class HelpView extends PanelView {

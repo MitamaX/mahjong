@@ -1,5 +1,6 @@
 import { Tiles } from '../core/tiles.js';
 import { Settings } from '../core/settings.js';
+import { SITE_ROOT } from '../core/locale.js';
 import { classNames, tag } from './markup.js';
 
 const VIEW = { width: 60, height: 84 };
@@ -10,7 +11,9 @@ const WHITE_DRAGON = 5;
 const GREEN_DRAGON = 6;
 const RED_DRAGON = 7;
 const SIMPLE = { size: 54, baseline: 61 };
-const ART_DIR = '../assets/tiles/';
+const ART_DIR = `${SITE_ROOT}assets/tiles/`;
+
+export const MARK = { PICK: 'pick', BEST: 'best', CITE: 'cite' };
 
 const PIP_ROWS = {
   pin: {
@@ -141,13 +144,16 @@ function accentOf(tile) {
 
 const faceOf = (tile) => STYLES[Settings.get('tileStyle')].face(Tiles.suitName(tile), Tiles.rankOf(tile));
 
-export function tileHtml(tile, { back = false, turned = false, dim = false, mark = null, interactive = false } = {}) {
+export function tileHtml(tile, {
+  back = false, turned = false, dim = false, drawn = false, mark = null, interactive = false, label = null
+} = {}) {
   if (back) return tag('div', { class: 'tile tile--back' });
   const style = STYLES[Settings.get('tileStyle')];
   return tag(interactive ? 'button' : 'div', {
     class: classNames('tile', `tile--${Tiles.suitName(tile)}`, style.art && 'tile--art', accentOf(tile),
-      turned && 'tile--turned', dim && 'tile--dim', mark && `tile--${mark}`),
+      turned && 'tile--turned', dim && 'tile--dim', drawn && 'tile--drawn', mark && `tile--${mark}`),
     type: interactive && 'button',
+    'aria-label': label,
     'data-tile': tile
   }, faceOf(tile));
 }

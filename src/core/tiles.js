@@ -45,6 +45,9 @@ export const Tiles = {
     tiles.forEach((tile) => { counts[tile] += 1; });
     return counts;
   },
+  unseen(seenTiles) {
+    return this.countsOf(seenTiles).map((seen) => COPIES - seen);
+  },
   expand(counts) {
     const tiles = [];
     counts.forEach((amount, index) => {

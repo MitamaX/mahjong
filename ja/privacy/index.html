@@ -10,8 +10,8 @@
 <link rel="alternate" hreflang="ja" href="https://betaori.app/ja/privacy/">
 <link rel="alternate" hreflang="en" href="https://betaori.app/en/privacy/">
 <meta name="theme-color" content="#FAEDCD">
-<link rel="icon" href="../../assets/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../../assets/icon-180.png">
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="betaori.app">
 <meta property="og:url" content="https://betaori.app/ja/privacy/">
@@ -39,19 +39,50 @@
   "image": "https://betaori.app/assets/og-ja.png",
   "description": "betaori.appが扱う情報の範囲とGoogle AdSenseのCookie利用についてのご案内。",
   "isPartOf": {
-    "@type": "WebApplication",
+    "@type": "WebSite",
     "name": "ベタオリ",
-    "url": "https://betaori.app/ja/"
+    "url": "https://betaori.app/"
   }
 }
 </script>
-<link rel="stylesheet" href="../../styles/tokens.css?v=713aefcd">
-<link rel="stylesheet" href="../../styles/base.css?v=91a13a97">
-<link rel="stylesheet" href="../../styles/components.css?v=92f53c13">
-<link rel="stylesheet" href="../../styles/layout.css?v=2989f6f1">
+<script type="importmap">
+{
+  "imports": {
+    "/src/core/locale.js": "/src/core/locale.js?v=2c3651ad",
+    "/src/core/settings.js": "/src/core/settings.js?v=be020702",
+    "/src/core/tiles.js": "/src/core/tiles.js?v=5e1583be",
+    "/src/site.js": "/src/site.js?v=c43eefc5",
+    "/src/ui/markup.js": "/src/ui/markup.js?v=a1dc8fb7",
+    "/src/ui/menuView.js": "/src/ui/menuView.js?v=be689885",
+    "/src/ui/overlayView.js": "/src/ui/overlayView.js?v=143c9012",
+    "/src/ui/pageBoot.js": "/src/ui/pageBoot.js?v=e9d9dc60",
+    "/src/ui/panelView.js": "/src/ui/panelView.js?v=11eddc8f",
+    "/src/ui/railView.js": "/src/ui/railView.js?v=b5638119",
+    "/src/ui/settingsView.js": "/src/ui/settingsView.js?v=b5edfe7b",
+    "/src/ui/tileView.js": "/src/ui/tileView.js?v=e83cada6"
+  }
+}
+</script>
+<link rel="stylesheet" href="/styles/tokens.css?v=fd186eff">
+<link rel="stylesheet" href="/styles/base.css?v=fc1c97fc">
+<link rel="stylesheet" href="/styles/components.css?v=b9f1d5a2">
+<link rel="stylesheet" href="/styles/layout.css?v=17709ab3">
+<link rel="modulepreload" href="/src/core/locale.js?v=2c3651ad">
+<link rel="modulepreload" href="/src/core/settings.js?v=be020702">
+<link rel="modulepreload" href="/src/core/tiles.js?v=5e1583be">
+<link rel="modulepreload" href="/src/site.js?v=c43eefc5">
+<link rel="modulepreload" href="/src/ui/markup.js?v=a1dc8fb7">
+<link rel="modulepreload" href="/src/ui/menuView.js?v=be689885">
+<link rel="modulepreload" href="/src/ui/overlayView.js?v=143c9012">
+<link rel="modulepreload" href="/src/ui/pageBoot.js?v=e9d9dc60">
+<link rel="modulepreload" href="/src/ui/panelView.js?v=11eddc8f">
+<link rel="modulepreload" href="/src/ui/railView.js?v=b5638119">
+<link rel="modulepreload" href="/src/ui/settingsView.js?v=b5edfe7b">
+<link rel="modulepreload" href="/src/ui/tileView.js?v=e83cada6">
 </head>
 <body class="page">
-<header class="doc__bar"><a class="doc__brand" href="../">ベタオリ</a><div class="segment"><a class="btn btn--on" href="../../ja/privacy/">日本語</a><a class="btn" href="../../en/privacy/">English</a><a class="btn" href="../../ko/privacy/">한국어</a></div></header>
-<main class="doc"><h1 class="doc__title">プライバシーポリシー</h1><section class="help__group"><h2 class="doc__heading">収集する情報</h2><div class="stack"><div class="lines surface"><span>betaori.appは会員登録がなく、利用者の個人情報を直接収集しません。</span><span>言語・打牌・牌の設定は利用者のブラウザのローカルストレージにのみ保存され、サーバーには送信されません。</span></div></div></section><section class="help__group"><h2 class="doc__heading">Cookieと広告</h2><div class="stack"><div class="lines surface"><span>本サイトはGoogle AdSenseで広告を配信しています。</span><span>Googleを含む第三者配信事業者はCookieを使用し、利用者の本サイトおよび他サイトへのアクセス情報に基づいて広告を配信します。</span><span>パーソナライズ広告は以下の設定から無効にできます。</span></div><div class="lines surface"><a class="link" href="https://adssettings.google.com" target="_blank" rel="noreferrer">Google 広告設定</a><a class="link" href="https://www.aboutads.info/choices/" target="_blank" rel="noreferrer">aboutads.info</a></div></div></section><section class="help__group"><h2 class="doc__heading">お問い合わせ</h2><div class="stack"><div class="lines surface"><span>サイトの運営および情報の取り扱いに関するお問い合わせは以下で受け付けます。</span></div><div class="lines surface"><a class="link" href="https://github.com/MitamaX/mahjong/issues" target="_blank" rel="noreferrer">GitHub Issues</a></div></div></section><footer class="split"><a class="btn btn--wide btn--accent" href="../">はじめる</a><a class="btn btn--wide" href="../guide/">守備ガイド</a></footer></main>
+<header class="site-bar"><a class="brand" href="/ja/">ベタオリ</a><nav class="segment site-bar__nav"><a class="btn btn--quiet" href="/ja/">レッスン</a><a class="btn btn--quiet" href="/ja/practice/">実戦</a><a class="btn btn--quiet" href="/ja/guide/">守備ガイド</a></nav><div class="site-bar__tools"><details class="menu" data-menu><summary class="btn btn--quiet menu__toggle">日本語<svg viewBox="0 0 24 24" fill="currentColor" text-anchor="middle" font-weight="800" aria-hidden="true"><path d="M6 9.5 12 15.5 18 9.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><div class="menu__list"><a class="menu__item" href="/ja/privacy/" lang="ja" aria-current="true" hreflang="ja">日本語<svg viewBox="0 0 24 24" fill="currentColor" text-anchor="middle" font-weight="800" aria-hidden="true"><path d="M5 12.5 9.8 17.2 19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="menu__item" href="/en/privacy/" lang="en" hreflang="en">English</a><a class="menu__item" href="/ko/privacy/" lang="ko" hreflang="ko">한국어</a></div></details><button type="button" class="btn btn--quiet btn--icon" aria-label="設定" data-open-settings><svg viewBox="0 0 24 24" fill="currentColor" text-anchor="middle" font-weight="800" aria-hidden="true"><path d="M10.48 4.35L10.56 1.3L13.44 1.3L13.52 4.35A7.8 7.8 0 0 1 16.33 5.51L16.33 5.51L18.55 3.41L20.59 5.45L18.49 7.67A7.8 7.8 0 0 1 19.65 10.48L19.65 10.48L22.7 10.56L22.7 13.44L19.65 13.52A7.8 7.8 0 0 1 18.49 16.33L18.49 16.33L20.59 18.55L18.55 20.59L16.33 18.49A7.8 7.8 0 0 1 13.52 19.65L13.52 19.65L13.44 22.7L10.56 22.7L10.48 19.65A7.8 7.8 0 0 1 7.67 18.49L7.67 18.49L5.45 20.59L3.41 18.55L5.51 16.33A7.8 7.8 0 0 1 4.35 13.52L4.35 13.52L1.3 13.44L1.3 10.56L4.35 10.48A7.8 7.8 0 0 1 5.51 7.67L5.51 7.67L3.41 5.45L5.45 3.41L7.67 5.51A7.8 7.8 0 0 1 10.48 4.35ZM16 12A4 4 0 1 0 8 12A4 4 0 1 0 16 12Z" fill-rule="evenodd" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg></button></div></header><main class="doc sheet"><h1 class="doc__title">プライバシーポリシー</h1><section class="help__group"><h2 class="doc__heading">収集する情報</h2><div class="stack"><div class="lines surface"><span>betaori.appは会員登録がなく、利用者の個人情報を直接収集しません。</span><span>言語・打牌・牌の設定は利用者のブラウザのローカルストレージにのみ保存され、サーバーには送信されません。</span></div></div></section><section class="help__group"><h2 class="doc__heading">Cookieと広告</h2><div class="stack"><div class="lines surface"><span>本サイトはGoogle AdSenseで広告を配信しています。</span><span>Googleを含む第三者配信事業者はCookieを使用し、利用者の本サイトおよび他サイトへのアクセス情報に基づいて広告を配信します。</span><span>パーソナライズ広告は以下の設定から無効にできます。</span></div><div class="lines surface"><a class="link" href="https://adssettings.google.com" target="_blank" rel="noreferrer">Google 広告設定</a><a class="link" href="https://www.aboutads.info/choices/" target="_blank" rel="noreferrer">aboutads.info</a></div></div></section><section class="help__group"><h2 class="doc__heading">お問い合わせ</h2><div class="stack"><div class="lines surface"><span>サイトの運営および情報の取り扱いに関するお問い合わせは以下で受け付けます。</span></div><div class="lines surface"><a class="link" href="https://github.com/MitamaX/mahjong/issues" target="_blank" rel="noreferrer">GitHub Issues</a></div></div></section></main><footer class="site-foot"><div class="site-foot__inner"><div class="site-foot__group site-foot__lead"><a class="brand" href="/ja/">ベタオリ</a><span class="caption">麻雀 守備シミュレーター</span></div><div class="site-foot__group"><span class="site-foot__title">サイト</span><nav class="stack"><a class="site-foot__link" href="/ja/">レッスン</a><a class="site-foot__link" href="/ja/practice/">実戦</a><a class="site-foot__link" href="/ja/guide/">守備ガイド</a><a class="site-foot__link" href="/ja/privacy/" aria-current="page">プライバシー</a></nav></div><div class="site-foot__group"><span class="site-foot__title">情報</span><a class="site-foot__link" href="https://github.com/MitamaX/mahjong" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" text-anchor="middle" font-weight="800" aria-hidden="true"><path transform="scale(1.5)" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>MitamaX/mahjong</a><div class="site-foot__rows"><div class="option"><span class="option__label">報告</span><a class="site-foot__link" href="https://github.com/MitamaX/mahjong/issues" target="_blank" rel="noreferrer">Issues</a></div><div class="option"><span class="option__label">牌画</span><a class="site-foot__link" href="https://github.com/FluffyStuff/riichi-mahjong-tiles" target="_blank" rel="noreferrer">FluffyStuff</a></div><div class="option"><span class="option__label">ライセンス</span><a class="site-foot__link" href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noreferrer">CC0 1.0</a></div></div></div></div></footer>
+<div class="overlay" data-settings-panel hidden role="dialog" aria-modal="true" tabindex="-1" aria-label="設定"><div class="panel sheet panel--single"><header class="panel__head"><span class="panel__title">設定</span></header><div class="option"><span class="option__label">打牌</span><div class="segment"><button type="button" class="btn btn--on" data-setting="discardInput" data-value="single">シングル</button><button type="button" class="btn" data-setting="discardInput" data-value="double">ダブル</button></div></div><div class="option"><span class="option__label">牌</span><div class="segment"><button type="button" class="btn btn--on" data-setting="tileStyle" data-value="standard">標準</button><button type="button" class="btn" data-setting="tileStyle" data-value="simple">シンプル</button><button type="button" class="btn" data-setting="tileStyle" data-value="classic">クラシック</button></div></div><button type="button" class="btn btn--accent btn--wide panel__action" data-close>閉じる</button></div></div>
+<script type="module" src="/src/site.js?v=c43eefc5"></script>
 </body>
 </html>
