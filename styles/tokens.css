@@ -1,15 +1,3 @@
-@property --board-size {
-  syntax: '<length>';
-  inherits: true;
-  initial-value: 0px;
-}
-
-@property --board-unit {
-  syntax: '<length>';
-  inherits: true;
-  initial-value: 0px;
-}
-
 :root {
   --sage: #CCD5AE;
   --lime: #E9EDC9;
@@ -30,21 +18,15 @@
 
   --line: rgba(90, 70, 50, 0.18);
   --shade: rgba(90, 70, 50, 0.22);
-  --veil-strength: 45%;
-  --veil: color-mix(in srgb, var(--ink) var(--veil-strength), transparent);
-  --veiled-cream: color-mix(in srgb, var(--ink) var(--veil-strength), var(--cream));
+  --veil: rgba(90, 70, 50, 0.45);
 
   --tile-w: 30px;
   --tile-h: 42px;
-  --tile-base-w: 24px;
-  --tile-base-h: calc(var(--tile-base-w) * var(--tile-aspect));
   --tile-gap: 2px;
   --tile-aspect: 1.375;
   --tile-art-inset: 13%;
   --hand-tiles: 14;
-  --scrollbar: 12px;
-  --focus-w: 3px;
-  --focus-gap: 2px;
+  --scrollbar: 8px;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -56,7 +38,6 @@
   --layer-center: 1;
   --layer-dock: 2;
   --layer-announce: 3;
-  --layer-bar: 4;
   --layer-overlay: 10;
 
   --text-s: 12px;
@@ -64,6 +45,7 @@
   --text-l: 20px;
   --text-xl: 26px;
   --text-xxl: 32px;
+  --annotation-h: calc(var(--text-s) + var(--space-1));
 
   --radius-s: 5px;
   --radius-m: 10px;
@@ -71,16 +53,11 @@
 
   --shadow-card: 0 18px 40px var(--shade);
   --shadow-rail: -12px 0 32px var(--shade);
-  --shadow-float: 0 8px 20px var(--shade);
 
   --btn-pad-y: var(--space-2);
   --grade-size: 52px;
-  --medal-size: 72px;
   --rank-mark-w: 44px;
   --btn-icon-size: 34px;
-  --icon-inset: 0.2;
-  --control-h: 40px;
-  --bar-pad-y: var(--space-3);
   --panel-pad: var(--space-4);
   --panel-gap: var(--space-3);
 
@@ -96,28 +73,18 @@
   --app-pad: var(--space-3);
   --app-gap: var(--space-3);
   --doc-w: 880px;
-  --site-w: 1280px;
-  --site-inset: var(--space-3);
-  --stage-gutter: var(--space-4);
-  --lesson-panel-w: 380px;
-  --lesson-panel-share: 40%;
-  --lesson-panel-h: 46%;
-  --figure-w: 720px;
-  --figure-tile-cap: 58px;
-  --figure-caption-gap: var(--space-2);
-  --figure-caption-max: var(--text-l);
-  --cover-tile-cap: 56px;
-  --term-tile-cap: var(--tile-base-w);
-  --scene-blur: 5px;
   --doc-pad: var(--space-4);
-  --rail-mark: 28px;
-  --rail-inset: var(--space-3);
-  --rail-lane: calc(var(--rail-inset) + var(--rail-mark) + var(--space-2));
+  --doc-nav-h: 52px;
   --term-cap: 520px;
+  --term-h: 350px;
   --term-slide: 0.28s;
+  --term-figure-tiles: 15;
   --doc-text: 16px;
   --ad-min-h: 120px;
+  --frame-w: calc(100vw - var(--safe-x) - var(--app-pad) * 2);
   --dora-reserve: 0px;
+  --frame-h: calc(var(--viewport-h) - var(--safe-y) - var(--app-pad) * 2 - var(--app-gap)
+    - var(--dora-reserve));
   --panel-h: 600px;
   --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);
   --panel-cap-h: calc((var(--viewport-h) - var(--safe-y)) * 0.94);
@@ -131,20 +98,17 @@
   --dock-tail: 200px;
   --board-unit-cap: 1.08px;
   --board-cap: 820px;
-  --center-span: 236;
-  --river-cols: 6;
-  --river-rows: 3;
-  --font: 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
-}
-
-.app {
   --board-size: min(
     var(--board-cap),
     calc(var(--frame-h) * var(--board-span) / var(--stack-span)),
     calc((var(--frame-w) - var(--dock-tail)) * var(--board-span) / var(--dock-span))
   );
   --board-unit: min(var(--board-unit-cap), calc(var(--board-size) / var(--board-span)));
+  --center-span: 236;
+  --river-cols: 6;
+  --river-rows: 3;
   --dock-lift: calc(var(--board-unit) * 54);
+  --font: 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
 }
 
 @supports (height: 100dvh) {

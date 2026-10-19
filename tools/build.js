@@ -4,22 +4,14 @@ import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DICTIONARIES, titleOf } from '../src/i18n/index.js';
 import { SETTING_VALUES, STORAGE_KEY } from '../src/core/settings.js';
-import {
-  DOC_PAGES, ZONE_LANGUAGES, FALLBACK_LANGUAGE, SITE_ROOT, HOME_KIND, HOME_PAGE, PRACTICE_PAGE, pageKind
-} from '../src/core/locale.js';
-import { UNITS } from '../src/lessons/catalog.js';
-import { LESSON_TEXT } from '../src/i18n/lessons/index.js';
-import { div, escape, html, link, tag } from '../src/ui/markup.js';
-import { plainLine } from '../src/ui/glossary.js';
+import { DOC_PAGES, ZONE_LANGUAGES, FALLBACK_LANGUAGE, SITE_ROOT } from '../src/core/locale.js';
+import { div, tag } from '../src/ui/markup.js';
 import { backTilesHtml } from '../src/ui/board.js';
 import { splashMarkup, tableMarkup } from '../src/ui/tableView.js';
 import { reportMarkup } from '../src/ui/reportView.js';
 import { settingsMarkup } from '../src/ui/settingsView.js';
 import { helpMarkup } from '../src/ui/helpView.js';
 import { AD_PAGES, docMarkup } from '../src/ui/docView.js';
-import { courseMarkup, lessonKind, lessonPageMarkup } from '../src/ui/courseView.js';
-import { screenFrame } from '../src/ui/siteView.js';
-import { overlayHtml } from '../src/ui/overlayView.js';
 
 const SITE = 'https://betaori.app';
 const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
@@ -31,30 +23,11 @@ const NOT_FOUND = '404';
 const OG_LOCALES = { ko: 'ko_KR', ja: 'ja_JP', en: 'en_US' };
 const DOC_SCHEMA = { guide: 'Article', privacy: 'WebPage' };
 const DEFAULT_LANGUAGE = 'ja';
-const PRACTICE_KIND = pageKind(PRACTICE_PAGE);
-const PLACED_LESSONS = UNITS.flatMap((unit) => unit.lessons.map((lesson) => ({ unit, lesson })));
-const COURSE_KINDS = [HOME_KIND, ...PLACED_LESSONS.map(({ lesson }) => lessonKind(lesson))];
-const SITE_KINDS = [PRACTICE_KIND, ...DOC_PAGES.map((name) => pageKind(name))];
+const APP_KIND = '';
+const PAGE_KINDS = [APP_KIND, ...DOC_PAGES.map((name) => `${name}/`)];
 const LANGUAGES = Object.keys(DICTIONARIES);
-const COURSE_LANGUAGES = Object.keys(LESSON_TEXT);
-const PAGE_LANGUAGES = new Map([
-  ...COURSE_KINDS.map((kind) => [kind, COURSE_LANGUAGES]),
-  ...SITE_KINDS.map((kind) => [kind, LANGUAGES])
-]);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const ENTRIES = {
-  practice: join(ROOT, 'src', 'main.js'),
-  lesson: join(ROOT, 'src', 'lesson.js'),
-  site: join(ROOT, 'src', 'site.js')
-};
-const [COURSE_AD_SLOT] = ADSENSE_SLOTS;
-const FIRST_PAGE = 0;
-const DESCRIPTION_LIMIT = 160;
-const VIEWPORT_META = '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">';
-const ICON_LINKS = [
-  `<link rel="icon" href="${SITE_ROOT}assets/icon.svg" type="image/svg+xml">`,
-  `<link rel="apple-touch-icon" href="${SITE_ROOT}assets/icon-180.png">`
-];
+const ENTRY = join(ROOT, 'src', 'main.js');
 const STYLESHEETS = ['tokens', 'base', 'components', 'layout'];
 const IMPORT_SPECIFIER = /from\s+'([^']+)'/g;
 const VERSION_LENGTH = 8;
@@ -64,22 +37,10 @@ const literal = (value) => JSON.stringify(value);
 const sitePath = (path) => relative(ROOT, path).split(sep).join('/');
 const version = (source) => createHash('sha256').update(source).digest('hex').slice(0, VERSION_LENGTH);
 const pagePath = (language, kind) => `${language}/${kind}`;
-const pageAddress = (language, kind) => absolute(pagePath(language, kind));
-const placeOf = (kind, section) => ({ kind, section, languages: PAGE_LANGUAGES.get(kind) });
-const ogImage = (language) => absolute(`assets/og-${language}.png`);
-
-function withinLimit(sentences) {
-  const kept = [];
-  for (const sentence of sentences) {
-    if (kept.length && [...kept, sentence].join(' ').length > DESCRIPTION_LIMIT) break;
-    kept.push(sentence);
-  }
-  return kept.join(' ');
-}
 
 function alternateTargets(kind) {
-  const targets = PAGE_LANGUAGES.get(kind).map((language) => [language, pageAddress(language, kind)]);
-  return kind === HOME_KIND ? [...targets, ['x-default', absolute('')]] : targets;
+  const targets = LANGUAGES.map((language) => [language, absolute(pagePath(language, kind))]);
+  return kind === APP_KIND ? [...targets, ['x-default', absolute('')]] : targets;
 }
 
 function alternates(kind) {
@@ -99,43 +60,9 @@ function appSchema(language, url) {
     operatingSystem: 'Web',
     browserRequirements: 'JavaScript',
     inLanguage: language,
-    image: ogImage(language),
+    image: absolute(`assets/og-${language}.png`),
     description: dictionary.description,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }
-  };
-}
-
-const siteNode = (language) => ({
-  '@type': 'WebSite',
-  name: DICTIONARIES[language].brand,
-  url: absolute('')
-});
-
-const courseNode = (language) => ({
-  '@type': 'CollectionPage',
-  name: DICTIONARIES[language].course.title,
-  url: pageAddress(language, HOME_KIND)
-});
-
-function courseSchema(language) {
-  return {
-    ...courseNode(language),
-    inLanguage: language,
-    image: ogImage(language),
-    description: DICTIONARIES[language].course.description
-  };
-}
-
-function lessonSchema(language, url, copy, description) {
-  return {
-    '@type': 'LearningResource',
-    learningResourceType: 'Lesson',
-    name: copy.title,
-    url,
-    inLanguage: language,
-    image: ogImage(language),
-    description,
-    isPartOf: courseNode(language)
   };
 }
 
@@ -148,9 +75,9 @@ function docSchema(language, url, name) {
     name: page.title,
     url,
     inLanguage: language,
-    image: ogImage(language),
+    image: absolute(`assets/og-${language}.png`),
     description: page.description,
-    isPartOf: siteNode(language)
+    isPartOf: { '@type': 'WebApplication', name: dictionary.brand, url: absolute(`${language}/`) }
   };
 }
 
@@ -159,18 +86,17 @@ function structuredData(schema) {
   return `<script type="application/ld+json">\n${source}\n</script>`;
 }
 
-function metadata(language, { url, kind, title: rawTitle, description: rawDescription, schema, canonical = true }) {
-  const image = ogImage(language);
-  const title = escape(rawTitle);
-  const description = escape(rawDescription);
+function metadata(language, { url, base, kind, title, description, schema, canonical = true }) {
+  const image = absolute(`assets/og-${language}.png`);
   return [
-    VIEWPORT_META,
+    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
     `<title>${title}</title>`,
     `<meta name="description" content="${description}">`,
     ...(canonical ? [`<link rel="canonical" href="${url}">`] : []),
     ...alternates(kind),
     '<meta name="theme-color" content="#FAEDCD">',
-    ...ICON_LINKS,
+    `<link rel="icon" href="${base}assets/icon.svg" type="image/svg+xml">`,
+    `<link rel="apple-touch-icon" href="${base}assets/icon-180.png">`,
     '<meta property="og:type" content="website">',
     `<meta property="og:site_name" content="${DICTIONARIES[language].help.name}">`,
     `<meta property="og:url" content="${url}">`,
@@ -181,7 +107,7 @@ function metadata(language, { url, kind, title: rawTitle, description: rawDescri
     '<meta property="og:image:height" content="630">',
     `<meta property="og:image:alt" content="${title}">`,
     `<meta property="og:locale" content="${OG_LOCALES[language]}">`,
-    ...PAGE_LANGUAGES.get(kind).filter((code) => code !== language)
+    ...LANGUAGES.filter((code) => code !== language)
       .map((code) => `<meta property="og:locale:alternate" content="${OG_LOCALES[code]}">`),
     '<meta name="twitter:card" content="summary_large_image">',
     `<meta name="twitter:title" content="${title}">`,
@@ -209,8 +135,8 @@ function adUnit(slot) {
   ]);
 }
 
-function siteBody(dictionary, entry, content, overlays = []) {
-  return [content, overlays, settingsMarkup(dictionary), entryScript(entry)];
+function overlay(name, content) {
+  return tag('div', { class: 'overlay', [`data-${name}`]: true, hidden: true }, content);
 }
 
 async function readModules(path, sources = new Map()) {
@@ -238,23 +164,20 @@ async function readStylesheets() {
     .map(async (path) => [path, await readFile(path, 'utf8')])));
 }
 
-function importMap(modules) {
+function importMap(base, modules) {
   const imports = Object.fromEntries([...modules]
-    .map(([path, stampedPath]) => [`${SITE_ROOT}${path}`, `${SITE_ROOT}${stampedPath}`]));
+    .map(([path, stampedPath]) => [`${base}${path}`, `${base}${stampedPath}`]));
   return `<script type="importmap">\n${JSON.stringify({ imports }, null, 2)}\n</script>`;
 }
 
-const styleLinks = (styles) =>
-  [...styles.values()].map((href) => `<link rel="stylesheet" href="${SITE_ROOT}${href}">`);
+const styleLinks = (base, styles) =>
+  [...styles.values()].map((href) => `<link rel="stylesheet" href="${base}${href}">`);
 
-const entryScript = ({ path, modules }) =>
-  `<script type="module" src="${SITE_ROOT}${modules.get(sitePath(path))}"></script>`;
-
-function assets(entry, styles) {
+function assets(base, modules, styles) {
   return [
-    importMap(entry.modules),
-    ...styleLinks(styles),
-    ...[...entry.modules.values()].map((href) => `<link rel="modulepreload" href="${SITE_ROOT}${href}">`)
+    importMap(base, modules),
+    ...styleLinks(base, styles),
+    ...[...modules.values()].map((href) => `<link rel="modulepreload" href="${base}${href}">`)
   ];
 }
 
@@ -301,97 +224,53 @@ function document(language, lines, body, bodyClass = null) {
 ${lines.join('\n')}
 </head>
 ${bodyTag(bodyClass)}
-${body.map(html).filter(Boolean).map((line) => `${line}\n`).join('')}</body>
+${body.map((line) => `${line}\n`).join('')}</body>
 </html>
 `;
 }
 
-function practicePage(language, entry, styles) {
+function appPage(language, modules, styles) {
   const dictionary = DICTIONARIES[language];
-  const url = pageAddress(language, PRACTICE_KIND);
-  const stage = tag('main', { class: 'stage screen__body' },
-    tag('div', { class: 'app', 'data-table': true }, [splashMarkup(dictionary), tableMarkup(dictionary)]));
+  const base = '../';
+  const url = absolute(pagePath(language, APP_KIND));
   return document(language, [
     ...metadata(language, {
       url,
-      kind: PRACTICE_KIND,
+      base,
+      kind: APP_KIND,
       title: titleOf(dictionary),
       description: dictionary.description,
       schema: appSchema(language, url)
     }),
-    ...assets(entry, styles)
-  ], siteBody(dictionary, entry, screenFrame(dictionary, language, placeOf(PRACTICE_KIND, PRACTICE_PAGE), stage), [
-    reportMarkup(dictionary),
-    helpMarkup(dictionary, language),
-    overlayHtml('loader', div('loader', backTilesHtml(LOADER_TILES)))
-  ]));
+    ...assets(base, modules, styles)
+  ], [
+    tag('main', { class: 'app', 'data-table': true }, [splashMarkup(dictionary), tableMarkup(dictionary)]),
+    overlay('report', reportMarkup(dictionary)),
+    overlay('settings-panel', settingsMarkup(dictionary, language)),
+    overlay('help-panel', helpMarkup(dictionary)),
+    overlay('loader', div('loader', backTilesHtml(LOADER_TILES))),
+    `<script type="module" src="${base}${modules.get(sitePath(ENTRY))}"></script>`
+  ]);
 }
 
-function coursePage(language, entry, styles) {
+function docPage(language, name, styles) {
   const dictionary = DICTIONARIES[language];
-  return document(language, [
-    ...metadata(language, {
-      url: pageAddress(language, HOME_KIND),
-      kind: HOME_KIND,
-      title: titleOf(dictionary, dictionary.course.title),
-      description: dictionary.course.description,
-      schema: courseSchema(language)
-    }),
-    ...assets(entry, styles),
-    adLoader()
-  ], siteBody(dictionary, entry, courseMarkup(dictionary, language, {
-    place: placeOf(HOME_KIND, HOME_PAGE),
-    copy: LESSON_TEXT[language],
-    ad: adUnit(COURSE_AD_SLOT)
-  })), 'page');
-}
-
-function lessonPage(language, { unit, lesson }, entry, styles) {
-  const dictionary = DICTIONARIES[language];
-  const copy = LESSON_TEXT[language];
-  const lessonCopy = copy.lessons[lesson.id];
-  const kind = lessonKind(lesson);
-  const url = pageAddress(language, kind);
-  const description = withinLimit(lesson.beats
-    .filter((beat) => beat.page === FIRST_PAGE)
-    .map((beat) => plainLine(dictionary, lessonCopy.beats[beat.id])));
-  return document(language, [
-    ...metadata(language, {
-      url,
-      kind,
-      title: titleOf(dictionary, lessonCopy.title),
-      description,
-      schema: lessonSchema(language, url, lessonCopy, description)
-    }),
-    ...assets(entry, styles)
-  ], siteBody(dictionary, entry, lessonPageMarkup(dictionary, language, {
-    place: placeOf(kind, HOME_PAGE),
-    unit,
-    lesson,
-    copy
-  })));
-}
-
-function docPage(language, name, entry, styles) {
-  const dictionary = DICTIONARIES[language];
-  const kind = pageKind(name);
-  const url = pageAddress(language, kind);
+  const base = '../../';
+  const kind = `${name}/`;
+  const url = absolute(pagePath(language, kind));
   const monetized = AD_PAGES.includes(name);
   return document(language, [
     ...metadata(language, {
       url,
+      base,
       kind,
       title: titleOf(dictionary, dictionary.doc[name].title),
       description: dictionary.doc[name].description,
       schema: docSchema(language, url, name)
     }),
-    ...assets(entry, styles),
+    ...styleLinks(base, styles),
     ...(monetized ? [adLoader()] : [])
-  ], siteBody(dictionary, entry, docMarkup(dictionary, language, {
-    place: placeOf(kind, name),
-    name,
-    ads: monetized ? ADSENSE_SLOTS.map(adUnit) : []
-  })), 'page');
+  ], docMarkup(dictionary, language, name, monetized ? ADSENSE_SLOTS.map(adUnit) : []), 'page');
 }
 
 function redirectPage() {
@@ -401,26 +280,21 @@ function redirectPage() {
     redirectScript(),
     ...metadata(DEFAULT_LANGUAGE, {
       url,
-      kind: HOME_KIND,
-      title: titleOf(dictionary, dictionary.course.title),
-      description: dictionary.course.description,
-      schema: { ...courseSchema(DEFAULT_LANGUAGE), url },
+      base: '',
+      kind: APP_KIND,
+      title: titleOf(dictionary),
+      description: dictionary.description,
+      schema: appSchema(DEFAULT_LANGUAGE, url),
       canonical: false
     })
   ], []);
 }
 
-function notFoundPage(styles) {
+function notFoundPage() {
   return document(DEFAULT_LANGUAGE, [
-    VIEWPORT_META,
     '<meta name="robots" content="noindex">',
-    `<title>${NOT_FOUND}</title>`,
-    ...ICON_LINKS,
-    ...styleLinks(styles)
-  ], [tag('main', { class: 'splash page__center' }, [
-    tag('h1', { class: 'splash__name' }, NOT_FOUND),
-    link(escape(DICTIONARIES[DEFAULT_LANGUAGE].help.name), SITE_ROOT, 'btn btn--accent')
-  ])], 'page');
+    `<title>${NOT_FOUND}</title>`
+  ], [NOT_FOUND]);
 }
 
 function sitemapEntry(language, kind) {
@@ -428,15 +302,15 @@ function sitemapEntry(language, kind) {
     .map(([hreflang, href]) => `      <xhtml:link rel="alternate" hreflang="${hreflang}" href="${href}"/>`)
     .join('\n');
   return `    <url>
-      <loc>${pageAddress(language, kind)}</loc>
+      <loc>${absolute(pagePath(language, kind))}</loc>
 ${links}
       <changefreq>monthly</changefreq>
     </url>`;
 }
 
 function sitemap() {
-  const entries = [...PAGE_LANGUAGES]
-    .flatMap(([kind, languages]) => languages.map((language) => sitemapEntry(language, kind)))
+  const entries = PAGE_KINDS
+    .flatMap((kind) => LANGUAGES.map((language) => sitemapEntry(language, kind)))
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -452,28 +326,17 @@ async function emit(path, content) {
   console.log(path);
 }
 
-async function readEntry(path) {
-  return { path, modules: ordered(stamped(await readModules(path))) };
-}
-
-const practiceEntry = await readEntry(ENTRIES.practice);
-const lessonEntry = await readEntry(ENTRIES.lesson);
-const siteEntry = await readEntry(ENTRIES.site);
+const modules = ordered(stamped(await readModules(ENTRY)));
 const styles = stamped(await readStylesheets());
 
 await emit('index.html', redirectPage());
 
-await Promise.all(COURSE_LANGUAGES.flatMap((language) => [
-  emit(`${language}/index.html`, coursePage(language, siteEntry, styles)),
-  ...PLACED_LESSONS.map((placed) => emit(`${language}/${lessonKind(placed.lesson)}index.html`,
-    lessonPage(language, placed, lessonEntry, styles)))
-]));
+await Promise.all(LANGUAGES.map((language) => emit(`${language}/index.html`,
+  appPage(language, modules, styles))));
 
-await Promise.all(LANGUAGES.flatMap((language) => [
-  emit(`${language}/${PRACTICE_KIND}index.html`, practicePage(language, practiceEntry, styles)),
-  ...DOC_PAGES.map((name) => emit(`${language}/${pageKind(name)}index.html`, docPage(language, name, siteEntry, styles)))
-]));
+await Promise.all(LANGUAGES.flatMap((language) => DOC_PAGES.map((name) =>
+  emit(`${language}/${name}/index.html`, docPage(language, name, styles)))));
 
-await emit('404.html', notFoundPage(styles));
+await emit('404.html', notFoundPage());
 
 await emit('sitemap.xml', sitemap());

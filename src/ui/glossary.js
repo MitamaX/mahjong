@@ -1,19 +1,21 @@
 import { GUARD } from '../core/danger.js';
-import { parseFigure } from '../core/lesson.js';
-import { TERM_FIGURES } from '../lessons/terms.js';
-import { figureHtml, figureStyle } from './figureView.js';
-import { button, classNames, div, escape, html, link, outlineNumber, tag, text } from './markup.js';
+import { SUIT, Tiles } from '../core/tiles.js';
+import { tileHtml } from './tileView.js';
+import { doraTilesHtml } from './board.js';
+import { button, div, escape, html, link, outlineNumber, text } from './markup.js';
 
+const CITE_MARK = 'cite';
+const SAFE_MARK = 'best';
+const PLUS = '+';
+const ARROW = '→';
 const LINE_BREAK = '';
 const LINK_PATTERN = /\[\[(\w+)(?:\|([^\]]+))?\]\]/g;
 const TERM_PREFIX = 'term-';
-const CLOSE_MARK = '×';
-const CLEARED_HASH = '#none';
 const NAKA_SUJI = 'nakaSuji';
 const KATA_SUJI = 'kataSuji';
 
 export const PANEL_CASES = [GUARD.GENBUTSU, GUARD.HONOR, GUARD.KABE, GUARD.SUJI];
-const GUIDE_CASES = [
+export const GUIDE_CASES = [
   { id: GUARD.GENBUTSU },
   { id: GUARD.HONOR },
   { id: GUARD.KABE },
@@ -21,37 +23,90 @@ const GUIDE_CASES = [
   { id: GUARD.NO_SUJI }
 ];
 
-const GLOSSARY_GROUPS = [
-  { name: 'tiles', ids: ['suited', 'honor', 'man', 'pin', 'sou', 'winds', 'dragons'] },
-  {
-    name: 'flow',
-    ids: ['shimocha', 'toimen', 'kamicha', 'oya', 'ko', 'hand', 'wall', 'draw', 'turn', 'discard', 'dora', 'indicator']
-  },
-  { name: 'melds', ids: ['agari', 'meld', 'run', 'triplet', 'pair', 'tenpai'] },
-  { name: 'build', ids: ['build', 'taatsu', 'toitsu', 'ukeire', 'shanten', 'block', 'fiveBlocks', 'isolated', 'menzen'] },
-  { name: 'waits', ids: ['wait', 'ryanmen', 'kanchan', 'penchan', 'tanki', 'shanpon'] },
-  { name: 'riichi', ids: ['riichi', 'declare', 'tsumogiri', 'tsumo', 'ron', 'dealIn', 'furiten'] },
-  {
-    name: 'defense',
-    ids: ['betaori', 'safeTile', 'genbutsu', 'suji', NAKA_SUJI, KATA_SUJI, 'kabe', 'noSuji', 'seen', 'chase']
-  }
+export const GLOSSARY_GROUPS = [
+  { name: 'flow', ids: ['turn', 'oya', 'ko', 'dora', 'draw'] },
+  { name: 'win', ids: ['agari', 'tenpai', 'shanten', 'ukeire', 'riichi', 'tsumo', 'ron', 'dealIn', 'furiten'] },
+  { name: 'wait', ids: ['wait', 'ryanmen', 'kanchan', 'penchan', 'tanki', 'shanpon'] },
+  { name: 'defense', ids: ['safeTile', 'genbutsu', 'suji', NAKA_SUJI, KATA_SUJI, 'kabe', 'honor', 'noSuji'] }
 ];
 
-const FIGURES = Object.fromEntries(Object.entries(TERM_FIGURES).map(([id, spec]) => [id, parseFigure(spec)]));
-const CARD_FIGURE = 'term-figure';
-const CASE_FIGURE = 'case__figure';
+const man = (rank) => Tiles.indexOf(SUIT.MAN, rank);
+const pin = (rank) => Tiles.indexOf(SUIT.PIN, rank);
+const sou = (rank) => Tiles.indexOf(SUIT.SOU, rank);
+const honor = (rank) => Tiles.indexOf(SUIT.HONOR, rank);
 
-export const TERM_FIGURE_STYLE = figureStyle(...Object.values(FIGURES));
+const set = (...tiles) => ({ tiles });
+const cite = (...tiles) => ({ tiles, mark: CITE_MARK });
+const best = (...tiles) => ({ tiles, mark: SAFE_MARK });
+const run = (suit, low) => set(suit(low), suit(low + 1), suit(low + 2));
+
+const EAST = honor(1);
+const SOUTH = honor(2);
+const WEST = honor(3);
+const NORTH = honor(4);
+const WHITE = honor(5);
+const RED = honor(7);
+
+const MAN_RUN = run(man, 1);
+const PIN_RUN = run(pin, 4);
+const SOU_RUN = run(sou, 7);
+const EAST_PAIR = set(EAST, EAST);
+const RED_PAIR = set(RED, RED);
+
+const TANKI_HAND = [MAN_RUN, PIN_RUN, SOU_RUN, set(EAST, EAST, EAST), best(WHITE)];
+const WIDE_HAND = [run(man, 2), run(pin, 5), run(sou, 2), best(sou(6), sou(7)), RED_PAIR];
+const ONE_AWAY_HAND = [MAN_RUN, PIN_RUN, SOU_RUN, EAST_PAIR, cite(WHITE, RED)];
+const TWO_AWAY_HAND = [MAN_RUN, set(pin(4), pin(5)), SOU_RUN, EAST_PAIR, cite(pin(9), WHITE, RED)];
+const THREE_AWAY_HAND = [MAN_RUN, set(pin(4), pin(5)), set(sou(8), sou(9)), EAST_PAIR,
+  cite(pin(9), sou(2), WHITE, RED)];
+const FURITEN_HAND = [run(man, 2), run(man, 6), best(pin(3), pin(4)), run(sou, 2), RED_PAIR];
+const WAIT_NOTES = { draw: 'wait' };
+const winRows = (note) => [{ hold: TANKI_HAND, draw: [WHITE], notes: { draw: note } }];
+const besideSafe = (term) => ({ hold: 'safe', safe: term });
+
+export const FIGURES = {
+  turn: [{ hold: [cite(EAST, SOUTH, WEST, NORTH)] }],
+  oya: [{ hold: [cite(EAST)] }],
+  ko: [{ hold: [cite(SOUTH, WEST, NORTH)] }],
+  dora: [{ hold: [cite(man(3))], rack: true, safe: [man(4)], notes: { hold: 'indicator', safe: 'dora' } }],
+  agari: winRows('wait'),
+  tenpai: [{ hold: WIDE_HAND, draw: [sou(5), sou(8)], notes: WAIT_NOTES }],
+  shanten: [
+    { hold: THREE_AWAY_HAND, shanten: 3 },
+    { hold: TWO_AWAY_HAND, shanten: 2 },
+    { hold: ONE_AWAY_HAND, shanten: 1 }
+  ],
+  ukeire: [{ hold: [cite(pin(5), pin(6))], draw: [pin(4), pin(7)], notes: { draw: 'ukeire' } }],
+  riichi: [{ hold: [cite(man(5))], turned: true, notes: { hold: 'declare' } }],
+  tsumo: [{ hold: WIDE_HAND, draw: [sou(5)], notes: { draw: 'tsumo' } }],
+  ron: winRows('ron'),
+  dealIn: winRows('dealIn'),
+  furiten: [{ hold: FURITEN_HAND, safe: [pin(2), pin(5)], notes: { safe: 'furiten' } }],
+  wait: [{ hold: WIDE_HAND, safe: [sou(5), sou(8)], notes: { safe: 'wait' } }],
+  ryanmen: [{ hold: [cite(pin(3), pin(4))], draw: [pin(2), pin(5)], notes: WAIT_NOTES }],
+  kanchan: [{ hold: [cite(pin(3), pin(5))], draw: [pin(4)], notes: WAIT_NOTES }],
+  penchan: [{ hold: [cite(pin(1), pin(2))], draw: [pin(3)], notes: WAIT_NOTES }],
+  tanki: [{ hold: [cite(pin(5))], draw: [pin(5)], notes: WAIT_NOTES }],
+  shanpon: [{ hold: [cite(pin(3), pin(3)), cite(pin(5), pin(5))], draw: [pin(3), pin(5)], notes: WAIT_NOTES }],
+  genbutsu: [{ hold: [cite(pin(5))], safe: [pin(5)], notes: { hold: 'discard', safe: 'safe' } }],
+  suji: [{ hold: [cite(man(4))], safe: [man(1), man(7)], notes: besideSafe('suji') }],
+  nakaSuji: [{ hold: [cite(man(2), man(8))], safe: [man(5)], notes: besideSafe('nakaSuji') }],
+  kataSuji: [{ hold: [cite(man(2))], safe: [man(5)], notes: besideSafe('kataSuji') }],
+  kabe: [{ hold: [cite(sou(3), sou(3), sou(3), sou(3))], safe: [sou(2)], notes: { hold: 'kabe' } }],
+  honor: [{ hold: [cite(WEST, WEST, WEST)], safe: [WEST], notes: { hold: 'seen' } }]
+};
+
+const figuresOf = (id) => FIGURES[id] ?? [];
 
 export const termOf = (dictionary, id) => dictionary.glossary.term[id];
 
 export const termIds = (dictionary) => Object.keys(dictionary.glossary.term);
 
-const termAnchorId = (id) => `${TERM_PREFIX}${id}`;
+export const termAnchorId = (id) => `${TERM_PREFIX}${id}`;
 
 const termLabel = (dictionary, id, label) => escape(label ?? termOf(dictionary, id).name);
 
-export const inlineName = (dictionary, id) => termOf(dictionary, id).name.toLowerCase();
+const inlineName = (dictionary, id) => termOf(dictionary, id).name.toLowerCase();
 
 export const termButton = (dictionary, id, label) =>
   button(termLabel(dictionary, id, label), { class: 'link', 'data-term': id });
@@ -59,26 +114,41 @@ export const termButton = (dictionary, id, label) =>
 export const termAnchor = (dictionary, id, label) =>
   link(termLabel(dictionary, id, label), `#${termAnchorId(id)}`, 'link');
 
-export const helpGroupHtml = (name, heading, body) => tag(name, { class: 'help__group' }, [heading, body]);
+const tileRow = (tiles, mark, turned) =>
+  div('tile-row', tiles.map((tile) => tileHtml(tile, { mark, turned })));
 
-export const sectionHtml = (title, body) => helpGroupHtml('div', text(title, 'caption'), body);
+const groupHtml = ({ tiles, mark }, { turned, rack } = {}) =>
+  (rack ? div('rack rack--figure', doraTilesHtml(tiles[0], mark)) : tileRow(tiles, mark, turned));
 
-export const captionOf = (dictionary, fallback = () => null) => (key) => termOf(dictionary, key)?.name ?? fallback(key);
+const handHtml = (groups, options) => div('hand-figure', groups.map((group) => groupHtml(group, options)));
 
-const termFigureHtml = (dictionary, id, className) =>
-  id in FIGURES && figureHtml(FIGURES[id], { class: className }, captionOf(dictionary));
+export const sectionHtml = (title, body) => div('help__group', [text(title, 'caption'), body]);
 
-const linkLabel = (dictionary, id, label) => label ?? inlineName(dictionary, id);
+const noteLabel = (dictionary, note) => dictionary.annotation[note] ?? termOf(dictionary, note).name;
 
-export const plainLine = (dictionary, source) =>
-  source.replace(LINK_PATTERN, (unused, id, label) => linkLabel(dictionary, id, label));
+const annotatedHtml = (dictionary, body, note) => (note
+  ? div('annotated', [body, text(noteLabel(dictionary, note), 'caption annotated__note')])
+  : body);
+
+export function figureParts(dictionary, { hold, draw, safe, turned, rack, shanten, notes = {} }) {
+  const annotate = (body, part) => annotatedHtml(dictionary, body, notes[part]);
+  return html([
+    shanten !== undefined && text(dictionary.shantenMark(shanten), 'caption'),
+    annotate(handHtml(hold, { turned, rack }), 'hold'),
+    draw && [text(PLUS, 'op'), annotate(tileRow(draw, SAFE_MARK), 'draw')],
+    safe && [text(ARROW, 'op'), annotate(tileRow(safe, SAFE_MARK), 'safe')]
+  ]);
+}
+
+export const figureRows = (dictionary, id) =>
+  figuresOf(id).map((row) => div('row', figureParts(dictionary, row)));
 
 export function lineHtml(dictionary, source, linkTerm) {
   const parts = [];
   let read = 0;
   for (const match of source.matchAll(LINK_PATTERN)) {
     if (match.index > read) parts.push(escape(source.slice(read, match.index)));
-    parts.push(linkTerm(dictionary, match[1], linkLabel(dictionary, match[1], match[2])));
+    parts.push(linkTerm(dictionary, match[1], match[2] ?? inlineName(dictionary, match[1])));
     read = match.index + match[0].length;
   }
   if (read < source.length) parts.push(escape(source.slice(read)));
@@ -91,7 +161,7 @@ export const linesHtml = (dictionary, lines, className, linkTerm) => div(classNa
 const caseBodyHtml = (dictionary, id, linkTerm) => [
   div('row', [
     text(termOf(dictionary, id).name, 'case__name'),
-    termFigureHtml(dictionary, id, CASE_FIGURE)
+    figuresOf(id).map((row) => figureParts(dictionary, row))
   ]),
   lineHtml(dictionary, termOf(dictionary, id).text, linkTerm)
 ];
@@ -103,33 +173,16 @@ const rankEntries = (cases) => cases.flatMap(({ id, subs = [] }, index) => [
   ...subs.map((sub, order) => ({ id: sub, number: outlineNumber(index, order) }))
 ]);
 
-const RANKED_CASES = rankEntries(GUIDE_CASES);
-
-export const CASE_FIGURE_STYLE = figureStyle(...RANKED_CASES.map(({ id }) => FIGURES[id]));
-
-export const rankedCasesHtml = (dictionary, linkTerm) => tag('div', { class: 'rank', style: CASE_FIGURE_STYLE },
-  RANKED_CASES.map(({ id, number }) => div('rank__item surface', [
+export const rankedCasesHtml = (dictionary, cases, linkTerm) => div('rank', rankEntries(cases).map(({ id, number }) =>
+  div('rank__item surface', [
     text(number, 'rank__number'),
     div('case', caseBodyHtml(dictionary, id, linkTerm))
   ])));
 
 export const articleBodyHtml = (dictionary, id, linkTerm) => [
-  termFigureHtml(dictionary, id, CARD_FIGURE),
+  figureRows(dictionary, id),
   lineHtml(dictionary, termOf(dictionary, id).text, linkTerm)
 ];
-
-const termCardHtml = (dictionary, id) => tag('article', { class: 'term', id: termAnchorId(id) }, [
-  div('term__head', [
-    tag('h3', { class: 'article__title' }, escape(termOf(dictionary, id).name)),
-    link(CLOSE_MARK, CLEARED_HASH, 'term__close', { 'aria-label': dictionary.close })
-  ]),
-  articleBodyHtml(dictionary, id, termAnchor)
-]);
-
-export const termLayerHtml = (dictionary, modifier) => tag('aside', {
-  class: classNames('term-layer', modifier),
-  style: TERM_FIGURE_STYLE
-}, termIds(dictionary).map((id) => termCardHtml(dictionary, id)));
 
 export const glossaryIndexHtml = (dictionary, linkTerm) =>
   GLOSSARY_GROUPS.map(({ name, ids }) => sectionHtml(dictionary.glossary.group[name],

@@ -4,8 +4,11 @@ import { Wall } from './wall.js';
 import { shuffledWall, mulberry32 } from './deal.js';
 import { OpponentBrain } from './opponent.js';
 import { Evaluator } from './evaluator.js';
-import { HAND_SIZE, PLAYER, SEATS, WINDS } from './seats.js';
 
+const WINDS = ['東', '南', '西', '北'];
+const SEATS = [0, 1, 2, 3];
+const PLAYER = 0;
+const HAND_SIZE = 13;
 const RIICHI_WALL_FLOOR = 4;
 const DEFENSE_SHANTEN_FLOOR = 2;
 const PHASE = { AUTO: 'auto', DEFENSE: 'defense' };
@@ -54,11 +57,11 @@ export class Round {
   }
 
   remaining(viewer = PLAYER) {
-    return Tiles.unseen([
-      ...this.hands[viewer].tiles,
-      ...this.rivers.flatMap((river) => river.map((entry) => entry.tile)),
-      this.doraIndicator
-    ]);
+    const seen = Tiles.emptyCounts();
+    this.hands[viewer].counts.forEach((amount, tile) => { seen[tile] += amount; });
+    this.rivers.forEach((river) => river.forEach((entry) => { seen[entry.tile] += 1; }));
+    seen[this.doraIndicator] += 1;
+    return seen.map((amount) => 4 - amount);
   }
 
   passedTiles(seat, upTo = this.log.length) {
@@ -216,3 +219,5 @@ export class Round {
     return { ...this.evaluator.summary(), result: this.result };
   }
 }
+
+export { PLAYER, WINDS };

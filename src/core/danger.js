@@ -166,9 +166,5 @@ export { GUARD };
 export const Danger = {
   profile(threats, remaining) {
     return new ThreatProfile(threats, remaining);
-  },
-
-  guard(tile, threat, remaining) {
-    return guardOf(tile, threat, remaining);
   }
 };

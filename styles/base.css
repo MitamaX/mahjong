@@ -14,11 +14,6 @@ body {
   margin: 0;
 }
 
-:root:lang(ko) {
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
 body {
   display: flex;
   padding: var(--safe-pad);
@@ -42,24 +37,4 @@ button {
 
 button:disabled {
   cursor: default;
-}
-
-:focus-visible {
-  outline: var(--focus-w) solid var(--tan);
-  outline-offset: var(--focus-gap);
-}
-
-[role='dialog'] {
-  outline: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
 }
