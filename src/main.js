@@ -1,17 +1,14 @@
-import { Round, PLAYER } from './core/round.js';
-import { Settings } from './core/settings.js';
-import { pageLanguage } from './core/locale.js';
+import { Round } from './core/round.js';
+import { PLAYER } from './core/seats.js';
 import { OverlayView } from './ui/overlayView.js';
 import { TableView } from './ui/tableView.js';
 import { ReportView } from './ui/reportView.js';
-import { SettingsView } from './ui/settingsView.js';
 import { HelpView } from './ui/helpView.js';
-import { repaintTiles } from './ui/tileView.js';
+import { bootPage } from './ui/pageBoot.js';
 import { strings } from './i18n/index.js';
 
 const TEMPO = { auto: 40, self: 150, opponent: 280, riichi: 900, result: 1000, load: 420 };
 const MAX_DEALS = 24;
-const STYLED_SETTING = 'tileStyle';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -25,10 +22,7 @@ function pauseFor(event) {
 class App {
   constructor(roots) {
     this.busy = false;
-    this.panels = {
-      help: new HelpView(roots.help),
-      settings: new SettingsView(roots.settings)
-    };
+    this.panels = { help: new HelpView(roots.help) };
     this.table = new TableView(roots.table, {
       onDiscard: (tile, withRiichi) => this.discard(tile, withRiichi),
       onTool: (name) => this.panels[name].show()
@@ -37,9 +31,6 @@ class App {
       onRestart: () => this.start()
     });
     this.loader = new OverlayView(roots.loader);
-    Settings.subscribe((name) => {
-      if (name === STYLED_SETTING) repaintTiles(document);
-    });
   }
 
   async start() {
@@ -83,14 +74,12 @@ class App {
   }
 }
 
-Settings.set('language', pageLanguage());
-repaintTiles(document);
+bootPage();
 
 const app = new App({
   table: document.querySelector('[data-table]'),
   report: document.querySelector('[data-report]'),
   loader: document.querySelector('[data-loader]'),
-  settings: document.querySelector('[data-settings-panel]'),
   help: document.querySelector('[data-help-panel]')
 });
 app.start();

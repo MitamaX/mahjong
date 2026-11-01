@@ -1,8 +1,9 @@
-import { tileHtml } from './tileView.js';
-import { OverlayView } from './overlayView.js';
+import { MARK, tileHtml } from './tileView.js';
+import { OverlayView, overlayHtml } from './overlayView.js';
 import { SEAT_CLASSES, doraTilesHtml, riverRowsHtml } from './board.js';
 import { button, classNames, div, escape, html, tag, text } from './markup.js';
-import { PLAYER } from '../core/round.js';
+import { inlineName } from './glossary.js';
+import { PLAYER } from '../core/seats.js';
 import { GUARD } from '../core/danger.js';
 import { COPIES } from '../core/tiles.js';
 import { strings } from '../i18n/index.js';
@@ -11,9 +12,6 @@ const SAFE_GUARDS = [GUARD.GENBUTSU, GUARD.SUJI, GUARD.HONOR];
 const CITE_SEPARATOR = '·';
 const LEDGER_KEYS = ['turn', 'picked', 'best', 'shanten', 'danger', 'verdict'];
 const COMPACT_STATS = 'stats stats--compact';
-const BEST_MARK = 'best';
-const PICK_MARK = 'pick';
-const CITE_MARK = 'cite';
 const SAME_MARK = '=';
 const EDGES = [
   { key: 'danger', holds: (best, picked) => best.danger < picked.danger },
@@ -36,12 +34,12 @@ const SUMMARY_STATS = [
 ];
 
 function guardText({ kind, left }) {
-  const name = strings().guard[kind];
+  const name = inlineName(strings(), kind);
   return left === null ? name : strings().seen(COPIES - left, name);
 }
 
 const citeList = (cites) => cites
-  .map((tile) => cited(tile, CITE_MARK))
+  .map((tile) => cited(tile, MARK.CITE))
   .flatMap((part, index) => (index ? [CITE_SEPARATOR, part] : [part]));
 
 const sharesGuard = (best, picked) => (best.guard?.kind ?? null) === (picked.guard?.kind ?? null);
@@ -76,7 +74,7 @@ function cited(tile, mark) {
 
 function noteSegments({ best, picked }) {
   const { note } = strings();
-  const choice = cited(best.tile, BEST_MARK);
+  const choice = cited(best.tile, MARK.BEST);
   const edge = edgeLabel(best, picked);
   const cites = citeList(best.guard.cites);
   const guard = guardText(best.guard);
@@ -101,9 +99,11 @@ const citedMarks = (segments) => new Map(segments
 const ledgerHead = (dictionary) =>
   div('ledger__row ledger__row--head', LEDGER_KEYS.map((key) => text(dictionary.ledger[key])));
 
-export const reportMarkup = (dictionary) => div('panel', [
+const OUTCOME_ID = 'report-outcome';
+
+export const reportMarkup = (dictionary) => overlayHtml('report', div('panel sheet', [
   tag('header', { class: 'panel__head' }, [
-    tag('span', { class: 'panel__title', 'data-outcome': true }),
+    tag('span', { class: 'panel__title', id: OUTCOME_ID, 'data-outcome': true }),
     tag('span', { class: 'grade', 'data-grade': true })
   ]),
   div('stats stats--summary', SUMMARY_STATS.map(({ key }) => statHtml(dictionary.stat[key], '', key))),
@@ -115,7 +115,7 @@ export const reportMarkup = (dictionary) => div('panel', [
     ])
   ]),
   button(escape(dictionary.restart), { class: 'btn btn--accent btn--wide panel__action', 'data-restart': true })
-]);
+]), { 'aria-labelledby': OUTCOME_ID });
 
 export class ReportView extends OverlayView {
   constructor(root, { onRestart }) {
@@ -170,9 +170,9 @@ export class ReportView extends OverlayView {
 
   compareRows(record) {
     const { compare } = strings();
-    const best = this.compareRow(compare.best, record.best, BEST_MARK);
+    const best = this.compareRow(compare.best, record.best, MARK.BEST);
     if (record.picked.tile === record.best.tile) return [best];
-    return [this.compareRow(compare.picked, record.picked, PICK_MARK), best];
+    return [this.compareRow(compare.picked, record.picked, MARK.PICK), best];
   }
 
   compareRow(label, stats, mark) {
@@ -210,8 +210,8 @@ export class ReportView extends OverlayView {
   }
 
   markOf(tile, record) {
-    if (tile === record.best.tile) return BEST_MARK;
-    if (tile === record.picked.tile) return PICK_MARK;
+    if (tile === record.best.tile) return MARK.BEST;
+    if (tile === record.picked.tile) return MARK.PICK;
     return null;
   }
 }

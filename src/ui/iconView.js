@@ -1,7 +1,11 @@
 const VIEW = 24;
 const CENTER = VIEW / 2;
-const GEAR = { teeth: 8, toothWidth: 3.2, toothTop: 1.5, toothLength: 5, radius: 4.6, stroke: 3 };
+const GEAR = { teeth: 8, tip: 10.8, root: 7.8, tipShare: 0.34, rootShare: 0.5, hole: 4, round: 1 };
+const RIGHT_ANGLE = 90;
+const PRECISION = 2;
 const QUESTION = { size: 24, baseline: 8.4 };
+const CHECK = { path: 'M5 12.5 9.8 17.2 19 7', stroke: 3 };
+const CHEVRON = { path: 'M6 9.5 12 15.5 18 9.5', stroke: 3 };
 const GITHUB = {
   span: 16,
   path: 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38'
@@ -13,19 +17,41 @@ const GITHUB = {
     + ' 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'
 };
 
-function gearTeeth() {
-  const step = 360 / GEAR.teeth;
-  return Array.from({ length: GEAR.teeth }, (unused, index) =>
-    `<rect x="${CENTER - GEAR.toothWidth / 2}" y="${GEAR.toothTop}"`
-    + ` width="${GEAR.toothWidth}" height="${GEAR.toothLength}" rx="${GEAR.toothWidth / 2}"`
-    + ` transform="rotate(${step * index} ${CENTER} ${CENTER})"/>`).join('');
+const coordinate = (value) => Number(value.toFixed(PRECISION));
+
+function polar(radius, degrees) {
+  const radians = (degrees - RIGHT_ANGLE) * Math.PI / 180;
+  return `${coordinate(CENTER + radius * Math.cos(radians))} ${coordinate(CENTER + radius * Math.sin(radians))}`;
 }
 
+function gearRim() {
+  const pitch = 360 / GEAR.teeth;
+  const tipHalf = pitch * GEAR.tipShare / 2;
+  const rootHalf = pitch * GEAR.rootShare / 2;
+  return `${Array.from({ length: GEAR.teeth }, (unused, index) => {
+    const angle = pitch * index;
+    return `${index ? 'L' : 'M'}${polar(GEAR.root, angle - rootHalf)}`
+      + `L${polar(GEAR.tip, angle - tipHalf)}L${polar(GEAR.tip, angle + tipHalf)}`
+      + `L${polar(GEAR.root, angle + rootHalf)}`
+      + `A${GEAR.root} ${GEAR.root} 0 0 1 ${polar(GEAR.root, angle + pitch - rootHalf)}`;
+  }).join('')}Z`;
+}
+
+function gearHole() {
+  const { hole } = GEAR;
+  return `M${CENTER + hole} ${CENTER}A${hole} ${hole} 0 1 0 ${CENTER - hole} ${CENTER}`
+    + `A${hole} ${hole} 0 1 0 ${CENTER + hole} ${CENTER}Z`;
+}
+
+const strokePath = ({ path, stroke }) => `<path d="${path}" fill="none" stroke="currentColor" stroke-width="${stroke}"`
+  + ' stroke-linecap="round" stroke-linejoin="round"/>';
+
 const ICONS = {
-  settings: () => `${gearTeeth()}`
-    + `<circle cx="${CENTER}" cy="${CENTER}" r="${GEAR.radius}" fill="none"`
-    + ` stroke="currentColor" stroke-width="${GEAR.stroke}"/>`,
+  settings: () => `<path d="${gearRim()}${gearHole()}" fill-rule="evenodd"`
+    + ` stroke="currentColor" stroke-width="${GEAR.round}" stroke-linejoin="round"/>`,
   help: () => `<text x="${CENTER}" y="${CENTER + QUESTION.baseline}" font-size="${QUESTION.size}">?</text>`,
+  check: () => strokePath(CHECK),
+  chevron: () => strokePath(CHEVRON),
   github: () => `<path transform="scale(${VIEW / GITHUB.span})" d="${GITHUB.path}"/>`
 };
 
