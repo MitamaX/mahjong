@@ -1,3 +1,4 @@
+import { Notation } from '../core/notation.js';
 import {
   ARROW, doraOf, figure, group, handUkeireFigure, handWaitFigure, riichiGenbutsuFigure, splitRow, ukeireFigure, waitFigure
 } from './figure.js';
@@ -10,8 +11,7 @@ const SUITED = group('suited', SAME_RANK);
 const HONOR = group('honor', '1z6z7z');
 export const FAMILIES = figure([SUITED, HONOR]);
 
-const seatFigure = (tiles) => figure([group('seats', tiles, { mark: MARK.CITE })]);
-const DISCARDS = group('discard', '2z1s9m1p');
+export const DISCARDS = group('discard', '2z1s9m1p');
 const DORA_SAMPLE = ['3p', '4p'];
 
 export const COMPLETE_MELDS = ['123m', '456p', '789s', '111z'];
@@ -33,6 +33,11 @@ const TAATSU_ARRIVALS = ukeireFigure(TAATSU_SHAPES.ryanmen);
 
 export const FIVE_TAATSU = ['79m', '67p'];
 export const FIVE_BLOCKS = ['234m', '678s', ...FIVE_TAATSU, WHITE_PAIR];
+const LOOSE_NEIGHBOR = '45s';
+const KEPT_BLOCKS = ['234m', '789p', LOOSE_NEIGHBOR, WHITE_PAIR];
+const LOOSE_TILES = '1s3z';
+const LOOSE_GROUPS = Notation.split(LOOSE_TILES).map((tile) => group('isolated', tile, { mark: MARK.BEST }));
+export const ISOLATED_COVER = figure([group('block', LOOSE_NEIGHBOR), ...LOOSE_GROUPS]);
 
 export const REACH = [
   { id: 'honor', tile: '3z', reach: '3z' },
@@ -77,12 +82,6 @@ export const TERM_FIGURES = {
   winds: figure([group('winds', '1234z')]),
   dragons: figure([group('dragons', '567z')]),
 
-  oya: seatFigure('1z'),
-  ko: seatFigure('234z'),
-  turn: seatFigure('1234z'),
-  hand: figure([group('hand', '123m456p')]),
-  wall: figure([group('wall', '2m7p4s6z9p')]),
-  discard: figure([DISCARDS]),
   dora: doraOf(...DORA_SAMPLE),
   indicator: doraOf(...DORA_SAMPLE, 'indicator'),
 
@@ -99,7 +98,7 @@ export const TERM_FIGURES = {
   shanten: handUkeireFigure([group('shanten', ONE_SHANTEN)], ONE_SHANTEN_UKEIRE),
   block: figure([group('meld', '678s'), group('taatsu', '67p'), group('toitsu', WHITE_PAIR)]),
   fiveBlocks: figure(FIVE_BLOCKS.map((block) => group('block', block))),
-  isolated: figure([group('isolated', ISOLATED_TILES.join(''))]),
+  isolated: figure([...KEPT_BLOCKS.map((block) => group('block', block)), ...LOOSE_GROUPS]),
 
   wait: handWaitFigure([group('tenpai', RYANMEN_TILES)], RYANMEN_WAITS),
   ryanmen: waitFigure(WAIT_SHAPES.ryanmen),
@@ -112,9 +111,6 @@ export const TERM_FIGURES = {
   declare: DECLARED,
   tsumogiri: figure([group('drawn', '2z'), ARROW, group('river', '2z')]),
   tsumo: figure([group('ryanmen', '34s'), group('tsumo', '5s', { mark: MARK.BEST })]),
-  ron: figure([group('river', '8s3p'), group('ron', '4s', { mark: MARK.BEST })]),
-  dealIn: figure([group('river', DEAL_IN_TILE, { mark: MARK.PICK })]),
-  furiten: figure([group('wait', '14s', { wrong: true })]),
 
   betaori: riichiGenbutsuFigure(['3*m'], '3m'),
   genbutsu: figure([...DECLARED_RIVER, ARROW, group('genbutsu', '1s', { mark: MARK.BEST })]),

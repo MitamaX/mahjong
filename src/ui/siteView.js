@@ -1,5 +1,5 @@
 import { SETTING_VALUES } from '../core/settings.js';
-import { GUIDE_PAGE, HOME_KIND, HOME_PAGE, PRACTICE_PAGE, PRIVACY_PAGE, pageKind, pageUrl } from '../core/locale.js';
+import { HOME_KIND, HOME_PAGE, PRACTICE_PAGE, PRIVACY_PAGE, pageKind, pageUrl } from '../core/locale.js';
 import { LANGUAGE_NAMES } from '../i18n/index.js';
 import { iconSvg } from './iconView.js';
 import { HREF, INFO_ROWS, REPOSITORY } from './linkView.js';
@@ -11,11 +11,10 @@ const FOOT_LINK = 'site-foot__link';
 export const SITE_PAGES = {
   [HOME_PAGE]: { kind: HOME_KIND, label: (dictionary) => dictionary.doc.home },
   [PRACTICE_PAGE]: { kind: pageKind(PRACTICE_PAGE), label: (dictionary) => dictionary.course.practice },
-  [GUIDE_PAGE]: { kind: pageKind(GUIDE_PAGE), label: (dictionary) => dictionary.doc[GUIDE_PAGE].nav },
   [PRIVACY_PAGE]: { kind: pageKind(PRIVACY_PAGE), label: (dictionary) => dictionary.doc[PRIVACY_PAGE].nav }
 };
 
-const BAR_PAGES = [HOME_PAGE, PRACTICE_PAGE, GUIDE_PAGE];
+const BAR_PAGES = [HOME_PAGE, PRACTICE_PAGE];
 const FOOT_PAGES = Object.keys(SITE_PAGES);
 
 export const pageLink = (dictionary, language, name, className, attrs) =>
@@ -44,16 +43,20 @@ const languageMenuHtml = (language, place) => tag('details', { class: 'menu', 'd
   div('menu__list', SETTING_VALUES.language.map(languageOption(language, place)))
 ]);
 
-const settingsButtonHtml = (dictionary) => button(iconSvg('settings'), {
+const panelButtonHtml = (name, label) => button(iconSvg(name), {
   class: `${BAR_CONTROL} btn--icon`,
-  'aria-label': dictionary.settings.title,
-  'data-open-settings': true
+  'aria-label': label,
+  [`data-open-${name}`]: true
 });
 
 const siteBarHtml = (dictionary, language, place) => tag('header', { class: 'site-bar' }, [
   brandHtml(dictionary, language),
   tag('nav', { class: 'segment site-bar__nav' }, BAR_PAGES.map(navLink(dictionary, language, place, BAR_CONTROL))),
-  div('site-bar__tools', [languageMenuHtml(language, place), settingsButtonHtml(dictionary)])
+  div('site-bar__tools', [
+    languageMenuHtml(language, place),
+    panelButtonHtml('help', dictionary.help.title),
+    panelButtonHtml('settings', dictionary.settings.title)
+  ])
 ]);
 
 const footGroupHtml = (title, items) => div('site-foot__group', [text(title, 'site-foot__title'), items]);

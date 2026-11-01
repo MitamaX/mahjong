@@ -4,7 +4,7 @@ import { Position } from './position.js';
 import { PLAYER, SEAT_NAMES } from './seats.js';
 
 export const UNLISTED = 'other';
-const SCENE_KEYS = ['figure', 'focus', 'callout', 'cycle', 'blocks', 'marks'];
+const SCENE_KEYS = ['figure', 'focus', 'callout', 'cycle', 'blocks', 'marks', 'afterRiichi'];
 const TARGET_SEPARATOR = ':';
 
 const keyedTiles = (groups = {}) => new Map(Object.entries(groups)
@@ -52,13 +52,14 @@ function checkScene(spec) {
 class Scene {
   constructor(spec, figures) {
     checkScene(spec);
-    const { figure = null, focus = [], callout = [], cycle = [], blocks = null, marks } = spec;
+    const { figure = null, focus = [], callout = [], cycle = [], blocks = null, marks, afterRiichi = false } = spec;
     this.figure = figure ? figures.indexOf(figure) : null;
     this.focus = focus;
     this.callout = callout.map(targetOf);
     this.cycle = cycle.map(targetOf);
     this.blocks = blocks && blocks.map((block) => Notation.tiles(block));
     this.marks = keyedTiles(marks);
+    this.afterRiichi = afterRiichi;
   }
 }
 

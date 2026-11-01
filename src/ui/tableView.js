@@ -1,12 +1,10 @@
 import { tileHtml } from './tileView.js';
 import { NO_MARKS, SEAT_CLASSES, backTilesHtml, doraTilesHtml, faceTilesHtml, markOf, riverRowsHtml } from './board.js';
-import { iconSvg } from './iconView.js';
 import { DiscardInput } from './discardInput.js';
 import { button, classNames, div, escape, html, tag, text } from './markup.js';
 import { PLAYER } from '../core/seats.js';
 
 const ANNOUNCE_MS = 900;
-const TOOLS = ['help'];
 const OPENING_ROUND = '東1';
 
 const BLOCKED_CLASS = 'hand--blocks';
@@ -79,25 +77,17 @@ const centerHtml = (dictionary) => div('center', [
   ])
 ]);
 
-const toolsHtml = (dictionary) => div('board__corner board__tools', TOOLS.map((name) =>
-  button(iconSvg(name), {
-    class: 'btn btn--icon btn--felt',
-    'aria-label': dictionary[name].title,
-    'data-tool': name
-  })));
-
 export const splashMarkup = (dictionary) => tag('div', { class: 'splash', 'data-splash': true }, [
   tag('h1', { class: 'splash__name' }, escape(dictionary.brand)),
   tag('p', { class: 'splash__tagline' }, escape(dictionary.tagline))
 ]);
 
-export const tableMarkup = (dictionary, { tools = true } = {}) => html([
+export const tableMarkup = (dictionary) => html([
   tag('section', { class: 'board', 'data-stage': true, hidden: true },
     div('table board__square', [
       SEAT_CLASSES.map(seatHtml),
       centerHtml(dictionary),
       tag('div', { class: 'rack board__corner board__dora', 'data-dora': true }),
-      tools && toolsHtml(dictionary),
       tag('div', { class: 'announce', 'data-announce': true, hidden: true })
     ])),
   tag('section', { class: 'dock', 'data-stage': true, hidden: true }, [
@@ -111,7 +101,7 @@ export const tableMarkup = (dictionary, { tools = true } = {}) => html([
 ]);
 
 export class TableView {
-  constructor(root, { onDiscard, onTool, nameOf = () => null, dimIdle = true }) {
+  constructor(root, { onDiscard, nameOf = () => null, dimIdle = true }) {
     this.root = root;
     this.dimIdle = dimIdle;
     this.nameOf = nameOf;
@@ -121,9 +111,6 @@ export class TableView {
     this.riichiButton.addEventListener('click', () => {
       this.setRiichiMode(!this.riichiMode);
       this.renderHand();
-    });
-    this.root.querySelectorAll('[data-tool]').forEach((node) => {
-      node.addEventListener('click', () => onTool(node.dataset.tool));
     });
   }
 
@@ -190,7 +177,7 @@ export class TableView {
       this.seatNode('data-wind', seat.seat).textContent = seat.wind;
       this.seatNode('data-riichi-chip', seat.seat).classList.toggle('chip--on', seat.declared);
       this.renderSeatHand(seat);
-      this.seatNode('data-river', seat.seat).innerHTML = riverRowsHtml(seat.river, this.marks);
+      this.seatNode('data-river', seat.seat).innerHTML = riverRowsHtml(seat.river, this.marks, this.state.afterRiichi);
     });
     this.markLast(previous);
   }

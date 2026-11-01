@@ -1,7 +1,7 @@
 import { Notation } from '../core/notation.js';
 import { doraOf, figure, group, ring } from './figure.js';
 import {
-  ALL_RIVERS, DORA, EMPTY_WALL, OPPONENTS, SAMPLE, SAMPLE_DRAWN, SAMPLE_HAND, SHOW_HAND, WALL_AFTER_DRAW,
+  ALL_PLATES, ALL_RIVERS, DORA, EMPTY_WALL, OPPONENTS, SAMPLE, SAMPLE_DRAWN, SAMPLE_HAND, SHOW_HAND, WALL_AFTER_DRAW,
   choose, choosePage, grouped, opening, pick, singlePage
 } from './table.js';
 import { TERM_FIGURES } from './terms.js';
@@ -33,6 +33,7 @@ const SEATS = {
         { id: 'right', callout: ['hidden:right'] },
         { id: 'across', callout: ['hidden:across'] },
         { id: 'left', callout: ['hidden:left'] },
+        { id: 'plates', callout: ALL_PLATES },
         { id: 'rivers', callout: ALL_RIVERS },
         { id: 'use', callout: [`river:across:${ROUND.across.river}`, 'hidden:across'] }
       ]
@@ -49,7 +50,7 @@ const SEATS = {
   ]
 };
 
-const HAND = singlePage('hand', TERM_FIGURES.hand, SAMPLE, [
+const HAND = singlePage('hand', figure([group('hand', '123m456p')]), SAMPLE, [
   { id: 'hand', ...SHOW_HAND },
   { id: 'sorted', ...grouped(SUIT_GROUPS, ...SUIT_GROUPS) },
   { id: 'hidden', callout: OPPONENTS },
@@ -58,9 +59,10 @@ const HAND = singlePage('hand', TERM_FIGURES.hand, SAMPLE, [
 
 const EMPTY = opening({ hand: SAMPLE_HAND }, { wall: EMPTY_WALL });
 
-const WALL = singlePage('wall', TERM_FIGURES.wall, SAMPLE, [
+const WALL = singlePage('wall', figure([group('wall', '2m7p4s6z9p')]), SAMPLE, [
   { id: 'pile' },
   { id: 'wall', callout: ['wall'] },
+  { id: 'dead', callout: ['dora'] },
   { id: 'shrink', board: SAMPLE_DRAWN, callout: ['wall', 'drawn'] },
   { id: 'empty', board: EMPTY, callout: ['wall'] },
   { id: 'over', board: EMPTY, callout: EVERYONE }

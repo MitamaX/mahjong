@@ -69,7 +69,7 @@ const KABE_TABLE = { hand: '3459m2378p12334s', across: '1z9p7z2m9s4*z', left: '1
 
 const KABE = {
   id: 'kabe',
-  cover: figure([KABE_WALL, ARROW, group('outer', '12s', { mark: MARK.BEST })]),
+  cover: figure([KABE_WALL, group('outer', '12s', { mark: MARK.BEST })]),
   pages: [
     {
       id: 'learn',

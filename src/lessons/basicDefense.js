@@ -1,9 +1,9 @@
 import { Notation } from '../core/notation.js';
 import { ARROW, figure, group, lineFigure, riichiGenbutsuFigure, sidesFigure, waitFigure } from './figure.js';
-import { citedPick, pickPages } from './table.js';
+import { AFTER_RIICHI, citedPick, guidedAfterRiichi, pickPages } from './table.js';
 import { FURITEN, FURITEN_DRAWN, FURITEN_RIVER } from './riichi.js';
 import { NOTHING_SAFER, riichiTable, safeDrill } from './riichiTable.js';
-import { SEEN_HONOR, SUJI_SOURCE, TERM_FIGURES } from './terms.js';
+import { DISCARDS, SEEN_HONOR, SUJI_SOURCE, TERM_FIGURES } from './terms.js';
 import { MARK } from '../ui/tileView.js';
 
 const GENBUTSU_TILES = Notation.split(FURITEN_RIVER).join('');
@@ -12,7 +12,7 @@ const GENBUTSU_FIGURE = figure([group('genbutsu', GENBUTSU_TILES)]);
 
 const GENBUTSU = {
   id: 'genbutsu',
-  cover: TERM_FIGURES.discard,
+  cover: figure([DISCARDS]),
   pages: [
     {
       id: 'learn',
@@ -95,9 +95,10 @@ const PASSED = {
       beats: [
         { id: 'river', callout: ['river:across'] },
         { id: 'passed', callout: [`river:left:${FIRST_PASSED}`, 'riichi:across'] },
-        { id: 'furiten', callout: [`river:left:${FIRST_PASSED}`] },
-        { id: 'anyone' },
-        { id: 'before', callout: ['river:right'] },
+        { id: 'mark', callout: [`river:left:${FIRST_PASSED}`], ...AFTER_RIICHI },
+        { id: 'furiten', callout: [`river:left:${FIRST_PASSED}`], ...AFTER_RIICHI },
+        { id: 'anyone', ...AFTER_RIICHI },
+        { id: 'before', callout: ['river:right'], ...AFTER_RIICHI },
         { id: 'only', callout: ['plate:across'] }
       ]
     },
@@ -127,7 +128,7 @@ const PASSED = {
         self: '1z2z3z6m8p3m3z1s9m8s5z7z', right: '4z5z7z6z4p6z1m2m2s7m5s3z',
         across: '2z7z1m3m2s1z8s7m6*p9m9m6m', left: '1z5z6z9s6m1z7z5m5s9m6z4z'
       }, { correct: { safe: '4z' }, wrong: { before: '4p1s' } })
-    ])
+    ], guidedAfterRiichi)
   ]
 };
 

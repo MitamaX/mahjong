@@ -2,12 +2,12 @@ import { Notation } from '../core/notation.js';
 import { SEAT_NAMES } from '../core/seats.js';
 import { COPIES } from '../core/tiles.js';
 import { counted, figure, group, ukeireFigure } from './figure.js';
-import { COMPLETE, COMPLETE_BLOCKS } from './melds.js';
+import { COMPLETE, COMPLETE_BLOCKS, TENPAI } from './melds.js';
 import {
   SHOW_HAND, WALL_AFTER_DRAW, dealt, drillOn, drillPages, grouped, handPart, looseDrill, opening
 } from './table.js';
 import {
-  FIVE_BLOCKS, FIVE_TAATSU, ISOLATED_TILES, KANCHAN, PENCHAN, REACH, RYANMEN, TAATSU_SHAPES, TERM_FIGURES, WHITE_PAIR
+  FIVE_BLOCKS, FIVE_TAATSU, ISOLATED_COVER, ISOLATED_TILES, KANCHAN, PENCHAN, REACH, RYANMEN, TAATSU_SHAPES, TERM_FIGURES, WHITE_PAIR
 } from './terms.js';
 
 const UPPER_PENCHAN = ['taatsu', '89s', '7s', { tag: 'penchan' }];
@@ -87,7 +87,7 @@ const REACH_FIGURE = ukeireFigure(...REACH.map(({ tile, reach }) => [tile, tile,
 
 const ISOLATED = {
   id: 'isolated',
-  cover: TERM_FIGURES.isolated,
+  cover: ISOLATED_COVER,
   pages: [
     {
       id: 'learn',
@@ -163,10 +163,15 @@ const MENZEN_TURNS = [
 
 const wallAt = (turn) => WALL_AFTER_DRAW - turn * SEAT_NAMES.length;
 
+const MENZEN_OTHERS = { right: '9p1z2m8s', across: '1z8p6s4z', left: '8m3z9s7z' };
+
+const othersAt = (turn) => Object.fromEntries(Object.entries(MENZEN_OTHERS)
+  .map(([seat, river]) => [seat, { river: Notation.split(river).slice(0, turn).join('') }]));
+
 const turnDrills = (start, turns) => turns.reduce(({ hand, river, specs }, { draw, loose, kept, blocks }, turn) => ({
   hand: Notation.without(`${hand}${draw}`, loose),
   river: `${river}${loose}`,
-  specs: [...specs, looseDrill(opening({ hand, draw, river }, { wall: wallAt(turn) }), blocks, loose, kept)]
+  specs: [...specs, looseDrill({ ...opening({ hand, draw, river }, { wall: wallAt(turn) }), ...othersAt(turn) }, blocks, loose, kept)]
 }), { hand: start, river: '', specs: [] }).specs;
 
 const MENZEN = {
@@ -186,4 +191,4 @@ const MENZEN = {
   ]
 };
 
-export const BUILD_LESSONS = [TAATSU, BLOCKS, ISOLATED, TRIM, MENZEN];
+export const BUILD_LESSONS = [TAATSU, TENPAI, BLOCKS, ISOLATED, TRIM, MENZEN];

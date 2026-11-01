@@ -16,20 +16,16 @@ import { splashMarkup, tableMarkup } from '../src/ui/tableView.js';
 import { reportMarkup } from '../src/ui/reportView.js';
 import { settingsMarkup } from '../src/ui/settingsView.js';
 import { helpMarkup } from '../src/ui/helpView.js';
-import { AD_PAGES, docMarkup } from '../src/ui/docView.js';
+import { docMarkup } from '../src/ui/docView.js';
 import { courseMarkup, lessonKind, lessonPageMarkup } from '../src/ui/courseView.js';
 import { screenFrame } from '../src/ui/siteView.js';
 import { overlayHtml } from '../src/ui/overlayView.js';
 
 const SITE = 'https://betaori.app';
-const ADSENSE_SRC = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-const ADSENSE_CLIENT = 'ca-pub-9410921386046089';
-const ADSENSE_SLOTS = ['6622171051', '4362356727'];
-const ADSENSE_PUSH = '<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>';
 const LOADER_TILES = 4;
 const NOT_FOUND = '404';
 const OG_LOCALES = { ko: 'ko_KR', ja: 'ja_JP', en: 'en_US' };
-const DOC_SCHEMA = { guide: 'Article', privacy: 'WebPage' };
+const DOC_SCHEMA = { privacy: 'WebPage' };
 const DEFAULT_LANGUAGE = 'ja';
 const PRACTICE_KIND = pageKind(PRACTICE_PAGE);
 const PLACED_LESSONS = UNITS.flatMap((unit) => unit.lessons.map((lesson) => ({ unit, lesson })));
@@ -47,7 +43,6 @@ const ENTRIES = {
   lesson: join(ROOT, 'src', 'lesson.js'),
   site: join(ROOT, 'src', 'site.js')
 };
-const [COURSE_AD_SLOT] = ADSENSE_SLOTS;
 const FIRST_PAGE = 0;
 const DESCRIPTION_LIMIT = 160;
 const VIEWPORT_META = '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">';
@@ -191,26 +186,9 @@ function metadata(language, { url, kind, title: rawTitle, description: rawDescri
   ];
 }
 
-function adLoader() {
-  return `<script async src="${ADSENSE_SRC}?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>`;
-}
-
-function adUnit(slot) {
-  return tag('aside', { class: 'ad' }, [
-    tag('ins', {
-      class: 'adsbygoogle ad__unit',
-      style: 'display:block',
-      'data-ad-client': ADSENSE_CLIENT,
-      'data-ad-slot': slot,
-      'data-ad-format': 'auto',
-      'data-full-width-responsive': 'true'
-    }),
-    ADSENSE_PUSH
-  ]);
-}
-
-function siteBody(dictionary, entry, content, overlays = []) {
-  return [content, overlays, settingsMarkup(dictionary), entryScript(entry)];
+function siteBody(language, entry, content, overlays = []) {
+  const dictionary = DICTIONARIES[language];
+  return [content, overlays, helpMarkup(dictionary, language), settingsMarkup(dictionary), entryScript(entry)];
 }
 
 async function readModules(path, sources = new Map()) {
@@ -320,9 +298,8 @@ function practicePage(language, entry, styles) {
       schema: appSchema(language, url)
     }),
     ...assets(entry, styles)
-  ], siteBody(dictionary, entry, screenFrame(dictionary, language, placeOf(PRACTICE_KIND, PRACTICE_PAGE), stage), [
+  ], siteBody(language, entry, screenFrame(dictionary, language, placeOf(PRACTICE_KIND, PRACTICE_PAGE), stage), [
     reportMarkup(dictionary),
-    helpMarkup(dictionary, language),
     overlayHtml('loader', div('loader', backTilesHtml(LOADER_TILES)))
   ]));
 }
@@ -337,12 +314,10 @@ function coursePage(language, entry, styles) {
       description: dictionary.course.description,
       schema: courseSchema(language)
     }),
-    ...assets(entry, styles),
-    adLoader()
-  ], siteBody(dictionary, entry, courseMarkup(dictionary, language, {
+    ...assets(entry, styles)
+  ], siteBody(language, entry, courseMarkup(dictionary, language, {
     place: placeOf(HOME_KIND, HOME_PAGE),
-    copy: LESSON_TEXT[language],
-    ad: adUnit(COURSE_AD_SLOT)
+    copy: LESSON_TEXT[language]
   })), 'page');
 }
 
@@ -364,7 +339,7 @@ function lessonPage(language, { unit, lesson }, entry, styles) {
       schema: lessonSchema(language, url, lessonCopy, description)
     }),
     ...assets(entry, styles)
-  ], siteBody(dictionary, entry, lessonPageMarkup(dictionary, language, {
+  ], siteBody(language, entry, lessonPageMarkup(dictionary, language, {
     place: placeOf(kind, HOME_PAGE),
     unit,
     lesson,
@@ -376,7 +351,6 @@ function docPage(language, name, entry, styles) {
   const dictionary = DICTIONARIES[language];
   const kind = pageKind(name);
   const url = pageAddress(language, kind);
-  const monetized = AD_PAGES.includes(name);
   return document(language, [
     ...metadata(language, {
       url,
@@ -385,12 +359,10 @@ function docPage(language, name, entry, styles) {
       description: dictionary.doc[name].description,
       schema: docSchema(language, url, name)
     }),
-    ...assets(entry, styles),
-    ...(monetized ? [adLoader()] : [])
-  ], siteBody(dictionary, entry, docMarkup(dictionary, language, {
+    ...assets(entry, styles)
+  ], siteBody(language, entry, docMarkup(dictionary, language, {
     place: placeOf(kind, name),
-    name,
-    ads: monetized ? ADSENSE_SLOTS.map(adUnit) : []
+    name
   })), 'page');
 }
 

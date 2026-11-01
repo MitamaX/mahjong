@@ -1,7 +1,7 @@
 import { COPIES, Tiles } from '../core/tiles.js';
 import { Notation } from '../core/notation.js';
 import { figure, group, multiplied, named, ring } from './figure.js';
-import { SAMPLE, SAMPLE_DRAWN, choose, opening, pick } from './table.js';
+import { SAMPLE, SAMPLE_DRAWN, choose, opening } from './table.js';
 import { FAMILIES, SAME_RANK, TERM_FIGURES } from './terms.js';
 
 const SUITS = ['man', 'pin', 'sou'];
@@ -34,7 +34,7 @@ const COUNT = {
     {
       id: 'practice',
       board: opening({ hand: '159m5555p37s1257z', draw: '4z' }),
-      beats: [pick('pick', { correct: { four: '5p' } })]
+      beats: [choose('pick', { correct: { four: '5p' } })]
     }
   ]
 };

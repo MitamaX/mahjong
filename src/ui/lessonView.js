@@ -5,17 +5,17 @@ import { overlayHtml } from './overlayView.js';
 import { figureHtml, figureStyle } from './figureView.js';
 import { MARK } from './tileView.js';
 import { iconSvg } from './iconView.js';
-import { captionOf, lineHtml, termAnchor, termLayerHtml, termOf } from './glossary.js';
+import { captionOf, lineHtml, termAnchor } from './glossary.js';
 import { button, classNames, div, escape, link, tag, text } from './markup.js';
 import { UNLISTED, VERDICT } from '../core/lesson.js';
+import { Progress } from '../core/progress.js';
 import { Notation } from '../core/notation.js';
 import { KINDS, Tiles } from '../core/tiles.js';
 
-const SHAKE_CLASS = 'tile--shake';
+const MOTIONS = { [VERDICT.CORRECT]: 'tile--lift', [VERDICT.WRONG]: 'tile--shake' };
 const CURRENT_CLASS = 'beat--on';
 const DIM_CLASS = 'figure__group--dim';
 const FIGURE_SCENE = 'lesson__stage--figure';
-const STAGE_TERM_LAYER = 'term-layer--stage';
 const SCROLLED_BODY = 'lesson__body--scrolled';
 const PROGRESS = '--progress';
 const VERDICTS = {
@@ -28,16 +28,15 @@ const PICKED_SLOT = '<span data-picked></span>';
 
 const markedWith = (scene, tile, mark) => new Map(scene.marks).set(tile, mark);
 
-const tileNameOf = (dictionary, { honors }, tile) => (Tiles.isHonor(tile)
+const tileNameOf = ({ honors, suits }, tile) => (Tiles.isHonor(tile)
   ? honors[Tiles.rankOf(tile) - 1]
-  : `${Tiles.rankOf(tile)}${termOf(dictionary, Tiles.suitName(tile)).name}`);
+  : `${Tiles.rankOf(tile)}${suits[Tiles.suitName(tile)]}`);
 
-const tileNamesOf = (dictionary, names) =>
-  Array.from({ length: KINDS }, (unused, tile) => tileNameOf(dictionary, names, tile));
+const tileNamesOf = (names) => Array.from({ length: KINDS }, (unused, tile) => tileNameOf(names, tile));
 
 const sceneCaptionOf = (dictionary, names) => captionOf(dictionary, (key) => {
   const tile = Notation.tile(key);
-  return names.labels[key] ?? (tile === null ? null : tileNameOf(dictionary, names, tile));
+  return names.labels[key] ?? (tile === null ? null : tileNameOf(names, tile));
 });
 
 const sceneFigureHtml = (dictionary, names) => (figure, index) => figureHtml(figure, {
@@ -93,13 +92,12 @@ export const completionHtml = (dictionary, title, finish) => overlayHtml('comple
 export const lessonMarkup = (dictionary, { lesson, copy, title, names, chapter }) => tag('main', {
   class: 'lesson screen__body',
   'data-lesson': lesson.id,
-  'data-tile-names': JSON.stringify(tileNamesOf(dictionary, names))
+  'data-tile-names': JSON.stringify(tileNamesOf(names))
 }, [
   tag('section', { class: 'stage lesson__stage sheet', 'data-scene': true }, [
-    tag('div', { class: 'app', 'data-table': true }, tableMarkup(dictionary, { tools: false })),
+    tag('div', { class: 'app', 'data-table': true }, tableMarkup(dictionary)),
     div('lesson__figures', lesson.figures.map(sceneFigureHtml(dictionary, names))),
-    tag('svg', { class: 'callout', 'data-callout': true, 'aria-hidden': 'true', hidden: true }),
-    termLayerHtml(dictionary, STAGE_TERM_LAYER)
+    tag('svg', { class: 'callout', 'data-callout': true, 'aria-hidden': 'true', hidden: true })
   ]),
   div('lesson__panel sheet', [
     tag('header', { class: 'stack lesson__head' }, [
@@ -168,8 +166,13 @@ export class LessonPlayer {
   }
 
   advance() {
-    if (this.onLastBeat) this.completion.show();
+    if (this.onLastBeat) this.complete();
     else this.show(this.index + 1);
+  }
+
+  complete() {
+    Progress.complete(this.lesson.id);
+    this.completion.show();
   }
 
   show(index) {
@@ -208,7 +211,7 @@ export class LessonPlayer {
   }
 
   stageScene(scene, awaiting, marks = scene.marks) {
-    this.table.render({ ...this.position.snapshot(awaiting), marks, blocks: scene.blocks });
+    this.table.render({ ...this.position.snapshot(awaiting), marks, blocks: scene.blocks, afterRiichi: scene.afterRiichi });
     this.showFigure(scene);
     this.callout.point(this.regionsOf(scene.callout), this.regionsOf(scene.cycle));
   }
@@ -236,15 +239,20 @@ export class LessonPlayer {
   solve(tile) {
     this.solved.set(this.index, tile);
     this.stageSolved(tile);
+    if (this.beat.chosen) this.gesture(tile, VERDICT.CORRECT);
     this.sync();
     this.node('next').focus();
   }
 
   miss(tile, verdict) {
     this.stageScene(this.beat.scene, true, markedWith(this.beat.scene, tile, MARK.PICK));
+    this.gesture(tile, verdict)?.focus();
+  }
+
+  gesture(tile, verdict) {
     const node = this.table.handTile(tile);
-    if (verdict === VERDICT.WRONG) node?.classList.add(SHAKE_CLASS);
-    node?.focus();
+    if (MOTIONS[verdict]) node?.classList.add(MOTIONS[verdict]);
+    return node;
   }
 
   stageSolved(tile) {

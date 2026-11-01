@@ -3,247 +3,1033 @@
     <url>
       <loc>https://betaori.app/ko/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/"/>
+      <xhtml:link rel="alternate" hreflang="x-default" href="https://betaori.app/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/"/>
+      <xhtml:link rel="alternate" hreflang="x-default" href="https://betaori.app/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/"/>
       <xhtml:link rel="alternate" hreflang="x-default" href="https://betaori.app/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/count/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/count/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/count/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/count/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/count/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/count/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/count/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/count/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/count/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/count/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/count/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/count/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/families/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/families/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/families/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/families/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/families/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/families/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/families/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/families/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/families/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/families/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/families/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/families/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/man/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/man/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/man/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/man/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/man/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/man/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/man/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/man/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/man/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/man/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/man/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/man/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/pin/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/pin/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/pin/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/pin/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/pin/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/pin/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/pin/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/pin/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/pin/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/pin/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/pin/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/pin/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/sou/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/sou/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/sou/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/sou/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/sou/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/sou/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/sou/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/sou/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/sou/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/sou/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/sou/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/sou/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/suited/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/suited/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/suited/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/suited/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/suited/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/suited/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/suited/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/suited/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/suited/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/suited/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/suited/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/suited/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/winds/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/winds/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/winds/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/winds/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/winds/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/winds/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/winds/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/winds/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/winds/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/winds/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/winds/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/winds/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/dragons/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dragons/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dragons/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dragons/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/dragons/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dragons/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dragons/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dragons/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/dragons/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dragons/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dragons/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dragons/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/seats/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/seats/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/seats/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/seats/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/seats/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/seats/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/seats/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/seats/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/seats/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/seats/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/seats/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/seats/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/hand/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/hand/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/hand/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/hand/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/hand/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/hand/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/hand/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/hand/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/hand/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/hand/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/hand/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/hand/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/wall/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/wall/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/wall/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/wall/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/wall/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/wall/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/wall/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/wall/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/wall/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/wall/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/wall/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/wall/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/turn/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/turn/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/turn/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/turn/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/turn/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/turn/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/turn/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/turn/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/turn/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/turn/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/turn/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/turn/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/dora/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dora/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dora/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dora/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/dora/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dora/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dora/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dora/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/dora/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dora/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dora/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dora/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/shape/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/shape/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/shape/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/shape/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/shape/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/shape/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/shape/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/shape/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/shape/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/shape/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/shape/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/shape/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/runs/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/runs/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/runs/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/runs/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/runs/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/runs/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/runs/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/runs/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/runs/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/runs/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/runs/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/runs/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/triplets/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/triplets/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/triplets/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/triplets/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/triplets/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/triplets/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/triplets/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/triplets/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/triplets/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/triplets/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/triplets/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/triplets/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/pairs/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/pairs/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/pairs/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/pairs/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/pairs/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/pairs/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/pairs/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/pairs/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/pairs/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/pairs/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/pairs/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/pairs/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/split/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/split/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/split/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/split/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
-      <loc>https://betaori.app/ko/lessons/tenpai/</loc>
-      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tenpai/"/>
+      <loc>https://betaori.app/ja/lessons/split/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/split/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/split/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/split/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/split/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/split/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/split/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/split/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/taatsu/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/taatsu/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/taatsu/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/taatsu/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/taatsu/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/taatsu/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/taatsu/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/taatsu/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/taatsu/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/taatsu/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/taatsu/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/taatsu/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ko/lessons/tenpai/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tenpai/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tenpai/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tenpai/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/tenpai/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tenpai/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tenpai/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tenpai/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/tenpai/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tenpai/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tenpai/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tenpai/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/blocks/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/blocks/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/blocks/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/blocks/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/blocks/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/blocks/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/blocks/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/blocks/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/blocks/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/blocks/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/blocks/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/blocks/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/isolated/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/isolated/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/isolated/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/isolated/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/isolated/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/isolated/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/isolated/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/isolated/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/isolated/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/isolated/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/isolated/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/isolated/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/trim/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/trim/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/trim/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/trim/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/trim/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/trim/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/trim/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/trim/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/trim/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/trim/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/trim/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/trim/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/menzen/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/menzen/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/menzen/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/menzen/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/menzen/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/menzen/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/menzen/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/menzen/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/menzen/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/menzen/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/menzen/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/menzen/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/waits/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/waits/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/waits/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/waits/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/waits/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/waits/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/waits/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/waits/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/waits/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/waits/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/waits/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/waits/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/ryanmen/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/ryanmen/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/ryanmen/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/ryanmen/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/ryanmen/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/ryanmen/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/ryanmen/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/ryanmen/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/ryanmen/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/ryanmen/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/ryanmen/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/ryanmen/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/compare/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/compare/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/compare/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/compare/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/compare/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/compare/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/compare/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/compare/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/compare/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/compare/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/compare/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/compare/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/riichi/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/riichi/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/riichi/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/riichi/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/riichi/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/riichi/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/riichi/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/riichi/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/riichi/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/riichi/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/riichi/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/riichi/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/tsumo/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tsumo/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tsumo/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tsumo/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/tsumo/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tsumo/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tsumo/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tsumo/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/tsumo/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tsumo/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tsumo/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tsumo/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/tsumogiri/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tsumogiri/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tsumogiri/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tsumogiri/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/tsumogiri/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tsumogiri/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tsumogiri/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tsumogiri/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/tsumogiri/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/tsumogiri/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/tsumogiri/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/tsumogiri/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/ron/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/ron/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/ron/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/ron/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/ron/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/ron/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/ron/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/ron/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/ron/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/ron/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/ron/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/ron/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/dealin/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dealin/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dealin/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dealin/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/dealin/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dealin/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dealin/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dealin/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/dealin/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/dealin/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/dealin/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/dealin/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/reading/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/reading/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/reading/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/reading/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/reading/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/reading/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/reading/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/reading/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/reading/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/reading/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/reading/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/reading/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/furiten/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/furiten/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/furiten/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/furiten/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/furiten/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/furiten/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/furiten/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/furiten/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/furiten/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/furiten/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/furiten/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/furiten/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/genbutsu/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/genbutsu/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/genbutsu/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/genbutsu/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/genbutsu/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/genbutsu/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/genbutsu/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/genbutsu/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/genbutsu/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/genbutsu/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/genbutsu/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/genbutsu/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/betaori/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/betaori/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/betaori/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/betaori/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/betaori/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/betaori/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/betaori/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/betaori/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/betaori/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/betaori/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/betaori/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/betaori/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/passed/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/passed/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/passed/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/passed/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/passed/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/passed/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/passed/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/passed/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/passed/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/passed/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/passed/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/passed/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/honor/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/honor/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/honor/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/honor/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/honor/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/honor/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/honor/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/honor/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/honor/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/honor/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/honor/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/honor/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/suji/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/suji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/suji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/suji/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/suji/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/suji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/suji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/suji/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/suji/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/suji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/suji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/suji/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/nakasuji/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/nakasuji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/nakasuji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/nakasuji/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/nakasuji/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/nakasuji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/nakasuji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/nakasuji/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/nakasuji/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/nakasuji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/nakasuji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/nakasuji/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/kabe/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/kabe/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/kabe/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/kabe/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/kabe/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/kabe/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/kabe/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/kabe/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/kabe/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/kabe/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/kabe/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/kabe/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/safety/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/safety/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/safety/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/safety/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/safety/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/safety/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/safety/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/safety/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/safety/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/safety/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/safety/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/safety/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/order/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/order/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/order/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/order/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/order/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/order/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/order/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/order/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/order/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/order/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/order/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/order/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/chase/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/chase/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/chase/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/chase/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/chase/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/chase/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/chase/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/chase/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/chase/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/chase/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/chase/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/chase/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/shared/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/shared/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/shared/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/shared/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/shared/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/shared/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/shared/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/shared/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/shared/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/shared/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/shared/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/shared/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/keep/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/keep/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/keep/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/keep/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/keep/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/keep/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/keep/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/keep/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/keep/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/keep/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/keep/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/keep/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/nosuji/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/nosuji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/nosuji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/nosuji/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/nosuji/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/nosuji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/nosuji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/nosuji/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/nosuji/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/nosuji/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/nosuji/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/nosuji/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
       <loc>https://betaori.app/ko/lessons/counted/</loc>
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/counted/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/counted/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/counted/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/ja/lessons/counted/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/counted/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/counted/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/counted/"/>
+      <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://betaori.app/en/lessons/counted/</loc>
+      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/lessons/counted/"/>
+      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/lessons/counted/"/>
+      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/lessons/counted/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>
@@ -265,27 +1051,6 @@
       <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/practice/"/>
       <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/practice/"/>
       <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/practice/"/>
-      <changefreq>monthly</changefreq>
-    </url>
-    <url>
-      <loc>https://betaori.app/ko/guide/</loc>
-      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/guide/"/>
-      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/guide/"/>
-      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/guide/"/>
-      <changefreq>monthly</changefreq>
-    </url>
-    <url>
-      <loc>https://betaori.app/ja/guide/</loc>
-      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/guide/"/>
-      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/guide/"/>
-      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/guide/"/>
-      <changefreq>monthly</changefreq>
-    </url>
-    <url>
-      <loc>https://betaori.app/en/guide/</loc>
-      <xhtml:link rel="alternate" hreflang="ko" href="https://betaori.app/ko/guide/"/>
-      <xhtml:link rel="alternate" hreflang="ja" href="https://betaori.app/ja/guide/"/>
-      <xhtml:link rel="alternate" hreflang="en" href="https://betaori.app/en/guide/"/>
       <changefreq>monthly</changefreq>
     </url>
     <url>

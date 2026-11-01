@@ -3,7 +3,6 @@ import { PLAYER } from './core/seats.js';
 import { OverlayView } from './ui/overlayView.js';
 import { TableView } from './ui/tableView.js';
 import { ReportView } from './ui/reportView.js';
-import { HelpView } from './ui/helpView.js';
 import { bootPage } from './ui/pageBoot.js';
 import { strings } from './i18n/index.js';
 
@@ -22,10 +21,8 @@ function pauseFor(event) {
 class App {
   constructor(roots) {
     this.busy = false;
-    this.panels = { help: new HelpView(roots.help) };
     this.table = new TableView(roots.table, {
-      onDiscard: (tile, withRiichi) => this.discard(tile, withRiichi),
-      onTool: (name) => this.panels[name].show()
+      onDiscard: (tile, withRiichi) => this.discard(tile, withRiichi)
     });
     this.report = new ReportView(roots.report, {
       onRestart: () => this.start()
@@ -79,7 +76,6 @@ bootPage();
 const app = new App({
   table: document.querySelector('[data-table]'),
   report: document.querySelector('[data-report]'),
-  loader: document.querySelector('[data-loader]'),
-  help: document.querySelector('[data-help-panel]')
+  loader: document.querySelector('[data-loader]')
 });
 app.start();

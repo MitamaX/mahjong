@@ -13,13 +13,14 @@ export const markOf = (marks, tile) => marks.get(tile) ?? null;
 const riverColumns = () =>
   Number(getComputedStyle(document.documentElement).getPropertyValue(RIVER_COLUMNS));
 
-export function riverRowsHtml(entries, marks = NO_MARKS) {
+export function riverRowsHtml(entries, marks = NO_MARKS, showsAfterRiichi = false) {
   const columns = riverColumns();
   const rows = [];
   entries.forEach((entry, index) => {
     if (index % columns === 0) rows.push([]);
     rows[rows.length - 1].push(tileHtml(entry.tile, {
       turned: entry.turned,
+      afterRiichi: showsAfterRiichi && entry.afterRiichi,
       mark: markOf(marks, entry.tile)
     }));
   });

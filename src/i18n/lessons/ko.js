@@ -1,11 +1,15 @@
 const NOT_TENPAI = '고른 패는 {tile}입니다. 버리면 텐파이가 되지 않습니다.';
 const IN_MELD = '고른 패는 {tile}입니다. 몸통이나 머리에 쓰이는 패입니다.';
+const RIGHT_TILE = '고른 패는 {tile}입니다. 숫자와 종류가 모두 맞습니다.';
 const WIDER = '대기패가 더 많은 텐파이가 되도록 패 1장을 버리세요.';
 const MAKE_TENPAI = '패 1장을 버려 텐파이를 만드세요.';
 const DRILL_COUNT = 5;
 const DRILL_IDS = Array.from({ length: DRILL_COUNT }, (unused, order) => `pick${order + 1}`);
 const READING_PICKS = 3;
 const everyDrill = (value, count = DRILL_COUNT) => Object.fromEntries(DRILL_IDS.slice(0, count).map((id) => [id, value]));
+const GUIDED_PICKS = 2;
+const guidedDrill = (guide, task) => ({ ...everyDrill(task), ...everyDrill(`${guide} ${task}`, GUIDED_PICKS) });
+const eachDrill = (values) => Object.fromEntries(values.map((value, order) => [DRILL_IDS[order], value]));
 const SUITED_PICKED = '고른 패는 {tile}, 숫자가 있는 수패입니다.';
 const HONOR_PICKED = '고른 패는 {tile}, 숫자가 없는 자패입니다.';
 const SEAT_NOTES = {
@@ -76,7 +80,7 @@ const kabeNote = (kabe) => ({
 const SAFETY_NOTES = {
   genbutsu: '고른 패는 {tile}, 대면의 현물입니다.',
   honor: '고른 패는 {tile}, 여러 장 보이는 자패입니다.',
-  kabe: '고른 패는 {tile}입니다. 벽 덕분에 양면으로 방총당하지 않습니다.',
+  kabe: '고른 패는 {tile}입니다. 벽 덕분에 양면으로 방총하지 않습니다.',
   naka: '고른 패는 {tile}, 양쪽 스지가 모두 현물인 나카스지입니다.',
   suji: '고른 패는 {tile}, 현물에서 세 칸 떨어진 스지입니다.',
   kata: '고른 패는 {tile}입니다. 한쪽 스지만 현물인 카타스지입니다.'
@@ -91,6 +95,11 @@ const CHASE_NOTES = {
   other: '고른 패는 {tile}입니다. 두 사람 모두의 현물이 아닙니다.'
 };
 const chaseNote = (both) => ({ ...CHASE_NOTES, both });
+const READING_WAITS = ['78통 양면으로 6통과 9통을', '46삭 간짱으로 5삭을', '12삭 변짱으로 3삭을', '2통과 7삭 샤보로', '4만 단기로'];
+const readingNote = (wait) => ({
+  safe: `고른 패는 대면의 대기패가 아닙니다. 대면은 ${wait} 기다립니다.`,
+  dealIn: `고른 패는 대면의 대기패입니다. 대면은 ${wait} 기다립니다.`
+});
 const countedNote = (seen) => ({ seen, other: '고른 패는 {tile}입니다. 더 많이 보이는 쪽이 있습니다.' });
 
 export const ko = {
@@ -108,6 +117,7 @@ export const ko = {
   labels: {
     copies: '4장'
   },
+  suits: { man: '만', pin: '통', sou: '삭' },
   honors: ['동', '남', '서', '북', '백', '발', '중'],
   lessons: {
     count: {
@@ -118,12 +128,12 @@ export const ko = {
         kinds: '패의 종류는 모두 34가지입니다.',
         copies: '종류마다 똑같은 패가 4장씩 있습니다.',
         total: '34종류가 4장씩이라 모두 136장입니다.',
-        pick: '[[hand]]에 똑같은 패 4장이 모두 들어 있습니다. 그 패를 1장 버리세요.'
+        pick: '똑같은 패 4장이 있습니다. 그 패를 골라 보세요.'
       },
       notes: {
         pick: {
-          four: '5통 4장이 모두 손패에 있었습니다.',
-          other: '고른 패는 {tile}입니다. 손패에 1장뿐입니다.'
+          four: '똑같은 패 4장을 찾았습니다.',
+          other: '고른 패는 {tile}입니다. 1장뿐인 패입니다.'
         }
       }
     },
@@ -146,62 +156,62 @@ export const ko = {
       }
     },
     man: {
-      title: '만',
+      title: '만수',
       summary: '1만부터 9만까지',
       beats: {
-        names: '[[man]]은 [[suited]]의 한 가지입니다. 1만부터 9만까지 9종류가 있습니다.',
+        names: '[[man]]는 [[suited]]의 한 가지입니다. 1만부터 9만까지 9종류가 있습니다.',
         read: '숫자 뒤에 만을 붙여 1만, 2만처럼 부릅니다.',
-        copies: '종류마다 4장씩, 만은 모두 36장입니다.',
+        copies: '종류마다 4장씩, 만수는 모두 36장입니다.',
         pick1: '3만을 골라 보세요.',
         pick2: '7만을 골라 보세요.',
         pick3: '6만을 골라 보세요.'
       },
-      notes: everyDrill({ right: '고른 패는 {tile}입니다. 萬 자 위의 한자가 숫자입니다.' }, READING_PICKS)
+      notes: everyDrill({ right: RIGHT_TILE }, READING_PICKS)
     },
     pin: {
-      title: '통',
+      title: '통수',
       summary: '1통부터 9통까지',
       beats: {
-        names: '[[pin]]은 [[suited]]의 한 가지입니다. 1통부터 9통까지 9종류가 있습니다.',
+        names: '[[pin]]는 [[suited]]의 한 가지입니다. 1통부터 9통까지 9종류가 있습니다.',
         read: '숫자 뒤에 통을 붙여 1통, 2통처럼 부릅니다.',
-        copies: '종류마다 4장씩, 통은 모두 36장입니다.',
+        copies: '종류마다 4장씩, 통수는 모두 36장입니다.',
         pick1: '3통을 골라 보세요.',
         pick2: '8통을 골라 보세요.',
         pick3: '5통을 골라 보세요.'
       },
-      notes: everyDrill({ right: '고른 패는 {tile}입니다. 동그라미 개수가 숫자입니다.' }, READING_PICKS)
+      notes: everyDrill({ right: RIGHT_TILE }, READING_PICKS)
     },
     sou: {
-      title: '삭',
+      title: '삭수',
       summary: '1삭부터 9삭까지',
       beats: {
-        names: '[[sou]]은 [[suited]]의 한 가지입니다. 1삭부터 9삭까지 9종류가 있습니다.',
+        names: '[[sou]]는 [[suited]]의 한 가지입니다. 1삭부터 9삭까지 9종류가 있습니다.',
         read: '숫자 뒤에 삭을 붙여 1삭, 2삭처럼 부릅니다.',
-        copies: '종류마다 4장씩, 삭은 모두 36장입니다.',
+        copies: '종류마다 4장씩, 삭수는 모두 36장입니다.',
         pick1: '1삭을 골라 보세요.',
         pick2: '8삭을 골라 보세요.',
         pick3: '5삭을 골라 보세요.'
       },
-      notes: everyDrill({ right: '고른 패는 {tile}입니다. 막대 개수가 숫자입니다.' }, READING_PICKS)
+      notes: everyDrill({ right: RIGHT_TILE }, READING_PICKS)
     },
     suited: {
       title: '수패 구분',
       summary: '숫자와 종류 함께 읽기',
       beats: {
-        same: '숫자가 같아도 [[man]]·[[pin]]·[[sou]]이 다르면 서로 다른 패입니다.',
+        same: '숫자가 같아도 [[man]]·[[pin]]·[[sou]]가 다르면 서로 다른 패입니다.',
         read: '[[suited]]는 숫자와 종류를 함께 읽습니다. 5만, 5통, 5삭은 모두 다른 패입니다.',
         pick1: '5통을 골라 보세요.',
         pick2: '7삭을 골라 보세요.',
         pick3: '9만을 골라 보세요.'
       },
-      notes: everyDrill({ right: '고른 패는 {tile}입니다. 숫자와 종류가 모두 맞습니다.' }, READING_PICKS)
+      notes: everyDrill({ right: RIGHT_TILE }, READING_PICKS)
     },
     winds: {
       title: '풍패',
       summary: '동·남·서·북',
       beats: {
         names: '[[winds]]는 [[honor]]의 한 가지입니다. 동·남·서·북 4종류가 있습니다.',
-        read: '동·남·서·북 순서로 외워 두세요. [[dora]]를 찾을 때 이 순서를 씁니다.',
+        read: '동·남·서·북 순서로 외워 두세요.',
         copies: '종류마다 4장씩, 풍패는 모두 16장입니다.',
         pick1: '남을 골라 보세요.',
         pick2: '북을 골라 보세요.',
@@ -218,7 +228,7 @@ export const ko = {
       summary: '백·발·중',
       beats: {
         names: '[[dragons]]는 [[honor]]의 한 가지입니다. 백·발·중 3종류가 있습니다.',
-        read: '백·발·중 순서로 외워 두세요. [[dora]]를 찾을 때 이 순서를 씁니다.',
+        read: '백·발·중 순서로 외워 두세요.',
         copies: '종류마다 4장씩, 삼원패는 모두 12장입니다.',
         pick1: '발을 골라 보세요.',
         pick2: '백을 골라 보세요.',
@@ -226,7 +236,7 @@ export const ko = {
       },
       notes: {
         pick1: { right: '發 자가 적힌 패가 발입니다.' },
-        pick2: { right: '테두리만 그려진 패가 백입니다.' },
+        pick2: { right: '아무 글자도 없는 패가 백입니다.' },
         pick3: { right: '中 자가 적힌 패가 중입니다.' }
       }
     },
@@ -239,6 +249,7 @@ export const ko = {
         right: '내 오른쪽 사람을 [[shimocha]]라고 합니다.',
         across: '내 맞은편 사람을 [[toimen]]이라고 합니다.',
         left: '내 왼쪽 사람을 [[kamicha]]라고 합니다.',
+        plates: '보드 가운데의 東·南·西·北은 각 자리의 이름표입니다.',
         rivers: '사람마다 자기 앞에 [[discard|버린 패]]를 놓습니다.',
         use: '그래서 버린 패가 놓인 곳을 보면 누가 버렸는지 알 수 있습니다.',
         pick1: '하가가 버린 패와 같은 패를 골라 보세요.',
@@ -263,6 +274,7 @@ export const ko = {
       beats: {
         pile: '[[hand]]로 나눠 주고 남은 패를 쌓아 둔 것을 [[wall]]이라고 합니다.',
         wall: '보드 가운데 숫자는 패산에서 더 뽑을 수 있는 패의 장수입니다.',
+        dead: '패산 중 14장은 뽑지 않고 남겨 둡니다. 그래서 처음에 뽑을 수 있는 패는 70장입니다.',
         shrink: '패를 1장 뽑을 때마다 1장씩 줄어듭니다.',
         empty: '패산이 0장이 될 때까지 아무도 손패를 완성하지 못하면 [[draw]]입니다.',
         over: '유국이 되면 이긴 사람 없이 그 판이 끝납니다.'
@@ -328,7 +340,7 @@ export const ko = {
       beats: {
         agari: '[[hand]]를 완성하는 것을 [[agari]]라고 합니다. 먼저 화료한 사람이 점수를 얻습니다.',
         goal: '완성된 손패는 [[meld]] 4개와 [[pair]] 1개로 이루어집니다.',
-        meld: '몸통은 패 3장으로 만든 묶음입니다.',
+        meld: '몸통은 패 3장으로 만든 묶음입니다. 정해진 모양만 몸통이 됩니다.',
         pair: '머리는 같은 패 2장으로 만든 묶음입니다.',
         total: '몸통 4개는 12장, 머리 1개는 2장이라 합치면 14장입니다.',
         hand: '이 손패는 14장이 모두 몸통과 머리로 나뉩니다. 그래서 화료입니다.',
@@ -340,7 +352,7 @@ export const ko = {
       summary: '이어지는 숫자 3장',
       beats: {
         run: '[[run]]는 같은 종류의 [[suited]] 3장이 숫자 순서대로 이어진 [[meld]]입니다.',
-        mixed: '[[man]]·[[pin]]·[[sou]]을 섞으면 슌쯔가 아닙니다.',
+        mixed: '[[man]]·[[pin]]·[[sou]]를 섞으면 슌쯔가 아닙니다.',
         gap: '135처럼 숫자를 건너뛰어도 슌쯔가 아닙니다.',
         honorRun: '[[honor]]는 숫자가 없어서 슌쯔를 만들 수 없습니다.',
         wrap: '[[dora]]와 달리 9 다음 1로는 이어지지 않습니다.',
@@ -370,7 +382,7 @@ export const ko = {
       summary: '같은 패 2장',
       beats: {
         pair: '[[pair]]는 같은 패 2장입니다. [[suited]]든 [[honor]]든 상관없습니다.',
-        one: '완성된 [[hand]]에는 머리가 꼭 1개 있습니다.',
+        one: '완성된 [[hand]]에는 머리가 꼭 1개 있습니다. 같은 패 2장이 여러 쌍이어도 머리로 쓰는 것은 1쌍뿐입니다.',
         broken: '숫자나 종류가 다르면 머리가 아닙니다.',
         ...everyDrill('짝이 없는 패 1장을 버리세요.')
       },
@@ -400,7 +412,7 @@ export const ko = {
       summary: '1장 남은 손패',
       beats: {
         ready: '패 1장만 더 있으면 [[agari]]하는 상태를 [[tenpai]]라고 합니다.',
-        readyWait: '지금 [[hand]]는 [[meld]] 3개와 같은 패 2쌍입니다. 동이나 백이 오면 화료합니다.',
+        readyWait: '지금 [[hand]]는 [[meld]] 3개와 [[toitsu]] 2개입니다. 동이나 백이 오면 화료합니다.',
         east: '동이 오면 동 3장이 [[triplet]]가 되고, 백 2장이 [[pair]]가 됩니다.',
         ...everyDrill(MAKE_TENPAI)
       },
@@ -455,7 +467,7 @@ export const ko = {
         five: '[[agari]] [[hand]]는 [[meld]] 4개와 [[pair]] 1개, 묶음 5개로 이루어집니다.',
         block: '몸통과 [[taatsu]], [[toitsu]]를 [[block]]이라고 합니다.',
         count: '이 손패는 몸통 2개, 타쯔 2개, 또이쯔 1개로 블록이 5개입니다.',
-        theory: '손패를 블록 5개로 나누어 [[build]]하는 방법을 [[fiveBlocks]]이라고 합니다.',
+        theory: '뽑고 버리며 화료 모양을 만들어 가는 것을 [[build]]라고 합니다. 손패를 블록 5개로 나누어 조패하는 방법을 [[fiveBlocks]]이라고 합니다.',
         grow: '타쯔가 모두 몸통이 되고 또이쯔가 머리로 남으면 화료입니다.',
         loose: '블록이 5개면, 블록에 들지 않는 패는 화료에 쓰이지 않습니다. 이런 패부터 버립니다.',
         ...everyDrill(LOOSE_FIRST)
@@ -468,12 +480,12 @@ export const ko = {
       beats: {
         isolated: '어느 [[block]]에도 들지 않는 패를 [[isolated]]라고 합니다.',
         short: '이 [[hand]]는 블록이 4개뿐입니다. 고립패 1장을 [[taatsu]]로 키워 블록 5개를 채워야 합니다.',
-        honor: '[[honor]]는 같은 패가 와야만 블록이 됩니다. [[ukeire]]가 1종류뿐입니다.',
+        honor: '[[honor]]는 같은 패가 와야만 [[toitsu]]가 되어 블록이 됩니다. [[ukeire]]가 1종류뿐입니다.',
         terminal: '1과 9는 유효패가 3종류입니다.',
         edge: '2와 8은 유효패가 4종류입니다.',
         middle: '3부터 7까지는 유효패가 5종류입니다.',
         order: '그래서 자패, 1과 9, 2와 8 순서로 버리고 가운데 [[suited]]를 남깁니다.',
-        ...everyDrill('고립패 1장을 버리세요.')
+        ...everyDrill('가장 먼저 버릴 고립패 1장을 버리세요.')
       },
       notes: {
         pick1: isolatedNotes(HONOR_LOOSE),
@@ -500,7 +512,7 @@ export const ko = {
       title: '멘젠 조패',
       summary: '뽑고 버리며 텐파이',
       beats: {
-        menzen: '다른 사람이 버린 패로 [[meld]]을 만들지 않고, 직접 뽑은 패로 [[hand]]를 만드는 것을 [[menzen]]이라고 합니다.',
+        menzen: '다른 사람이 버린 패를 가져와 [[meld]]을 만들 수도 있습니다. 그렇게 하지 않고 직접 뽑은 패로만 [[hand]]를 만드는 것을 [[menzen]]이라고 합니다.',
         turn: '차례마다 1장 뽑고 1장 버리며, [[block]] 5개를 몸통 4개와 [[pair]] 1개로 바꿔 갑니다.',
         order: '버릴 패는 [[isolated]]부터 고릅니다. 고립패가 없는데 블록이 6개라면 [[ukeire]]가 적은 [[taatsu]]를 정리합니다.',
         ...everyDrill('패 1장을 버리세요.'),
@@ -524,7 +536,8 @@ export const ko = {
         wait: '[[tenpai]] [[hand]]를 [[agari]]하게 하는 패를 [[wait|대기패]]라고 합니다.',
         waitHere: '이 손패는 34삭에 2삭이나 5삭이 오면 [[run]]가 되어 화료합니다. 그래서 대기패는 2삭과 5삭입니다.',
         shapes: '남은 패의 모양에 따라 대기패가 달라집니다. 대기 모양은 [[ryanmen]]·[[kanchan]]·[[penchan]]·[[tanki]]·[[shanpon]], 다섯 가지입니다.',
-        strongest: '그중 가장 강력한 모양은 양면입니다. 다음 레슨에서 양면을 배웁니다.'
+        known: '양면·간짱·변짱은 [[taatsu]]의 모양 그대로입니다. 샤보는 [[toitsu]] 2개, 단기는 1장 남은 패로 기다립니다.',
+        strongest: '그중 대기패가 가장 많은 모양은 양면입니다. 다음 레슨에서 양면을 배워봅시다.'
       }
     },
     ryanmen: {
@@ -534,7 +547,7 @@ export const ko = {
         ryanmen: '[[ryanmen]]은 숫자가 이어진 [[suited]] 2장으로 양쪽 끝을 기다리는 모양입니다. 12와 89는 한쪽 끝이 없어 양면이 아닙니다.',
         how: '34삭은 2삭이 오면 234삭, 5삭이 오면 345삭 [[run]]가 됩니다.',
         wide: '[[wait]]는 2종류, 최대 8장입니다. 다섯 모양 중 가장 많습니다.',
-        compare: '[[kanchan]]인 35삭은 4삭 1종류만 기다립니다. 그래서 같은 [[tenpai]]라면 양면을 남깁니다.',
+        compare: '[[kanchan]]인 35삭은 4삭 1종류만 기다립니다. [[tenpai]]가 가능하다면, 양면을 고릅니다.',
         ...everyDrill('양면 대기가 남도록 패 1장을 버리세요.')
       },
       notes: {
@@ -573,9 +586,9 @@ export const ko = {
         ryanmen: '3삭을 버리면 56삭 [[ryanmen]]이 남습니다. [[wait]]는 4삭과 7삭입니다.',
         kanchan: '6삭을 버리면 35삭 [[kanchan]]이 남습니다. 대기패는 4삭뿐입니다.',
         count: '같은 패는 4장씩이라 양면은 최대 8장, 간짱은 최대 4장을 기다립니다.',
-        more: '대기패가 많을수록 [[agari]]하기 쉽습니다. 그래서 대기패가 많은 쪽을 남깁니다.',
+        more: '대기패가 많을수록 [[agari]]하기 쉽습니다. 대기패가 많은 양면이 좋은 이유입니다.',
         held: '[[hand]]에 이미 있는 대기패는 장수에서 뺍니다. [[shanpon]]는 최대 4장, [[tanki]]는 최대 3장입니다.',
-        indicator: '[[indicator]]로 [[seen|보이는]] 대기패도 장수에서 뺍니다. 7삭이 보여서 56삭의 대기패는 최대 7장입니다.',
+        indicator: '[[discard]]나 [[indicator]]로 [[seen|보이는]] 대기패도 장수에서 뺍니다. 7삭이 표시패로 보여서 56삭의 대기패는 최대 7장입니다.',
         ...everyDrill(WIDER)
       },
       notes: {
@@ -611,9 +624,9 @@ export const ko = {
       summary: '텐파이 선언',
       beats: {
         tenpai: '[[tenpai]]가 되면 [[riichi]]를 선언할 수 있습니다.',
-        what: '리치는 텐파이라고 알리는 선언입니다. 리치를 하고 [[agari]]하면 점수가 올라갑니다.',
+        what: '리치는 텐파이라고 알리는 선언입니다. [[menzen]]일 때만 할 수 있습니다. 리치를 하고 [[agari]]하면 점수가 올라갑니다.',
         declare: '[[toimen]]이 리치를 선언했습니다. 대면 이름표에 리치 표시가 켜졌습니다.',
-        sideways: '리치를 선언하며 버린 패는 옆으로 눕혀 놓습니다. 이 패를 [[declare]]라고 합니다.'
+        sideways: '리치를 선언하며 버린 패는 다른 버림패와 방향을 다르게 놓습니다. 이 패를 [[declare]]라고 합니다.'
       }
     },
     tsumogiri: {
@@ -630,7 +643,7 @@ export const ko = {
       summary: '내가 뽑은 패로 화료',
       beats: {
         tsumo: '[[tsumo]]는 내가 뽑은 패로 [[agari]]하는 것입니다.',
-        complete: '34삭에 5삭을 뽑아 [[hand]]가 완성되었습니다.',
+        complete: '리치한 내가 34삭에 5삭을 뽑아 [[hand]]가 완성되었습니다.',
         pay: '쯔모하면 다른 세 사람이 점수를 나누어 냅니다.'
       }
     },
@@ -639,15 +652,17 @@ export const ko = {
       summary: '남이 버린 패로 화료',
       beats: {
         ron: '[[ron]]은 다른 사람이 버린 패로 [[agari]]하는 것입니다.',
-        anyone: '[[shimocha]]·[[toimen]]·[[kamicha]] 누가 버린 패든 론할 수 있습니다.'
+        example: '[[shimocha]]가 5삭을 버렸습니다. 내 34삭에 5삭이 더해지면 [[hand]]가 완성됩니다. 그래서 5삭으로 론할 수 있습니다.',
+        anyone: '[[shimocha]]·[[toimen]]·[[kamicha]] 누가 버린 패든 론할 수 있습니다.',
+        pay: '론하면 그 패를 버린 사람이 점수를 혼자 모두 냅니다.'
       }
     },
     dealin: {
       title: '방총',
-      summary: '내 패로 방총당하기',
+      summary: '내가 버린 패로 론',
       beats: {
         dealIn: '내가 버린 패로 다른 사람이 [[ron]]하는 것을 [[dealIn]]이라고 합니다.',
-        pay: '방총당하면 그 점수를 나 혼자 모두 냅니다.',
+        pay: '방총하면 그 점수를 나 혼자 모두 냅니다.',
         avoid: '그래서 상대가 [[tenpai]]일 때는 상대의 [[wait]]를 버리지 않아야 합니다.'
       }
     },
@@ -657,12 +672,9 @@ export const ko = {
       beats: {
         reveal: '[[toimen]]의 [[hand]]를 공개합니다.',
         waits: '대면은 23삭 [[ryanmen]]입니다. 1삭이나 4삭이 오면 [[agari]]합니다.',
-        ...everyDrill('대면에게 [[dealIn]]당하지 않는 패 1장을 버리세요.')
+        ...everyDrill('대면의 손패에서 대기패를 찾아, 대기패가 아닌 패 1장을 버리세요.')
       },
-      notes: everyDrill({
-        safe: '고른 패는 대면의 대기패가 아닙니다.',
-        dealIn: '고른 패는 대면의 대기패입니다. 대면이 론합니다.'
-      })
+      notes: eachDrill(READING_WAITS.map(readingNote))
     },
     furiten: {
       title: '후리텐',
@@ -687,14 +699,14 @@ export const ko = {
       beats: {
         hidden: '실전에서는 상대의 [[hand]]를 볼 수 없습니다.',
         visible: '하지만 상대가 버린 패는 볼 수 있습니다.',
-        genbutsu: '[[riichi]]한 사람이 버린 패로는 [[dealIn]]당하지 않습니다. 그 패로는 [[furiten]]이라 [[ron]]할 수 없기 때문입니다.',
+        genbutsu: '[[riichi]]한 사람이 버린 패로는 [[dealIn]]하지 않습니다. 그 패로는 [[furiten]]이라 [[ron]]할 수 없기 때문입니다.',
         name: '리치한 사람이 이미 버린 패를 [[genbutsu]]이라고 합니다. 가장 안전한 패입니다.',
         pick: '[[toimen]]의 현물 1장을 버리세요.'
       },
       notes: {
         pick: {
           genbutsu: '대면이 이미 버린 패입니다.',
-          furiten: '4삭도 후리텐이라 안전하지만, 대면이 버린 패는 아닙니다.',
+          furiten: '4삭은 대면이 후리텐이라 론할 수 없지만, 대면이 버린 현물은 아닙니다.',
           other: '고른 패는 {tile}입니다. 대면이 버린 패가 아닙니다.'
         }
       }
@@ -704,11 +716,11 @@ export const ko = {
       summary: '화료보다 수비',
       beats: {
         riichi: '[[toimen]]이 [[riichi]]했습니다. 내 [[hand]]는 아직 [[tenpai]]가 아닙니다.',
-        betaori: '이럴 때는 [[agari]]를 포기하고 [[dealIn]]당하지 않는 데만 집중할 수 있습니다. 이런 수비를 [[betaori]]라고 합니다.',
+        betaori: '이럴 때는 [[agari]]를 포기하고 [[dealIn]]하지 않는 데만 집중할 수 있습니다. 이런 수비를 [[betaori]]라고 합니다.',
         build: '[[build]]만 생각하면 북이나 9통을 버립니다. 하지만 둘 다 대면의 [[genbutsu]]이 아닙니다.',
         safe: '3만은 대면이 버린 현물입니다. 베타오리할 때는 [[meld]]이 깨져도 3만을 버립니다.',
         turns: '남은 [[turn|순]]만큼 [[safeTile]]가 있으면 끝까지 버틸 수 있습니다.',
-        ...everyDrill('베타오리하세요.')
+        ...everyDrill('대면의 [[genbutsu]] 1장을 버려 베타오리하세요.')
       },
       notes: everyDrill(BETAORI_NOTES)
     },
@@ -718,11 +730,12 @@ export const ko = {
       beats: {
         river: '[[riichi]]한 사람이 버린 패는 그 사람에게 [[genbutsu]]입니다.',
         passed: '[[toimen]]이 리치한 뒤 [[kamicha]]가 백을 버렸습니다. 대면은 [[ron]]하지 않았습니다.',
-        furiten: '리치한 사람은 [[wait]]를 한 번 놓치면 그 판 내내 [[furiten]]입니다. 그래서 대면은 앞으로 백으로 론할 수 없습니다.',
+        mark: '리치 뒤에 버린 패를 띠로 표시했습니다.',
+        furiten: '리치한 사람은 [[wait]]를 한 번 놓치면, 직접 버리지 않았어도 그 판 내내 [[furiten]]입니다. 그래서 대면은 앞으로 백으로 론할 수 없습니다.',
         anyone: '이렇게 리치 뒤에 론하지 않고 넘긴 패도 현물이 됩니다. 누가 버렸든 마찬가지입니다.',
         before: '리치하기 전에 다른 사람이 버린 패는 현물이 아닙니다.',
         only: '현물은 리치한 그 사람에게만 안전합니다.',
-        ...everyDrill('대면의 [[genbutsu]] 1장을 버리세요.')
+        ...guidedDrill('리치 뒤에 버린 패만 띠로 표시했습니다.', '대면의 [[genbutsu]] 1장을 버리세요.')
       },
       notes: {
         pick1: passedNote('상가가 리치 뒤에 버린 9통입니다. 대면은 론하지 않았습니다.'),
@@ -741,7 +754,7 @@ export const ko = {
         count: '그래서 자패는 몇 장 [[seen|보이는지]] 셉니다. [[discard]]와 내 [[hand]], [[indicator]]를 모두 합칩니다. 북은 3장 보입니다.',
         three: '3장 보이면 남은 1장으로는 샤보가 되지 않습니다. 단기로만 [[dealIn]]당합니다.',
         one: '중은 내 손패 1장 말고는 보이지 않습니다. 단기와 샤보가 모두 남아 위험합니다.',
-        late: '보이지 않는 자패는 후반으로 갈수록 더 위험해집니다.',
+        late: '판이 진행될수록 보이지 않는 자패는 누군가 쥐고 있을 가능성이 커져 더 위험해집니다.',
         ...everyDrill('가장 많이 보이는 [[honor]] 1장을 버리세요.')
       },
       notes: everyDrill({
@@ -759,12 +772,12 @@ export const ko = {
         genbutsu: '4만은 [[toimen]]의 [[genbutsu]]입니다.',
         ryanmen: '대면이 23만 [[ryanmen]]이면 1만과 4만을, 56만 양면이면 4만과 7만을 기다립니다.',
         furiten: '어느 쪽이든 [[wait]]인 4만을 버렸으니 [[furiten]]입니다. 1만이나 7만으로 [[ron]]할 수 없습니다.',
-        suji: '그래서 1만과 7만은 양면으로는 [[dealIn]]당하지 않습니다. 이렇게 현물에서 세 칸 떨어진 패를 [[suji]]라고 합니다.',
-        lines: '1, 4, 7 / 2, 5, 8 / 3, 6, 9가 서로 스지입니다.',
-        outer: '현물 1장으로 양면이 모두 막히는 스지는 4, 5, 6을 제외한 패뿐입니다.',
+        suji: '그래서 1만과 7만은 양면으로는 [[dealIn]]하지 않습니다. 이렇게 현물에서 세 칸 떨어진 패를 [[suji]]라고 합니다.',
+        lines: '147 / 258 / 369가 서로 스지입니다.',
+        outer: '1, 2, 3, 7, 8, 9는 현물 1장으로 양면이 모두 막힙니다.',
         middle: '1만이 현물이어도 4만은 56만 [[ryanmen]]이 남아 있습니다. 4, 5, 6은 무턱대고 버리면 안 됩니다.',
         limit: '스지는 양면만 막습니다. [[kanchan]]·[[penchan]]·[[tanki]]·[[shanpon]] 대기로는 방총당할 수 있습니다.',
-        ...everyDrill('스지 덕분에 [[ryanmen]]으로 방총당하지 않는 패 1장을 버리세요.')
+        ...everyDrill('스지 덕분에 [[ryanmen]]으로 방총하지 않는 패 1장을 버리세요.')
       },
       notes: {
         pick1: sujiNote('4만에서 세 칸 떨어진 7만은 스지입니다.'),
@@ -802,19 +815,19 @@ export const ko = {
         none: '[[genbutsu]]과 [[honor]]가 없다면, [[suji]]보다 먼저 [[kabe]]을 찾아봅시다.',
         four: '같은 패가 4장 모두 [[seen|보이면]] 그 패를 [[kabe]]이라고 합니다. [[discard]]와 내 [[hand]], [[indicator]]를 합쳐 셉니다.',
         blocked: '3삭이 더 남아 있지 않아 23삭 [[ryanmen]]과 34삭 양면을 만들 수 없습니다.',
-        safe: '그래서 1삭과 2삭은 양면으로 [[dealIn]]당하지 않습니다.',
+        safe: '그래서 1삭과 2삭은 양면으로 [[dealIn]]하지 않습니다.',
         kanchan: '2삭은 13삭 [[kanchan]]도 막힙니다.',
         weak: '4가 벽이어도 1은 23 [[ryanmen]]이 남아 안전하지 않습니다.',
         strong: '그래서 벽은 2, 3, 7, 8일 때 강력합니다.',
         pairs: '[[tanki]]와 [[shanpon]]는 벽으로 막을 수 없습니다.',
-        ...everyDrill('벽 덕분에 [[ryanmen]]으로 방총당하지 않는 패 1장을 버리세요.')
+        ...everyDrill('벽 덕분에 [[ryanmen]]으로 방총하지 않는 패 1장을 버리세요.')
       },
       notes: {
-        pick1: kabeNote('7통이 벽이라 8통과 9통은 양면으로 방총당하지 않습니다.'),
-        pick2: kabeNote('2삭이 벽이라 1삭은 양면으로 방총당하지 않습니다.'),
-        pick3: kabeNote('3만이 벽이라 2만은 양면으로 방총당하지 않습니다.'),
-        pick4: kabeNote('7삭이 벽이라 8삭과 9삭은 양면으로 방총당하지 않습니다.'),
-        pick5: kabeNote('8만이 벽이라 9만은 양면으로 방총당하지 않습니다.')
+        pick1: kabeNote('7통이 벽이라 8통과 9통은 양면으로 방총하지 않습니다.'),
+        pick2: kabeNote('2삭이 벽이라 1삭은 양면으로 방총하지 않습니다.'),
+        pick3: kabeNote('3만이 벽이라 2만은 양면으로 방총하지 않습니다.'),
+        pick4: kabeNote('7삭이 벽이라 8삭과 9삭은 양면으로 방총하지 않습니다.'),
+        pick5: kabeNote('8만이 벽이라 9만은 양면으로 방총하지 않습니다.')
       }
     },
     safety: {
@@ -837,7 +850,7 @@ export const ko = {
         first: '가장 안전한 패부터 버립니다. 9삭은 [[toimen]]의 [[genbutsu]]입니다.',
         save: '2만은 [[suji]]지만 아직 버리지 않습니다. [[genbutsu]]이 남아 있으면 현물부터 버립니다.',
         later: '한 [[turn|순]]이 지나자 [[shimocha]]가 2만을 버렸습니다. 2만도 이제 현물입니다. 이렇게 [[safeTile]]는 늘어날 수 있습니다.',
-        narrow: '현물이 늘어날수록 아직 통하지 않은 패는 더 위험해집니다. 남은 [[wait|대기]]가 그만큼 좁혀지기 때문입니다.',
+        narrow: '현물이 늘어날수록 아직 아무도 버리지 않은 패는 더 위험해집니다. 남은 [[wait|대기]]가 그만큼 좁혀지기 때문입니다.',
         ...everyDrill('가장 안전한 패 1장을 버리세요.')
       },
       notes: everyDrill(SAFETY_NOTES),
@@ -847,18 +860,19 @@ export const ko = {
       title: '추격 리치',
       summary: '리치가 둘일 때',
       beats: {
-        two: '[[toimen]]에 이어 [[kamicha]]도 [[riichi]]했습니다. 리치가 둘이면 두 사람 모두에게 [[dealIn]]당하지 않는 패만 [[safeTile]]입니다.',
+        two: '[[toimen]]에 이어 [[kamicha]]도 [[riichi]]했습니다. 이렇게 뒤따라 거는 리치를 [[chase]]라고 합니다.',
+        safe: '리치가 둘이면 두 사람 모두에게 [[dealIn]]하지 않는 패만 [[safeTile]]입니다.',
         one: '2통은 대면의 [[genbutsu]]이지만 상가에게는 아닙니다.',
         both: '8삭은 대면과 상가가 모두 버렸습니다. 두 사람 모두에게 현물입니다.',
         declare: '상가의 [[declare]] 5통을 대면은 [[ron]]하지 않았습니다. 그래서 5통은 두 사람 모두에게 현물입니다.',
         after: '두 번째 리치 뒤에 둘 다 론하지 않은 패도 두 사람 모두에게 현물입니다.',
-        ...everyDrill('두 사람 모두의 [[genbutsu]] 1장을 버리세요.')
+        ...guidedDrill('두 번째 리치 뒤에 버린 패만 띠로 표시했습니다.', '두 사람 모두의 [[genbutsu]] 1장을 버리세요.')
       },
       notes: {
-        pick1: chaseNote('8통은 대면과 상가가 모두 버린 패입니다.'),
-        pick2: chaseNote('2통은 상가의 선언패입니다. 대면이 론하지 않았습니다.'),
-        pick3: chaseNote('상가의 리치 뒤에 [[shimocha]]가 버린 1삭입니다. 둘 다 론하지 않았습니다.'),
-        pick4: chaseNote('상가의 리치 뒤에 내가 버린 2삭입니다. 둘 다 론하지 않았습니다.'),
+        pick1: chaseNote('상가의 리치 뒤에 [[shimocha]]가 버린 1삭입니다. 둘 다 론하지 않았습니다.'),
+        pick2: chaseNote('상가의 리치 뒤에 내가 버린 2삭입니다. 둘 다 론하지 않았습니다.'),
+        pick3: chaseNote('8통은 대면과 상가가 모두 버린 패입니다.'),
+        pick4: chaseNote('2통은 상가의 선언패입니다. 대면이 론하지 않았습니다.'),
         pick5: chaseNote('상가가 리치 뒤에 버린 4삭입니다. 대면도 론하지 않았습니다.')
       }
     },
@@ -866,7 +880,7 @@ export const ko = {
       title: '공통과 따로',
       summary: '벽·자패는 공통, 스지는 따로',
       beats: {
-        shared: '[[kabe]]과 [[honor]]의 장수는 두 사람에게 똑같이 적용됩니다. 3삭이 벽이라 2삭은 두 사람 모두에게 [[ryanmen]]으로 [[dealIn]]당하지 않습니다. 북은 두 사람 모두에게 3장 [[seen|보이는]] 자패입니다.',
+        shared: '[[kabe]]과 [[honor]]의 장수는 두 사람에게 똑같이 적용됩니다. 3삭이 벽이라 2삭은 두 사람 모두에게 [[ryanmen]]으로 [[dealIn]]하지 않습니다. 북은 두 사람 모두에게 3장 [[seen|보이는]] 자패입니다.',
         apart: '[[suji]]는 사람마다 따로 봅니다. 7만은 [[toimen]]에게는 스지지만 [[kamicha]]에게는 아닙니다.',
         double: '대면과 상가가 모두 4통을 버려, 1통은 두 사람 모두에게 스지입니다.',
         better: '9삭은 대면에게만 [[genbutsu]]이고 상가에게는 위험합니다. 한 사람에게만 현물인 패보다, 두 사람 모두에게 스지인 패가 나을 수 있습니다.',
@@ -874,8 +888,8 @@ export const ko = {
       },
       notes: everyDrill({
         double: '고른 패는 {tile}, 두 사람 모두에게 스지입니다.',
-        kabe: '고른 패는 {tile}입니다. 벽은 두 사람 모두에게 통합니다.',
-        honor: '고른 패는 {tile}입니다. 자패의 장수는 두 사람 모두에게 통합니다.',
+        kabe: '고른 패는 {tile}입니다. 벽은 두 사람 모두에게 적용됩니다.',
+        honor: '고른 패는 {tile}입니다. 자패의 장수는 두 사람 모두에게 적용됩니다.',
         one: '고른 패는 {tile}입니다. 한 사람에게만 현물이라 다른 사람에게는 위험합니다.',
         half: '고른 패는 {tile}입니다. 한 사람에게만 스지입니다.'
       }),
@@ -886,7 +900,7 @@ export const ko = {
       summary: '추격 리치 대비',
       beats: {
         two: '[[toimen]]의 [[genbutsu]]이 [[hand]]에 두 가지 있습니다. 9삭과 2통입니다.',
-        keep: '9삭은 [[shimocha]]도 버린 패입니다. 하가가 [[chase]]를 해도 9삭은 하가의 현물입니다.',
+        keep: '9삭은 [[shimocha]]도 버린 패입니다. 하가가 [[chase]]를 해도 9삭은 하가에게 현물이 됩니다.',
         first: '[[safeTile]]가 여러 장이면 다른 사람의 현물이기도 한 패를 남겨 둡니다. 그래서 2통부터 버립니다.',
         ...everyDrill('추격 리치에 대비해 대면의 [[genbutsu]] 1장을 버리세요.')
       },
@@ -902,7 +916,7 @@ export const ko = {
       beats: {
         none: '[[genbutsu]]·[[honor]]·[[kabe]]·[[suji]]가 모두 없다면 [[noSuji]] 중에서 고릅니다. 이때도 조금이라도 덜 위험한 패가 있습니다.',
         edge: '1, 9가 가장 덜 위험하고, 4, 5, 6이 가장 위험합니다.',
-        why: '끝으로 갈수록 그 패를 쓰는 [[wait|대기]]의 모양이 적기 때문입니다. 1만은 23만 [[ryanmen]]만 기다리지만, 5만은 34만·67만 양면과 46만 [[kanchan]]이 기다립니다.',
+        why: '끝으로 갈수록 그 패를 쓰는 [[wait|대기]]의 모양이 적기 때문입니다. 1만을 기다리는 [[ryanmen]]은 23만 하나뿐이지만, 5만은 34만·67만 양면과 46만 [[kanchan]]이 기다립니다. [[tanki]]와 [[shanpon]]는 숫자와 상관없이 남습니다.',
         ...everyDrill('가장 덜 위험한 패 1장을 버리세요.')
       },
       notes: everyDrill({
@@ -923,10 +937,10 @@ export const ko = {
       },
       notes: {
         pick1: countedNote('3통 주변의 2통과 4통이 많이 보입니다.'),
-        pick2: countedNote('3삭 주변의 4삭이 4장 모두 보입니다.'),
+        pick2: countedNote('3삭 주변의 4삭이 4장 모두 보여 [[kabe]]입니다.'),
         pick3: countedNote('7만 주변의 6만이 3장 보입니다.'),
         pick4: countedNote('7통 주변의 8통이 3장 보입니다.'),
-        pick5: countedNote('7삭 주변의 6삭이 4장 모두 보입니다.')
+        pick5: countedNote('7삭 주변의 6삭이 4장 모두 보여 [[kabe]]입니다.')
       }
     }
   }
