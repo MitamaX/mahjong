@@ -1,25 +1,15 @@
-import { GUARD } from '../core/danger.js';
 import { parseFigure } from '../core/lesson.js';
 import { TERM_FIGURES } from '../lessons/terms.js';
 import { figureHtml, figureStyle } from './figureView.js';
-import { button, classNames, div, escape, html, link, outlineNumber, tag, text } from './markup.js';
+import { button, div, escape, html, link, tag, text } from './markup.js';
 
 const LINE_BREAK = '';
 const LINK_PATTERN = /\[\[(\w+)(?:\|([^\]]+))?\]\]/g;
 const TERM_PREFIX = 'term-';
 const CLOSE_MARK = '×';
-const CLEARED_HASH = '#none';
 const NAKA_SUJI = 'nakaSuji';
 const KATA_SUJI = 'kataSuji';
 
-export const PANEL_CASES = [GUARD.GENBUTSU, GUARD.HONOR, GUARD.KABE, GUARD.SUJI];
-const GUIDE_CASES = [
-  { id: GUARD.GENBUTSU },
-  { id: GUARD.HONOR },
-  { id: GUARD.KABE },
-  { id: GUARD.SUJI, subs: [NAKA_SUJI, KATA_SUJI] },
-  { id: GUARD.NO_SUJI }
-];
 
 const GLOSSARY_GROUPS = [
   { name: 'tiles', ids: ['suited', 'honor', 'man', 'pin', 'sou', 'winds', 'dragons'] },
@@ -27,8 +17,11 @@ const GLOSSARY_GROUPS = [
     name: 'flow',
     ids: ['shimocha', 'toimen', 'kamicha', 'oya', 'ko', 'hand', 'wall', 'draw', 'turn', 'discard', 'dora', 'indicator']
   },
-  { name: 'melds', ids: ['agari', 'meld', 'run', 'triplet', 'pair', 'tenpai'] },
-  { name: 'build', ids: ['build', 'taatsu', 'toitsu', 'ukeire', 'shanten', 'block', 'fiveBlocks', 'isolated', 'menzen'] },
+  { name: 'melds', ids: ['agari', 'meld', 'run', 'triplet', 'pair'] },
+  {
+    name: 'build',
+    ids: ['build', 'taatsu', 'toitsu', 'ukeire', 'tenpai', 'shanten', 'block', 'fiveBlocks', 'isolated', 'menzen']
+  },
   { name: 'waits', ids: ['wait', 'ryanmen', 'kanchan', 'penchan', 'tanki', 'shanpon'] },
   { name: 'riichi', ids: ['riichi', 'declare', 'tsumogiri', 'tsumo', 'ron', 'dealIn', 'furiten'] },
   {
@@ -39,7 +32,6 @@ const GLOSSARY_GROUPS = [
 
 const FIGURES = Object.fromEntries(Object.entries(TERM_FIGURES).map(([id, spec]) => [id, parseFigure(spec)]));
 const CARD_FIGURE = 'term-figure';
-const CASE_FIGURE = 'case__figure';
 
 export const TERM_FIGURE_STYLE = figureStyle(...Object.values(FIGURES));
 
@@ -88,31 +80,6 @@ export function lineHtml(dictionary, source, linkTerm) {
 export const linesHtml = (dictionary, lines, className, linkTerm) => div(className, lines.map((line) =>
   (line === LINE_BREAK ? div('lines__break') : lineHtml(dictionary, line, linkTerm))));
 
-const caseBodyHtml = (dictionary, id, linkTerm) => [
-  div('row', [
-    text(termOf(dictionary, id).name, 'case__name'),
-    termFigureHtml(dictionary, id, CASE_FIGURE)
-  ]),
-  lineHtml(dictionary, termOf(dictionary, id).text, linkTerm)
-];
-
-export const guardCaseHtml = (dictionary, id, linkTerm) => div('case surface', caseBodyHtml(dictionary, id, linkTerm));
-
-const rankEntries = (cases) => cases.flatMap(({ id, subs = [] }, index) => [
-  { id, number: outlineNumber(index) },
-  ...subs.map((sub, order) => ({ id: sub, number: outlineNumber(index, order) }))
-]);
-
-const RANKED_CASES = rankEntries(GUIDE_CASES);
-
-export const CASE_FIGURE_STYLE = figureStyle(...RANKED_CASES.map(({ id }) => FIGURES[id]));
-
-export const rankedCasesHtml = (dictionary, linkTerm) => tag('div', { class: 'rank', style: CASE_FIGURE_STYLE },
-  RANKED_CASES.map(({ id, number }) => div('rank__item surface', [
-    text(number, 'rank__number'),
-    div('case', caseBodyHtml(dictionary, id, linkTerm))
-  ])));
-
 export const articleBodyHtml = (dictionary, id, linkTerm) => [
   termFigureHtml(dictionary, id, CARD_FIGURE),
   lineHtml(dictionary, termOf(dictionary, id).text, linkTerm)
@@ -121,14 +88,15 @@ export const articleBodyHtml = (dictionary, id, linkTerm) => [
 const termCardHtml = (dictionary, id) => tag('article', { class: 'term', id: termAnchorId(id) }, [
   div('term__head', [
     tag('h3', { class: 'article__title' }, escape(termOf(dictionary, id).name)),
-    link(CLOSE_MARK, CLEARED_HASH, 'term__close', { 'aria-label': dictionary.close })
+    button(CLOSE_MARK, { class: 'term__close', 'aria-label': dictionary.close, 'data-close': true })
   ]),
   articleBodyHtml(dictionary, id, termAnchor)
 ]);
 
-export const termLayerHtml = (dictionary, modifier) => tag('aside', {
-  class: classNames('term-layer', modifier),
-  style: TERM_FIGURE_STYLE
+export const termLayerHtml = (dictionary) => tag('aside', {
+  class: 'term-layer',
+  style: TERM_FIGURE_STYLE,
+  'data-term-layer': true
 }, termIds(dictionary).map((id) => termCardHtml(dictionary, id)));
 
 export const glossaryIndexHtml = (dictionary, linkTerm) =>

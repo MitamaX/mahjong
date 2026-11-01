@@ -35,8 +35,7 @@ function statsOf(option) {
 
 const CRITERIA = [
   { of: (option) => option.danger, weight: 12, tie: 0.001 },
-  { of: (option) => option.shanten, weight: 4, tie: 0 },
-  { of: (option) => -option.ukeire, weight: 0.2, tie: 0 }
+  { of: (option) => -option.kept, weight: 4, tie: 0 }
 ];
 
 function compare(option, other) {
@@ -62,10 +61,12 @@ export class Evaluator {
 
   evaluate({ turn, hand, chosen, remaining, threats, rivers, doraIndicator }) {
     const profile = Danger.profile(threats, remaining);
+    const genbutsu = hand.tiles.filter((tile) => profile.isGenbutsu(tile)).length;
     const options = hand.discardOptions(remaining).map((option) => ({
       ...option,
       danger: profile.rate(option.tile),
-      guard: profile.guard(option.tile)
+      guard: profile.guard(option.tile),
+      kept: genbutsu - Number(profile.isGenbutsu(option.tile))
     }));
 
     const picked = options.find((option) => option.tile === chosen);

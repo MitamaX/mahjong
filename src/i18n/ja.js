@@ -13,141 +13,31 @@ export const ja = {
   help: {
     title: 'ヘルプ',
     name: 'betaori.app',
-    tab: { basic: '基本', defense: '守備', terms: '用語', info: '情報' },
-    guide: '詳しくは守備ガイドを参照してください。',
-    intro: [
-      '先制[[riichi]]に対して[[safeTile]]を見つけるためのリーチ麻雀の守備シミュレーターです。',
-      '本サイトでは押し引きの判断を評価しません。放銃回避に徹したセオリー通りの守備を練習してみてください。'
-    ],
+    tab: { basic: '基本', terms: '用語', info: '情報' },
+    intro: ['リーチ麻雀を学び、守備を練習できます。'],
+    pages: {
+      home: [
+        'ルールの基本から守備まで段階的に学んでみてください。',
+        '盤上で実際に牌を切りながら身につけられます。'
+      ],
+      practice: [
+        '先制[[riichi]]に対して[[safeTile]]を選んでみてください。',
+        '押し引きの判断は評価しません。',
+        '相手は最善の打牌で勝負し、追いかけ[[riichi]]をすることもあります。',
+        '[[dealIn]]せずに1局を凌いでみてください。'
+      ]
+    },
     control: {
       title: '操作',
       lines: [
-        '好きな牌をクリックすると切れます。',
-        'レポートの各部分をクリックするとその[[turn]]の評価を確認できます。'
+        '牌を押して切ってください。',
+        'レポートの各[[turn]]を押すと評価を確認できます。',
+        '用語を押すと意味を確認できます。'
       ]
     },
-    info: { issues: '報告', art: '牌画', license: 'ライセンス' },
-    flow: {
-      title: '進行',
-      lines: [
-        '相手の[[riichi]]から守備が始まります。',
-        '相手は最善の打牌で勝負します。追いかけ[[riichi]]をすることもあります。',
-        '[[dealIn]]せずに1局を凌いでみてください。'
-      ]
-    }
+    info: { issues: '報告', art: '牌画', license: 'ライセンス' }
   },
   doc: {
-    guide: {
-      title: 'リーチ麻雀 守備ガイド',
-      nav: '守備ガイド',
-      description: '現物・字牌・壁・筋で牌の危険度を見分けるリーチ麻雀の守備基準と用語解説。',
-      parts: [
-        {
-          name: 'ranking',
-          title: '基本',
-          lines: [
-            'ベタオリは[[agari]]を諦め、[[dealIn]]しないことだけに集中する守備です。',
-            '手作りより、安全に切ることを優先しましょう。',
-            '残りの[[turn|巡目]]の数だけ[[safeTile]]があれば、最後まで凌げます。'
-          ],
-          groups: [
-            {
-              title: '安全度',
-              lines: [
-                '[[safeTile]]がなければ、当たりうる[[wait|待ち]]が少ない牌から選びます。',
-                'おおむね下に行くほど危険です。[[honor]]の危険度は見えている枚数で大きく変わります。'
-              ],
-              cases: true
-            }
-          ]
-        },
-        {
-          name: 'reading',
-          title: '読み',
-          groups: [
-            {
-              title: '現物',
-              lines: [
-                '[[riichi]]者が切った牌は、その人の[[genbutsu]]です。',
-                '[[riichi]]後は、誰が切った牌でも[[ron]]せずに見逃せば[[genbutsu]]になります。',
-                '',
-                '[[genbutsu]]はその人にしか通りません。'
-              ]
-            },
-            {
-              title: '筋',
-              lines: [
-                '[[genbutsu]]から3つ離れた牌が[[suji]]です。1・4・7 / 2・5・8 / 3・6・9が互いに筋です。',
-                '[[suji]]は[[ryanmen]]だけを防ぎます。[[tanki]]と[[shanpon]]はどの[[suji]]にも当たります。[[kanchan]]・[[penchan]]の可能性も否定できません。',
-                '',
-                '4・5・6は両側の[[suji]]がどちらも[[genbutsu]]のときだけ[[nakaSuji]]になります。片側だけなら[[kataSuji]]です。',
-                '[[kataSuji]]は[[nakaSuji]]に比べてはるかに危険です。'
-              ]
-            },
-            {
-              title: '壁',
-              lines: [
-                '同じ牌が4枚すべて見えている状態を[[kabe]]と呼びます。手牌と捨て牌、[[indicator]]を合わせて数えます。',
-                '',
-                '3の[[kabe]]があれば、1と2は[[ryanmen]]で[[dealIn]]しません。2は[[kanchan]]でも[[dealIn]]しません。',
-                '4の[[kabe]]があっても、1は2・3の[[ryanmen]]が残るため安全ではありません。つまり、[[kabe]]が効くのは2・3・7・8です。',
-                '',
-                '[[tanki]]と[[shanpon]]は[[kabe]]では防げません。'
-              ]
-            },
-            {
-              title: '字牌',
-              lines: [
-                '[[honor]]には[[ryanmen]]がないため、[[tanki]]と[[shanpon]]だけが残ります。',
-                '枚数は自分の手牌も含めて数えます。3枚見えれば[[shanpon]]がなくなり、[[tanki]]だけが残ります。',
-                '',
-                '1枚も見えていない[[honor]]は[[nakaSuji]]より危険です。終盤に近づくほどさらに危険になります。'
-              ]
-            }
-          ]
-        },
-        {
-          name: 'fold',
-          title: '切り方',
-          groups: [
-            {
-              title: '順番',
-              lines: [
-                '最も安全な牌から切ります。面子や[[tenpai]]が崩れても構いません。',
-                '[[safeTile]]があるうちは[[suji]]を先に切りません。1[[turn|巡]]待てば[[safeTile]]が増えることもあります。',
-                '',
-                '[[safeTile]]が複数あれば、他の人の[[genbutsu]]でもある牌を残しておきます。追いかけ[[riichi]]に備えられます。',
-                '',
-                '[[genbutsu]]が増えるほど、まだ通っていない牌はより危険になります。残りの[[wait|待ち]]がそれだけ絞られるからです。'
-              ]
-            },
-            {
-              title: '追いかけリーチ',
-              lines: [
-                '[[riichi]]者が二人なら、どちらにも[[dealIn]]しない牌だけが[[safeTile]]です。',
-                '二人目の[[riichi]]の後、二人とも[[ron]]しなかった牌は両者の[[genbutsu]]です。',
-                '二人目の[[riichi]]宣言牌を先制[[riichi]]者が[[ron]]しなかったなら、その牌も両者の[[genbutsu]]です。',
-                '',
-                '[[kabe]]と[[honor]]の枚数は二人に共通です。[[suji]]は人ごとに別々に見ます。',
-                '片方だけの[[genbutsu]]より、両者に[[suji]]の牌のほうが良いこともあります。'
-              ]
-            },
-            {
-              title: '危険牌',
-              lines: [
-                '[[genbutsu]]・[[honor]]・[[kabe]]・[[suji]]がどれもなければ、[[noSuji]]の中から選びます。その中でも、少しでも危険の少ない牌があります。',
-                '',
-                '1・9の危険が最も低く、4・5・6が最も高いです。端に近いほど、その牌を使う[[wait|待ち]]の形が少ないからです。',
-                '',
-                '端の牌がなければ、その牌自身と周りの牌が多く見えている牌を切ります。多く見えているほど、その牌に当たる[[wait|待ち]]が少なくなります。',
-                '切ろうとする牌が多く見えているほど、[[tanki]]と[[shanpon]]が減ります。',
-                '周りの牌が多く見えているほど、その牌を使う[[ryanmen]]と[[kanchan]]が減ります。'
-              ]
-            }
-          ]
-        }
-      ]
-    },
     privacy: {
       title: 'プライバシーポリシー',
       nav: 'プライバシー',
@@ -187,7 +77,7 @@ export const ja = {
   ledger: { turn: '巡', picked: '選択', best: '最善', shanten: 'シャンテン', danger: '危険', verdict: '判定' },
   compare: { best: '最善', picked: '選択' },
   verdict: { best: '最善', second: '次善', good: '良好', weak: '不足', risky: '危険', worst: '最悪' },
-  edge: { danger: 'より安全な', shanten: 'シャンテンを戻さない', ukeire: '受け入れの広い' },
+  edge: 'より安全な',
   seen: (count, guard) => `${count}枚見えの${guard}`,
   turnMark: (turn) => `${turn}巡目`,
   score: (value) => `${value}点`,
@@ -250,7 +140,7 @@ export const ja = {
       betaori: { name: 'ベタオリ', text: '[[agari]]を諦め、[[dealIn]]しないことだけに集中する守備。' },
       safeTile: { name: '安全牌', text: '[[riichi]]者の誰にも[[dealIn]]しない牌。' },
       genbutsu: { name: '現物', text: '[[riichi]]者がすでに切った牌。リーチ後にその人が[[ron]]せずに見逃した牌も現物になる。' },
-      suji: { name: '筋', text: '[[genbutsu]]から3つ離れた牌。1・4・7 / 2・5・8 / 3・6・9が互いに筋の関係にある。' },
+      suji: { name: '筋', text: '[[genbutsu]]から3つ離れた牌。147 / 258 / 369が互いに筋の関係にある。' },
       nakaSuji: { name: '中筋', text: '4・5・6のうち、両側の[[suji]]がどちらも[[genbutsu]]の牌。' },
       kataSuji: { name: '片筋', text: '4・5・6のうち、片側の[[suji]]だけが[[genbutsu]]の牌。' },
       kabe: { name: '壁', text: '4枚すべてが[[seen|見えている]]牌。その牌を含む[[run]]と[[ryanmen]]が作れなくなる。' },

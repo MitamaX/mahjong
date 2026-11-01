@@ -13,11 +13,6 @@ const CITE_SEPARATOR = '·';
 const LEDGER_KEYS = ['turn', 'picked', 'best', 'shanten', 'danger', 'verdict'];
 const COMPACT_STATS = 'stats stats--compact';
 const SAME_MARK = '=';
-const EDGES = [
-  { key: 'danger', holds: (best, picked) => best.danger < picked.danger },
-  { key: 'shanten', holds: (best, picked) => best.shanten < picked.shanten },
-  { key: 'ukeire', holds: (best, picked) => best.ukeire > picked.ukeire }
-];
 const DASH = '—';
 
 const percent = (value) => `${value.toFixed(1)}%`;
@@ -44,11 +39,8 @@ const citeList = (cites) => cites
 
 const sharesGuard = (best, picked) => (best.guard?.kind ?? null) === (picked.guard?.kind ?? null);
 
-function edgeLabel(best, picked) {
-  if (best.tile === picked.tile || !sharesGuard(best, picked)) return '';
-  const edge = EDGES.find(({ holds }) => holds(best, picked));
-  return edge ? strings().edge[edge.key] : '';
-}
+const edgeLabel = (best, picked) =>
+  (sharesGuard(best, picked) && best.danger < picked.danger ? strings().edge : '');
 
 function outcomeLabel(result) {
   const { outcome } = strings();

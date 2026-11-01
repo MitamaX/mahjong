@@ -76,10 +76,11 @@
   --btn-pad-y: var(--space-2);
   --grade-size: 52px;
   --medal-size: 72px;
-  --rank-mark-w: 44px;
+  --card-check-size: 44px;
   --btn-icon-size: 34px;
   --icon-inset: 0.2;
   --control-h: 40px;
+  --nav-item-min-w: 120px;
   --bar-pad-y: var(--space-3);
   --panel-pad: var(--space-4);
   --panel-gap: var(--space-3);
@@ -101,7 +102,7 @@
   --stage-gutter: var(--space-4);
   --lesson-panel-w: 380px;
   --lesson-panel-share: 40%;
-  --lesson-panel-h: 46%;
+  --lesson-panel-h: 38%;
   --figure-w: 720px;
   --figure-tile-cap: 58px;
   --figure-caption-gap: var(--space-2);
@@ -114,9 +115,11 @@
   --rail-inset: var(--space-3);
   --rail-lane: calc(var(--rail-inset) + var(--rail-mark) + var(--space-2));
   --term-cap: 520px;
+  --term-h: 350px;
+  --term-step: var(--space-6);
+  --term-depth-cap: 3;
   --term-slide: 0.28s;
   --doc-text: 16px;
-  --ad-min-h: 120px;
   --dora-reserve: 0px;
   --panel-h: 600px;
   --panel-cap-w: calc((100vw - var(--safe-x)) * 0.94);

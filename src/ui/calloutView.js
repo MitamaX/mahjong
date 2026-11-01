@@ -170,7 +170,11 @@ export class CalloutView {
   point(targets, cycle = []) {
     this.targets = present(targets);
     this.cycle = present(cycle);
-    this.draw(true);
+    const pointed = this.targets;
+    const settling = [...pointed, ...this.cycle].flat().flatMap((node) => node.getAnimations());
+    Promise.all(settling.map((animation) => animation.finished.catch(() => null))).then(() => {
+      if (this.targets === pointed) this.draw(true);
+    });
   }
 
   draw(entering) {

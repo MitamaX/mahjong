@@ -154,6 +154,10 @@ class ThreatProfile {
     return (1 - survival) * PERCENT;
   }
 
+  isGenbutsu(tile) {
+    return this.models.every((model) => model.threat.safe.has(tile));
+  }
+
   guard(tile) {
     if (!this.models.length) return null;
     const riskiest = this.models.reduce((worst, model) => (model.rate(tile) > worst.rate(tile) ? model : worst));

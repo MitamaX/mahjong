@@ -1,29 +1,19 @@
-import { DOC_PAGES, GUIDE_PAGE, HOME_PAGE } from '../core/locale.js';
+import { HOME_PAGE, PRACTICE_PAGE } from '../core/locale.js';
 import { PanelView, panelMarkup } from './panelView.js';
 import { anchor, button, classNames, div, escape, tag, text } from './markup.js';
 import { iconSvg } from './iconView.js';
 import { REPOSITORY } from './linkView.js';
-import { infoRowsHtml, pageLink } from './siteView.js';
+import { SITE_PAGES, infoRowsHtml, pageLink } from './siteView.js';
 import {
-  CASE_FIGURE_STYLE,
-  PANEL_CASES,
-  TERM_FIGURE_STYLE,
-  articleBodyHtml,
-  glossaryIndexHtml,
-  guardCaseHtml,
-  linesHtml,
-  sectionHtml,
-  termButton,
-  termIds,
-  termOf
+  TERM_FIGURE_STYLE, articleBodyHtml, glossaryIndexHtml, linesHtml, sectionHtml, termButton, termIds, termOf
 } from './glossary.js';
 
 const BACK = '←';
-const TABS = ['basic', 'defense', 'terms', 'info'];
-const TEXT_SECTIONS = ['control', 'flow'];
+const TABS = ['basic', 'terms', 'info'];
+const PAGE_SECTIONS = [HOME_PAGE, PRACTICE_PAGE];
 const STACK_CLASS = 'help__stack';
 const ACTIVE_CLASS = 'btn--on';
-const INFO_PAGES = [HOME_PAGE, ...DOC_PAGES];
+const INFO_PAGES = Object.keys(SITE_PAGES);
 
 const articleHtml = (dictionary, id) => tag('div', { class: 'article surface', 'data-article': id, hidden: true }, [
   div('row', [
@@ -33,22 +23,16 @@ const articleHtml = (dictionary, id) => tag('div', { class: 'article surface', '
   articleBodyHtml(dictionary, id, termButton)
 ]);
 
+const linedSectionHtml = (dictionary, title, lines) =>
+  sectionHtml(title, linesHtml(dictionary, lines, 'lines surface', termButton));
+
 const basicPane = (dictionary) => [
   text(dictionary.help.name, 'help__name'),
   linesHtml(dictionary, dictionary.help.intro, 'lines', termButton),
-  TEXT_SECTIONS.map((name) => sectionHtml(dictionary.help[name].title,
-    linesHtml(dictionary, dictionary.help[name].lines, 'lines surface', termButton)))
+  PAGE_SECTIONS.map((name) =>
+    linedSectionHtml(dictionary, SITE_PAGES[name].label(dictionary), dictionary.help.pages[name])),
+  linedSectionHtml(dictionary, dictionary.help.control.title, dictionary.help.control.lines)
 ];
-
-const guideLinkHtml = (dictionary, language) => div('split split--center', [
-  text(dictionary.help.guide),
-  pageLink(dictionary, language, GUIDE_PAGE, 'btn btn--wide')
-]);
-
-const defensePane = (dictionary, language) => div('guide', [
-  guideLinkHtml(dictionary, language),
-  PANEL_CASES.map((id) => guardCaseHtml(dictionary, id, termButton))
-]);
 
 const termsPane = (dictionary) => [
   tag('div', { class: STACK_CLASS, 'data-glossary': true }, glossaryIndexHtml(dictionary, termButton)),
@@ -64,8 +48,8 @@ const infoPane = (dictionary, language) => [
   ])
 ];
 
-const PANES = { basic: basicPane, defense: defensePane, terms: termsPane, info: infoPane };
-const PANE_STYLES = { defense: CASE_FIGURE_STYLE, terms: TERM_FIGURE_STYLE };
+const PANES = { basic: basicPane, terms: termsPane, info: infoPane };
+const PANE_STYLES = { terms: TERM_FIGURE_STYLE };
 
 const paneHtml = (dictionary, language, name) => tag('div', {
   class: STACK_CLASS,

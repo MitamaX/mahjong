@@ -9,11 +9,12 @@ const SIDE_RIVERS = { right: '9p1z2m8s3p', left: '8m3z9s1m2p' };
 const CALLER_RIVER = '2z9m1p7s4*m';
 const TSUMOGIRI_TILE = '8p';
 const FURITEN_TILE = '1s';
-export const FURITEN_RIVER = `2z${FURITEN_TILE}9m1p7s4*m`;
+export const FURITEN_RIVER = `2z${FURITEN_TILE}1p7s4*m`;
 const DEFENDER_HAND = '258m369p147s1356z';
 const DEFENDER_RIVER = '9s4z6p1p8m';
 const WINNER_HAND = '123m789m456p55z34s';
 const WINNER_RIVER = '9s4z6*p';
+const WINNER_RIVERS = { right: '9p1z2m', across: '1z8p6s', left: '8m3z9s' };
 
 const CALLER_MELDS = ['234m', '567m', '234p'];
 const CALLER_PAIR = '66s';
@@ -23,11 +24,16 @@ const CALLER_HAND = [...CALLER_MELDS, CALLER_PAIR, CALLER_SHAPE].join('');
 const CALLER_TABLE = { ...SIDE_RIVERS, hand: DEFENDER_HAND, self: DEFENDER_RIVER, across: CALLER_RIVER };
 const calledTable = (changes = {}) => riichiTable({ ...CALLER_TABLE, ...changes });
 const revealed = (changes) => calledTable({ ...changes, shown: { across: CALLER_HAND } });
-const winnerTable = (draw) => riichiTable({ ...SIDE_RIVERS, hand: WINNER_HAND, self: WINNER_RIVER, across: '1z8p6s', draw });
+const RON_TABLE = riichiTable({
+  ...WINNER_RIVERS, right: `${WINNER_RIVERS.right}5s`, hand: WINNER_HAND, self: `${WINNER_RIVER}2p`
+});
+const winnerTable = (draw) => riichiTable({ ...WINNER_RIVERS, hand: WINNER_HAND, self: WINNER_RIVER, draw });
 
 const CALLED = calledTable();
 const REVEALED = revealed();
-const TSUMOGIRI_TABLE = calledTable({ across: `${CALLER_RIVER}${TSUMOGIRI_TILE}` });
+const TSUMOGIRI_TABLE = calledTable({
+  self: `${DEFENDER_RIVER}2z`, right: `${SIDE_RIVERS.right}7z`, across: `${CALLER_RIVER}${TSUMOGIRI_TILE}`
+});
 const DEALT_IN = calledTable({ self: `${DEFENDER_RIVER}${DEAL_IN_TILE}` });
 const WINNER_DRAWN = winnerTable('9p');
 export const FURITEN = calledTable({ across: FURITEN_RIVER });
@@ -40,7 +46,7 @@ const CALLER_WAITS = handWaitFigure(CALLER_GROUPS, '14s');
 const TSUMO_ONLY = figure([group('ron', '4s', { wrong: true }), group('tsumo', '4s', { mark: MARK.BEST })]);
 
 const RIICHI = singlePage('riichi', figure([group('river', CALLER_RIVER)]), CALLED, [
-  { id: 'tenpai', callout: ['hidden:across'] },
+  { id: 'tenpai', callout: ['riichi:across'] },
   { id: 'what' },
   { id: 'declare', callout: ['plate:across'] },
   { id: 'sideways', callout: ['riichi:across'] }
@@ -58,12 +64,14 @@ const TSUMO = singlePage('tsumo', TERM_FIGURES.tsumo, winnerTable('5s'), [
   { id: 'pay', callout: OPPONENTS }
 ]);
 
-const RON = singlePage('ron', TERM_FIGURES.ron, CALLED, [
+const RON = singlePage('ron', figure([group('river', '8s3p'), group('ron', '4s', { mark: MARK.BEST })]), RON_TABLE, [
   { id: 'ron', callout: ['river:right'] },
-  { id: 'anyone', callout: OPPONENT_RIVERS }
+  { id: 'example', callout: ['river:right:5s', 'hand:34s'] },
+  { id: 'anyone', callout: OPPONENT_RIVERS },
+  { id: 'pay', callout: ['plate:right'] }
 ]);
 
-const DEAL_IN = singlePage('dealin', TERM_FIGURES.dealIn, DEALT_IN, [
+const DEAL_IN = singlePage('dealin', figure([group('river', DEAL_IN_TILE, { mark: MARK.PICK })]), DEALT_IN, [
   { id: 'dealIn', callout: [`river:self:${DEAL_IN_TILE}`, 'hidden:across'] },
   { id: 'pay', callout: ['plate:self'] },
   { id: 'avoid', callout: ['plate:across'] }
@@ -113,7 +121,7 @@ const READING = {
 
 const FURITEN_LESSON = {
   id: 'furiten',
-  cover: TERM_FIGURES.furiten,
+  cover: figure([group('wait', '14s', { wrong: true })]),
   pages: [
     {
       id: 'furiten',

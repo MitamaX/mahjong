@@ -14,6 +14,7 @@ const targetsOf = (region, seats) => seats.map((seat) => `${region}:${seat}`);
 export const OPPONENTS = targetsOf('hidden', OTHER_SEATS);
 export const ALL_RIVERS = targetsOf('river', SEAT_NAMES);
 export const OPPONENT_RIVERS = targetsOf('river', OTHER_SEATS);
+export const ALL_PLATES = targetsOf('plate', SEAT_NAMES);
 
 export const DORA = '9m';
 export const EMPTY_WALL = 0;
@@ -64,8 +65,12 @@ const drills = (specs) => specs.map((spec, order) => drill(drillId(order), spec,
 
 export const drillPages = (specs) => drills(specs).map((beat, order) => pageOf(beat.id, specs[order].board, beat));
 
-const pagesWith = (beatOf) => (specs) => specs.map(({ board, answer, solved }, order) =>
-  pageOf(drillId(order), board, beatOf(drillId(order), answer, solved)));
+const pagesWith = (beatOf) => (specs, sceneAt = () => ({})) => specs.map(({ board, answer, solved }, order) =>
+  pageOf(drillId(order), board, { ...beatOf(drillId(order), answer, solved), ...sceneAt(order) }));
+
+export const AFTER_RIICHI = { afterRiichi: true };
+
+export const guidedAfterRiichi = (order) => (order < GUIDED_DRILLS ? AFTER_RIICHI : {});
 
 export const pickPages = pagesWith(citedPick);
 

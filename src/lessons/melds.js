@@ -122,7 +122,7 @@ const EAST_TRIPLET = '111z';
 const EAST_BLOCKS = [...READY_MELDS, EAST_TRIPLET, WHITE_PAIR];
 const EAST_DRAWN = opening({ hand: READY_HAND, draw: '1z', river: LOOSE_TILE }, { wall: NEXT_TURN_WALL });
 
-const TENPAI = {
+export const TENPAI = {
   id: 'tenpai',
   cover: figure([group('pair', '55z'), ARROW, group('wait', '5z', { mark: MARK.BEST })]),
   pages: [
@@ -145,4 +145,4 @@ const TENPAI = {
   ]
 };
 
-export const MELD_LESSONS = [SHAPE, RUNS, TRIPLETS, PAIRS, SPLITTING, TENPAI];
+export const MELD_LESSONS = [SHAPE, RUNS, TRIPLETS, PAIRS, SPLITTING];

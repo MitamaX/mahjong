@@ -3,7 +3,7 @@ import { Notation } from '../core/notation.js';
 import { SEAT_NAMES } from '../core/seats.js';
 import { Tiles } from '../core/tiles.js';
 import { figure, group, waitFigure } from './figure.js';
-import { pickPages } from './table.js';
+import { guidedAfterRiichi, pickPages } from './table.js';
 import { riichiTable, safeDrill } from './riichiTable.js';
 import { SHARED_GENBUTSU, TERM_FIGURES } from './terms.js';
 import { MARK } from '../ui/tileView.js';
@@ -22,6 +22,7 @@ const CHASE = {
       board: riichiTable(CHASE_TABLE),
       beats: [
         { id: 'two', callout: ['riichi:across', 'riichi:left'] },
+        { id: 'safe', callout: ['plate:across', 'plate:left'] },
         { id: 'one', callout: ['river:across:2p', 'hand:2p'] },
         { id: 'both', callout: [`river:across:${SHARED_GENBUTSU}`, `river:left:${SHARED_GENBUTSU}`, `hand:${SHARED_GENBUTSU}`] },
         { id: 'declare', callout: ['riichi:left'] },
@@ -29,16 +30,6 @@ const CHASE = {
       ]
     },
     ...pickPages([
-      safeDrill({
-        hand: '34789m68999p122s', draw: '6m', dora: '6s',
-        self: '3z5z4z6z2p5p8s8m9m2p', right: '5z1m7s9m5p4s1p7p1z2p',
-        across: '1s3z7m9s1s8p3s7z1m7*z', left: '2z2z7p5z4z8m2z6p8p9*s'
-      }, { correct: { both: '8p' }, wrong: { across: '7m1s', left: '8m6p' } }),
-      safeDrill({
-        hand: '23456m234p12578s', draw: '7m', dora: '5m',
-        self: '1z2z6z8m6p9p9m6z', right: '6z1s8s4m2m2m5m1m',
-        across: '1m1p7z7z6s7m2*s8m', left: '1z2z6z3m8m5p9s2*p'
-      }, { correct: { both: '2p' }, wrong: { across: '2s7m', left: '3m' } }),
       safeDrill({
         hand: '11234m689p12357s', draw: '5s', dora: '5z',
         self: '1z2s2m1z6m3z5z8m6z', right: '1z3z4z4m2m2p4p6z1s',
@@ -50,11 +41,21 @@ const CHASE = {
         across: '6z2z3z4z5z1m2s7*s7m6m', left: '1z2z9p4z7m6m5s8*p6z4z'
       }, { correct: { both: '2s' }, wrong: { across: '7s3z', left: '5s' } }),
       safeDrill({
+        hand: '34789m68999p122s', draw: '6m', dora: '6s',
+        self: '3z5z4z6z2p5p8s8m9m2p', right: '5z1m7s9m5p4s1p7p1z2p',
+        across: '1s3z7m9s1s8p3s7z1m7*z', left: '2z2z7p5z4z8m2z6p8p9*s'
+      }, { correct: { both: '8p' }, wrong: { across: '7m1s', left: '8m6p' } }),
+      safeDrill({
+        hand: '23456m234p12578s', draw: '7m', dora: '5m',
+        self: '1z2z6z8m6p9p9m6z', right: '6z1s8s4m2m2m5m1m',
+        across: '1m1p7z7z6s7m2*s8m', left: '1z2z6z3m8m5p9s2*p'
+      }, { correct: { both: '2p' }, wrong: { across: '2s7m', left: '3m' } }),
+      safeDrill({
         hand: '788m23567p2458s2z', draw: '1m', dora: '8s',
         self: '6z7z9p9m6p2m4m6z3s1s', right: '5z7z3m9m5z3m2m1m9s1s',
         across: '1z3s6z3z3s9s1m2*m6m5z', left: '1z5z6z3z4z2p9p4z1*s4s'
       }, { correct: { both: '4s' }, wrong: { across: '1m', left: '2p' } })
-    ])
+    ], guidedAfterRiichi)
   ]
 };
 
@@ -164,10 +165,10 @@ const tierOf = (tile) => TIERS.find((tier) => RANK_TIERS[tier].includes(Tiles.ra
 
 function rankAnswer(source) {
   const tiles = Notation.tiles(source);
-  const [best, ...rest] = TIERS
+  const [best, next, ...rest] = TIERS
     .map((tier) => [tier, tiles.filter((tile) => tierOf(tile) === tier).map((tile) => Notation.of(tile)).join('')])
     .filter(([, members]) => members);
-  return { correct: Object.fromEntries([best]), wrong: Object.fromEntries(rest) };
+  return { correct: Object.fromEntries([best]), second: Object.fromEntries([next]), wrong: Object.fromEntries(rest) };
 }
 
 const NO_SUJI_TABLE = { ...quietRivers('6s', '5p7z', '7s'), across: '1z9m7z2z5z3*z', hand: '1234m789p23458s6p' };

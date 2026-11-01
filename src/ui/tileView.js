@@ -145,13 +145,15 @@ function accentOf(tile) {
 const faceOf = (tile) => STYLES[Settings.get('tileStyle')].face(Tiles.suitName(tile), Tiles.rankOf(tile));
 
 export function tileHtml(tile, {
-  back = false, turned = false, dim = false, drawn = false, mark = null, interactive = false, label = null
+  back = false, turned = false, afterRiichi = false, dim = false, drawn = false, mark = null,
+  interactive = false, label = null
 } = {}) {
   if (back) return tag('div', { class: 'tile tile--back' });
   const style = STYLES[Settings.get('tileStyle')];
   return tag(interactive ? 'button' : 'div', {
     class: classNames('tile', `tile--${Tiles.suitName(tile)}`, style.art && 'tile--art', accentOf(tile),
-      turned && 'tile--turned', dim && 'tile--dim', drawn && 'tile--drawn', mark && `tile--${mark}`),
+      turned && 'tile--turned', afterRiichi && 'tile--after-riichi', dim && 'tile--dim', drawn && 'tile--drawn',
+      mark && `tile--${mark}`),
     type: interactive && 'button',
     'aria-label': label,
     'data-tile': tile

@@ -26,6 +26,7 @@ const INTRO = singlePage('waits', TERM_FIGURES.ryanmen, RYANMEN_HAND, [
   { id: 'wait', figure: TERM_FIGURES.wait },
   { id: 'waitHere', figure: WAIT_HAND, focus: ['ryanmen', 'wait'] },
   { id: 'shapes', figure: ALL_SHAPES },
+  { id: 'known', figure: ALL_SHAPES },
   { id: 'strongest', figure: ALL_SHAPES, focus: ['ryanmen'] }
 ]);
 
