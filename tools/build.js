@@ -52,7 +52,7 @@ const ICON_LINKS = [
 ];
 const STYLESHEETS = ['tokens', 'base', 'components', 'layout'];
 const IMPORT_SPECIFIER = /from\s+'([^']+)'/g;
-const VERSION_LENGTH = 8;
+const VERSION_LENGTH = 12;
 
 const absolute = (path) => `${SITE}/${path}`;
 const literal = (value) => JSON.stringify(value);
