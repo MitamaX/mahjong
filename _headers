@@ -6,3 +6,15 @@
 
 /assets/*
   Cache-Control: public, max-age=86400
+
+/
+  Cache-Control: no-store
+
+/ko/*
+  Cache-Control: no-store
+
+/en/*
+  Cache-Control: no-store
+
+/ja/*
+  Cache-Control: no-store
