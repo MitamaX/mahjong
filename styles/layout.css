@@ -616,6 +616,18 @@
 
   .lesson__panel {
     --panel-gap: var(--space-2);
+    --btn-pad-y: var(--space-2);
+  }
+
+  .site-bar:has(~ .lesson) .site-bar__nav,
+  .lesson .progress {
+    display: none;
+  }
+
+  .lesson__next {
+    background: linear-gradient(90deg, var(--tan) calc(var(--progress) * 100%), var(--lime) 0);
+    color: var(--ink);
+    transition-property: background, transform, opacity, --progress;
   }
 
   .lesson__head {

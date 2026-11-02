@@ -10,6 +10,12 @@
   initial-value: 0px;
 }
 
+@property --progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
 :root {
   --sage: #CCD5AE;
   --lime: #E9EDC9;

@@ -877,7 +877,7 @@ a.btn {
 }
 
 .progress__fill {
-  width: calc(var(--progress, 0) * 100%);
+  width: calc(var(--progress) * 100%);
   height: 100%;
   border-radius: inherit;
   background: var(--tan);

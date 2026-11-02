@@ -115,7 +115,7 @@ export const lessonMarkup = (dictionary, { lesson, copy, title, names, chapter }
       lesson.pages.map(pageHtml(dictionary, copy, lesson.beats))),
     div('segment', [
       button(escape(dictionary.lesson.back), { class: 'btn btn--wide', 'data-back': true }),
-      button(escape(dictionary.lesson.next), { class: 'btn btn--accent btn--wide', 'data-next': true })
+      button(escape(dictionary.lesson.next), { class: 'btn btn--accent btn--wide lesson__next', 'data-next': true })
     ])
   ])
 ]);
@@ -285,7 +285,7 @@ export class LessonPlayer {
     this.node('back').disabled = this.index === 0;
     next.disabled = !this.cleared;
     if (passing && next.disabled) this.table.firstChoice?.focus();
-    progress.style.setProperty(PROGRESS, done / this.lines.length);
+    this.root.style.setProperty(PROGRESS, done / this.lines.length);
     progress.ariaValueNow = done;
   }
 }
