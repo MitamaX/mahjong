@@ -1117,8 +1117,7 @@ a.btn {
 
 .callout--enter .callout__halo,
 .callout--enter .callout__ring {
-  stroke-dasharray: 1;
-  animation: ring-draw 0.5s ease both;
+  animation: ring-draw 0.5s ease backwards;
 }
 
 .tile--shake {
@@ -1159,8 +1158,8 @@ a.btn {
 }
 
 @keyframes ring-draw {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
 }
 
 @keyframes nudge {
