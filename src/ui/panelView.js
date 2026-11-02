@@ -1,4 +1,5 @@
 import { DISMISS_KEY, OverlayView, overlayHtml } from './overlayView.js';
+import { BackTrail } from './backTrail.js';
 import { button, classNames, div, escape, tag, text } from './markup.js';
 
 export const panelMarkup = ({ name, modifier, title, close }, content) => overlayHtml(name,
@@ -12,6 +13,7 @@ export const panelMarkup = ({ name, modifier, title, close }, content) => overla
 export class PanelView extends OverlayView {
   constructor(root) {
     super(root);
+    this.backTrail = new BackTrail(() => this.hide());
     this.root.querySelectorAll('[data-close]').forEach((node) => node.addEventListener('click', () => this.hide()));
     this.root.addEventListener('click', (event) => {
       if (event.target === this.root) this.hide();
@@ -19,5 +21,19 @@ export class PanelView extends OverlayView {
     document.addEventListener('keydown', (event) => {
       if (event.key === DISMISS_KEY) this.hide();
     });
+  }
+
+  show() {
+    super.show();
+    this.syncTrail();
+  }
+
+  hide() {
+    super.hide();
+    this.syncTrail();
+  }
+
+  syncTrail() {
+    this.backTrail.sync(Number(this.visible));
   }
 }

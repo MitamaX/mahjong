@@ -18,6 +18,7 @@ const DIM_CLASS = 'figure__group--dim';
 const FIGURE_SCENE = 'lesson__stage--figure';
 const SCROLLED_BODY = 'lesson__body--scrolled';
 const PROGRESS = '--progress';
+const FIRST_STEP = 0;
 const VERDICTS = {
   [VERDICT.CORRECT]: 'verdict--best',
   [VERDICT.SECOND]: 'verdict--second',
@@ -147,6 +148,9 @@ export class LessonPlayer {
     this.node('back').addEventListener('click', () => this.show(this.index - 1));
     this.node('next').addEventListener('click', () => this.advance());
     this.body.addEventListener('scroll', () => this.markScroll(), { passive: true });
+    addEventListener('pageshow', (event) => {
+      if (event.persisted) this.start();
+    });
   }
 
   node(name) {
@@ -163,6 +167,12 @@ export class LessonPlayer {
 
   get onLastBeat() {
     return this.index === this.lines.length - 1;
+  }
+
+  start() {
+    this.solved.clear();
+    this.completion.hide();
+    this.show(FIRST_STEP);
   }
 
   advance() {
