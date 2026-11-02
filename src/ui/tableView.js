@@ -8,6 +8,7 @@ const ANNOUNCE_MS = 900;
 const OPENING_ROUND = '東1';
 
 const BLOCKED_CLASS = 'hand--blocks';
+const CUE_CLASS = 'hand--cue';
 const SHOWN_HAND_CLASS = 'seat__hand--shown';
 const TILE = '.tile';
 
@@ -136,6 +137,10 @@ export class TableView {
     return this.node('hand').querySelector('button[data-tile]');
   }
 
+  cueHand() {
+    this.node('hand').classList.add(CUE_CLASS);
+  }
+
   setRiichiMode(on) {
     this.riichiMode = on;
     this.riichiButton.classList.toggle('btn--on', on);
@@ -230,6 +235,7 @@ export class TableView {
     const container = this.node('hand');
     this.input.clear();
     container.classList.toggle(BLOCKED_CLASS, Boolean(blocks));
+    container.classList.remove(CUE_CLASS);
     container.innerHTML = blocks
       ? html(blockLayout(hand, blocks).map((group) => div('hand__block', group.map((tile) => face(tile, false)))))
       : html([concealed.map((tile) => face(tile, false)), drawn !== null && face(drawn, true)]);

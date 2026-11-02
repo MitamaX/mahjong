@@ -182,6 +182,7 @@ export class LessonPlayer {
     const solvedTile = this.solved.get(index);
     if (solvedTile === undefined) this.stageScene(this.beat.scene, this.beat.asks);
     else this.revisit(solvedTile);
+    if (!this.cleared) this.table.cueHand();
     this.sync();
   }
 
