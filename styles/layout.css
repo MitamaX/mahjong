@@ -639,4 +639,14 @@
     --dora-cap: 1px;
     left: 0;
   }
+
+  .lesson {
+    --dora-reserve: 0px;
+  }
+
+  .lesson .board__dora {
+    --dora-unit: var(--board-unit);
+    inset: var(--board-edge) auto auto var(--board-edge);
+    margin: 0;
+  }
 }
